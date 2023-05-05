@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../utils/res/res_color.dart';
 
 class Habit {
+  final String id;
   final String name;
   final HabitColor color;
   final DateTime? reminder;
 
-  Habit(this.name, this.color, this.reminder);
+  Habit(this.id, this.name, this.color, {this.reminder});
 }
 
 enum HabitColor {
