@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../res/res_color.dart';
+import '../utils/res/res_color.dart';
 
 class Habit {
   final String name;

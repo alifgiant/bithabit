@@ -1,3 +1,4 @@
+import 'package:bithabit/src/utils/view/title_view.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
@@ -7,7 +8,11 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(elevation: 0),
-      body: Center(child: Text(runtimeType.toString())),
+      body: ListView(
+        children: [
+          TitleView(text: 'Create Habit'),
+        ],
+      ),
     );
   }
 }

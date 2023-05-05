@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/view/title_view.dart';
+
 class DashPage extends StatelessWidget {
   const DashPage({super.key});
 
@@ -32,7 +34,8 @@ class DashPage extends StatelessWidget {
               ),
               centerTitle: false,
               titlePadding: const EdgeInsets.all(16),
-              title: Text('BitHabit'),
+              // title: Text('BitHabit'),
+              title: const TitleView(),
             ),
           ),
           SliverList(

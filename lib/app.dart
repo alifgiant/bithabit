@@ -1,5 +1,5 @@
 import 'package:bithabit/src/pages/detail/detail_page.dart';
-import 'package:bithabit/src/res/res_color.dart';
+import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 
 import 'src/pages/home/home_page.dart';
