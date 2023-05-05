@@ -6,18 +6,19 @@ class DashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             pinned: true,
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).pushNamed('/detail'),
+                tooltip: 'Add Habit',
                 icon: const Icon(Icons.add_rounded),
               ),
               IconButton(
                 onPressed: () {},
+                tooltip: 'Sort Habit',
                 icon: const Icon(Icons.sort_rounded),
               ),
             ],

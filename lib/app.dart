@@ -1,3 +1,5 @@
+import 'package:bithabit/src/pages/detail/detail_page.dart';
+import 'package:bithabit/src/res/res_color.dart';
 import 'package:flutter/material.dart';
 
 import 'src/pages/home/home_page.dart';
@@ -11,9 +13,28 @@ class MyApp extends StatelessWidget {
       title: 'BitHabit',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        // primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: ResColor.white,
+        primaryTextTheme: TextTheme(
+          titleLarge: TextStyle(color: ResColor.black),
+        ),
+        appBarTheme: AppBarTheme(
+          color: ResColor.white,
+          titleTextStyle: TextStyle(
+            color: ResColor.black,
+          ),
+          toolbarTextStyle: TextStyle(
+            color: ResColor.black,
+          ),
+          iconTheme: IconThemeData(
+            color: ResColor.black,
+          ),
+        ),
       ),
-      home: const HomePage(),
+      routes: {
+        '/': (context) => const HomePage(),
+        '/detail': (context) => const DetailPage(),
+      },
     );
   }
 }
