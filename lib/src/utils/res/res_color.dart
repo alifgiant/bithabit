@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 mixin ResColor {
-  static const purple = Color(0xffFFFFFF);
-  static const yellow = Color(0xffFCF6B1);
+  static const purple = Color(0xff7D83FF);
+  static const yellow = Color(0xffFFD166);
   static const pink = Color(0xffFF7B9C);
   static const darkGreen = Color(0xff0CBABA);
   static const lightGreen = Color(0xffA9E5BB);

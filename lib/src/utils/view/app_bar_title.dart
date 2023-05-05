@@ -1,10 +1,10 @@
 import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 
-class TitleView extends StatelessWidget {
+class AppBarTitle extends StatelessWidget {
   final String text;
 
-  const TitleView({super.key, this.text = ''});
+  const AppBarTitle({super.key, this.text = ''});
 
   @override
   Widget build(BuildContext context) {

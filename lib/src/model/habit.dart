@@ -12,13 +12,13 @@ class Habit {
 }
 
 enum HabitColor {
-  purple(ResColor.purple, ResColor.black),
-  yellow(ResColor.yellow, ResColor.black),
-  pink(ResColor.pink, ResColor.black),
-  darkGreen(ResColor.darkGreen, ResColor.black),
-  lightGreen(ResColor.lightGreen, ResColor.black),
-  darkBlue(ResColor.darkBlue, ResColor.black),
-  lightBlue(ResColor.lightBlue, ResColor.black);
+  purple(ResColor.purple, ResColor.white),
+  yellow(ResColor.yellow, ResColor.white),
+  pink(ResColor.pink, ResColor.white),
+  darkGreen(ResColor.darkGreen, ResColor.white),
+  lightGreen(ResColor.lightGreen, ResColor.white),
+  darkBlue(ResColor.darkBlue, ResColor.white),
+  lightBlue(ResColor.lightBlue, ResColor.white);
 
   const HabitColor(this.mainColor, this.textColor);
   final Color mainColor;

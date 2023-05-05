@@ -1,7 +1,7 @@
 import 'package:bithabit/src/model/habit.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/view/title_view.dart';
+import '../../utils/view/app_bar_title.dart';
 import 'completed_count.dart';
 
 class DashPage extends StatelessWidget {
@@ -44,7 +44,7 @@ class DashPage extends StatelessWidget {
                 ),
                 centerTitle: false,
                 titlePadding: const EdgeInsets.all(16),
-                title: const TitleView(),
+                title: const AppBarTitle(),
               ),
             ),
             SliverList(
