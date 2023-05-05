@@ -22,6 +22,11 @@ class HabitService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeHabit(String id) async {
+    _habitMap.remove(id);
+    notifyListeners();
+  }
+
   Future<void> _createHabit(Habit habit) async {
     final newId = DateTime.now().toIso8601String();
     _habitMap[newId] = habit.copy(id: newId);

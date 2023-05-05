@@ -39,9 +39,9 @@ class DashPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       CompletedCount(
-                        completed: 1,
+                        completed: 0,
                         total: 4,
                       ),
                     ],
@@ -56,14 +56,18 @@ class DashPage extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final habit = habits[index];
-                  return ListTile(
-                    title: Text(habit.name.titleCase),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        '/detail',
-                        arguments: habit,
-                      );
-                    },
+                  return Dismissible(
+                    key: ValueKey(habit.id),
+                    onDismissed: (direction) => habitService.removeHabit(habit.id),
+                    child: ListTile(
+                      title: Text(habit.name.titleCase),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/detail',
+                          arguments: habit,
+                        );
+                      },
+                    ),
                   );
                 },
                 childCount: habits.length,
