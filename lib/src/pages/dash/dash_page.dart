@@ -1,5 +1,8 @@
 import 'package:bithabit/src/model/habit.dart';
+import 'package:bithabit/src/service/habit_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recase/recase.dart';
 
 import '../../utils/view/app_bar_title.dart';
 import 'completed_count.dart';
@@ -9,6 +12,8 @@ class DashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final habitService = context.watch<HabitService>();
+    final habits = habitService.habits.toList();
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
@@ -27,7 +32,7 @@ class DashPage extends StatelessWidget {
                   icon: const Icon(Icons.sort_rounded),
                 ),
               ],
-              expandedHeight: 140.0,
+              // expandedHeight: 140.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -50,21 +55,18 @@ class DashPage extends StatelessWidget {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
+                  final habit = habits[index];
                   return ListTile(
-                    title: Text('Item $index'),
+                    title: Text(habit.name.titleCase),
                     onTap: () {
                       Navigator.of(context).pushNamed(
                         '/detail',
-                        arguments: Habit(
-                          index.toString(),
-                          index.toString(),
-                          HabitColor.lightBlue,
-                        ),
+                        arguments: habit,
                       );
                     },
                   );
                 },
-                childCount: 20,
+                childCount: habits.length,
               ),
             ),
             const SliverToBoxAdapter(

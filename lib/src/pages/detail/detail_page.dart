@@ -1,4 +1,5 @@
 import 'package:bithabit/src/model/habit.dart';
+import 'package:bithabit/src/service/habit_service.dart';
 import 'package:bithabit/src/utils/view/app_bar_title.dart';
 import 'package:bithabit/src/utils/view/section_title.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,13 @@ import 'habit_color_picker.dart';
 
 class DetailPage extends StatefulWidget {
   final Habit? habit;
-  const DetailPage({super.key, this.habit});
+  final HabitService habitService;
+
+  const DetailPage({
+    super.key,
+    this.habit,
+    required this.habitService,
+  });
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -16,12 +23,15 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   bool get isNewHabit => widget.habit == null;
 
-  late HabitColor selectedColor;
+  bool isTitleEmpty = false;
+  late Habit edittedHabit;
+  late TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
-    selectedColor = widget.habit?.color ?? HabitColor.values.first;
+    edittedHabit = widget.habit?.copy() ?? Habit('', '', HabitColor.values.first);
+    controller = TextEditingController(text: edittedHabit.name);
   }
 
   @override
@@ -34,20 +44,28 @@ class _DetailPageState extends State<DetailPage> {
           children: [
             AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
             const SizedBox(height: 21),
-            const TextField(
+            TextField(
+              controller: controller,
               decoration: InputDecoration(
                 filled: true,
                 hintText: 'Title',
+                errorText: isTitleEmpty ? 'Please fill the title' : null,
               ),
+              onChanged: (value) {
+                setState(() {
+                  isTitleEmpty = false;
+                  edittedHabit = edittedHabit.copy(name: value);
+                });
+              },
             ),
             const SizedBox(height: 30),
             const SectionTitle(text: 'Color'),
             const SizedBox(height: 12),
             HabitColorPicker(
-              selectedColor: selectedColor,
+              selectedColor: edittedHabit.color,
               onColorSelected: (color) {
                 setState(() {
-                  selectedColor = color;
+                  edittedHabit = edittedHabit.copy(color: color);
                 });
               },
             ),
@@ -69,7 +87,7 @@ class _DetailPageState extends State<DetailPage> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: onSaveClick,
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -83,5 +101,19 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
+  }
+
+  void onSaveClick() async {
+    if (edittedHabit.name.isEmpty) {
+      setState(() {
+        isTitleEmpty = true;
+      });
+      return;
+    }
+
+    await widget.habitService.saveHabit(edittedHabit);
+
+    if (!mounted) return;
+    Navigator.of(context).pop(edittedHabit);
   }
 }

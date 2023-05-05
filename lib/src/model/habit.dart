@@ -8,7 +8,31 @@ class Habit {
   final HabitColor color;
   final DateTime? reminder;
 
-  Habit(this.id, this.name, this.color, {this.reminder});
+  Habit(
+    this.id,
+    this.name,
+    this.color, {
+    this.reminder,
+  });
+
+  Habit copy({
+    String? id,
+    String? name,
+    HabitColor? color,
+    DateTime? reminder,
+  }) {
+    return Habit(
+      id ?? this.id,
+      name ?? this.name,
+      color ?? this.color,
+      reminder: reminder ?? this.reminder,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Habit($id,$name,$color,$reminder)';
+  }
 }
 
 enum HabitColor {
