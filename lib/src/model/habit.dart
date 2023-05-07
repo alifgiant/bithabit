@@ -7,15 +7,14 @@ class Habit {
   final String name;
   final HabitColor color;
   final HabitFrequency frequency;
-  final Set<int> selectedDay;
+
   final List<DateTime> reminder;
 
   const Habit(
     this.id,
     this.name,
     this.color, {
-    this.frequency = HabitFrequency.daily,
-    this.selectedDay = const {1, 2, 3, 4, 5, 6, 7}, // 7 day of week
+    this.frequency = const DailyFrequency(),
     this.reminder = const [],
   });
 
@@ -56,10 +55,35 @@ enum HabitColor {
   final Color textColor;
 }
 
-enum HabitFrequency {
-  daily('daily'),
-  monthly('monthly');
+abstract class HabitFrequency {
+  final Set<int> selected;
+  const HabitFrequency({required this.selected});
 
-  const HabitFrequency(this.name);
-  final String name;
+  HabitFrequency copyWith({Set<int>? selected});
+}
+
+class DailyFrequency extends HabitFrequency {
+  static const name = 'daily';
+
+  const DailyFrequency({
+    super.selected = const {1, 2, 3, 4, 5, 6, 7},
+  });
+
+  @override
+  DailyFrequency copyWith({Set<int>? selected}) {
+    return DailyFrequency(selected: selected ?? this.selected);
+  }
+}
+
+class MonthlyFrequency extends HabitFrequency {
+  static const name = 'monthly';
+
+  const MonthlyFrequency({
+    super.selected = const {},
+  });
+
+  @override
+  MonthlyFrequency copyWith({Set<int>? selected}) {
+    return MonthlyFrequency(selected: selected ?? this.selected);
+  }
 }

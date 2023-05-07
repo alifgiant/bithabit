@@ -13,4 +13,5 @@ mixin ResColor {
   // base
   static const black = Color(0xff172121);
   static const white = Color(0xffFCFCFC);
+  static const grey = Color(0xfff2f2f2);
 }

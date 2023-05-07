@@ -1,4 +1,5 @@
 import 'package:bithabit/src/pages/detail/habit_frequency_picker.dart';
+import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/habit.dart';
@@ -29,29 +30,30 @@ class _DetailPageState extends State<DetailPage> {
   late TextEditingController titleCtlr;
 
   bool isFrequencyEmpty = false;
-  late TextEditingController frequencyCtlr;
 
   @override
   void initState() {
     super.initState();
     edittedHabit = widget.habit?.copy() ?? Habit('', '', HabitColor.values.first);
     titleCtlr = TextEditingController(text: edittedHabit.name);
-    frequencyCtlr = TextEditingController(text: edittedHabit.name);
   }
 
   @override
   void dispose() {
     titleCtlr.dispose();
-    frequencyCtlr.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    const screenPadding = 16.0;
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(elevation: 0),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
+          bottom: kBottomNavigationBarHeight + screenPadding,
+        ),
         children: [
           AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
           const SizedBox(height: 21),
@@ -73,6 +75,7 @@ class _DetailPageState extends State<DetailPage> {
           const SectionTitle(text: 'Color'),
           const SizedBox(height: 10),
           HabitColorPicker(
+            screenPadding: 16,
             selectedColor: edittedHabit.color,
             onColorSelected: (color) {
               setState(() {
@@ -92,9 +95,17 @@ class _DetailPageState extends State<DetailPage> {
             },
           ),
           const SizedBox(height: 30),
-          const SectionTitle(text: 'On These Day'),
+          SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
           const SizedBox(height: 10),
-          const Text('data'),
+          HabitFrequencyValuePicker(
+            selectedFrequency: edittedHabit.frequency,
+            screenPadding: screenPadding,
+            onFrequencySelected: (frequency) {
+              setState(() {
+                edittedHabit = edittedHabit.copy(frequency: frequency);
+              });
+            },
+          ),
           const SizedBox(height: 30),
           const SectionTitle(text: 'Reminder'),
           const SizedBox(height: 10),
@@ -120,6 +131,17 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
+  }
+
+  String frequencyValueDetail(Type selectionType) {
+    switch (selectionType) {
+      case DailyFrequency:
+        return 'On These Day';
+      case MonthlyFrequency:
+        return 'On These Date';
+      default:
+        return 'On These Day';
+    }
   }
 
   void onSaveClick() async {
