@@ -31,7 +31,9 @@ class RecapPage extends StatelessWidget {
         ],
       ),
       body: ListView.separated(
-        padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: kBottomNavigationBarHeight + 16),
+        padding: const EdgeInsets.all(12).copyWith(
+          bottom: kBottomNavigationBarHeight + 12,
+        ),
         itemBuilder: (_, index) => WeeklyHabit(habit: habits[index]),
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemCount: habits.length,

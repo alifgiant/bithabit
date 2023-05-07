@@ -38,35 +38,6 @@ class _HomePageState extends State<HomePage> {
           setState(() => currentPageIndex = value);
         },
       ),
-      // bottomNavigationBar: DotNavigationBar(
-      //   currentIndex: currentPageIndex,
-      //   onTap: (index) => pageController.animateToPage(
-      //     index,
-      //     duration: const Duration(milliseconds: 350),
-      //     curve: Curves.easeIn,
-      //   ),
-      //   dotIndicatorColor: Colors.black,
-      //   // enableFloatingNavBar: false
-      //   items: [
-      //     /// Home
-      //     DotNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       selectedColor: Colors.purple,
-      //     ),
-
-      //     /// Likes
-      //     DotNavigationBarItem(
-      //       icon: Icon(Icons.favorite_border),
-      //       selectedColor: Colors.pink,
-      //     ),
-
-      //     /// Search
-      //     DotNavigationBarItem(
-      //       icon: Icon(Icons.search),
-      //       selectedColor: Colors.orange,
-      //     ),
-      //   ],
-      // ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: CustomNavigationBar(

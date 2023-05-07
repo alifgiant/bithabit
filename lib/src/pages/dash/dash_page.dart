@@ -37,8 +37,9 @@ class DashPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    CompletedCount(
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).viewPadding.top),
+                    const CompletedCount(
                       completed: 0,
                       total: 4,
                     ),
