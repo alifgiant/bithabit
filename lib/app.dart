@@ -9,7 +9,16 @@ import 'src/service/timeline_service.dart';
 import 'src/utils/res/res_color.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Locale? locale;
+  final TransitionBuilder? builder;
+  final bool useInheritedMediaQuery;
+
+  const MyApp({
+    super.key,
+    this.locale,
+    this.builder,
+    this.useInheritedMediaQuery = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +28,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimelineService()),
       ],
       child: MaterialApp(
+        locale: locale,
+        builder: builder,
+        useInheritedMediaQuery: useInheritedMediaQuery,
         title: 'BitHabit',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
