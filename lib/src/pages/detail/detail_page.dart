@@ -1,3 +1,4 @@
+import 'package:bithabit/src/pages/detail/habit_frequency_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/habit.dart';
@@ -21,17 +22,28 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  late Habit edittedHabit;
   bool get isNewHabit => widget.habit == null;
 
   bool isTitleEmpty = false;
-  late Habit edittedHabit;
-  late TextEditingController controller;
+  late TextEditingController titleCtlr;
+
+  bool isFrequencyEmpty = false;
+  late TextEditingController frequencyCtlr;
 
   @override
   void initState() {
     super.initState();
     edittedHabit = widget.habit?.copy() ?? Habit('', '', HabitColor.values.first);
-    controller = TextEditingController(text: edittedHabit.name);
+    titleCtlr = TextEditingController(text: edittedHabit.name);
+    frequencyCtlr = TextEditingController(text: edittedHabit.name);
+  }
+
+  @override
+  void dispose() {
+    titleCtlr.dispose();
+    frequencyCtlr.dispose();
+    super.dispose();
   }
 
   @override
@@ -45,7 +57,7 @@ class _DetailPageState extends State<DetailPage> {
             AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
             const SizedBox(height: 21),
             TextField(
-              controller: controller,
+              controller: titleCtlr,
               decoration: InputDecoration(
                 filled: true,
                 hintText: 'Title',
@@ -60,7 +72,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
             const SizedBox(height: 30),
             const SectionTitle(text: 'Color'),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             HabitColorPicker(
               selectedColor: edittedHabit.color,
               onColorSelected: (color) {
@@ -71,15 +83,20 @@ class _DetailPageState extends State<DetailPage> {
             ),
             const SizedBox(height: 30),
             const SectionTitle(text: 'Repeat'),
-            const SizedBox(height: 12),
-            const Text('data'),
+            const SizedBox(height: 10),
+            HabitFrequencyPicker(
+              selectedFrequency: edittedHabit.frequency,
+              onFrequencySelected: (frequency) {
+                //
+              },
+            ),
             const SizedBox(height: 30),
             const SectionTitle(text: 'On These Day'),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             const Text('data'),
             const SizedBox(height: 30),
             const SectionTitle(text: 'Reminder'),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             const Text('data'),
             const SizedBox(height: 30),
           ],

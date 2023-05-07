@@ -6,12 +6,14 @@ class Habit {
   final String id;
   final String name;
   final HabitColor color;
+  final HabitFrequency frequency;
   final List<DateTime> reminder;
 
-  Habit(
+  const Habit(
     this.id,
     this.name,
     this.color, {
+    this.frequency = const DailyFrequency(),
     this.reminder = const [],
   });
 
@@ -19,12 +21,14 @@ class Habit {
     String? id,
     String? name,
     HabitColor? color,
+    HabitFrequency? frequency,
     List<DateTime>? reminder,
   }) {
     return Habit(
       id ?? this.id,
       name ?? this.name,
       color ?? this.color,
+      frequency: frequency ?? this.frequency,
       reminder: reminder ?? this.reminder,
     );
   }
@@ -48,4 +52,22 @@ enum HabitColor {
   const HabitColor(this.mainColor, this.textColor);
   final Color mainColor;
   final Color textColor;
+}
+
+abstract class HabitFrequency {
+  const HabitFrequency();
+}
+
+class DailyFrequency extends HabitFrequency {
+  final Set<int> selectedDays;
+
+  const DailyFrequency({
+    this.selectedDays = const {0, 1, 2, 3, 4, 5, 6},
+  });
+}
+
+class MonthlyFrequency extends HabitFrequency {
+  final Set<int> selectedDate;
+
+  const MonthlyFrequency({this.selectedDate = const {}});
 }

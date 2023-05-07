@@ -4,7 +4,7 @@ import '../../model/habit.dart';
 
 class HabitColorPicker extends StatelessWidget {
   final HabitColor selectedColor;
-  final void Function(HabitColor) onColorSelected;
+  final void Function(HabitColor color) onColorSelected;
 
   const HabitColorPicker({
     super.key,
