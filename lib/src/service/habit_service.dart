@@ -1,10 +1,9 @@
-import 'package:bithabit/src/model/habit.dart';
 import 'package:flutter/material.dart';
+
+import '../model/habit.dart';
 
 class HabitService extends ChangeNotifier {
   final Map<String, Habit> _habitMap = {};
-
-  HabitService();
 
   Iterable<Habit> get habits => _habitMap.values;
 
@@ -22,7 +21,7 @@ class HabitService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeHabit(String id) async {
+  Future<void> deleteHabit(String id) async {
     _habitMap.remove(id);
     notifyListeners();
   }

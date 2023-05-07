@@ -1,11 +1,12 @@
-import 'package:bithabit/src/model/habit.dart';
-import 'package:bithabit/src/pages/detail/detail_page.dart';
-import 'package:bithabit/src/service/habit_service.dart';
-import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'src/model/habit.dart';
+import 'src/pages/detail/detail_page.dart';
 import 'src/pages/home/home_page.dart';
+import 'src/service/habit_service.dart';
+import 'src/service/timeline_service.dart';
+import 'src/utils/res/res_color.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => HabitService()),
+        ChangeNotifierProvider(create: (context) => TimelineService()),
       ],
       child: MaterialApp(
         title: 'BitHabit',

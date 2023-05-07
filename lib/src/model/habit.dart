@@ -6,20 +6,20 @@ class Habit {
   final String id;
   final String name;
   final HabitColor color;
-  final DateTime? reminder;
+  final List<DateTime> reminder;
 
   Habit(
     this.id,
     this.name,
     this.color, {
-    this.reminder,
+    this.reminder = const [],
   });
 
   Habit copy({
     String? id,
     String? name,
     HabitColor? color,
-    DateTime? reminder,
+    List<DateTime>? reminder,
   }) {
     return Habit(
       id ?? this.id,
@@ -36,13 +36,14 @@ class Habit {
 }
 
 enum HabitColor {
-  purple(ResColor.purple, ResColor.white),
-  yellow(ResColor.yellow, ResColor.white),
+  red(ResColor.red, ResColor.white),
   pink(ResColor.pink, ResColor.white),
+  purple(ResColor.purple, ResColor.white),
   darkGreen(ResColor.darkGreen, ResColor.white),
   lightGreen(ResColor.lightGreen, ResColor.white),
   darkBlue(ResColor.darkBlue, ResColor.white),
-  lightBlue(ResColor.lightBlue, ResColor.white);
+  lightBlue(ResColor.lightBlue, ResColor.white),
+  brown(ResColor.brown, ResColor.white);
 
   const HabitColor(this.mainColor, this.textColor);
   final Color mainColor;

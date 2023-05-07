@@ -1,9 +1,9 @@
-import 'package:bithabit/src/model/habit.dart';
-import 'package:bithabit/src/service/habit_service.dart';
-import 'package:bithabit/src/utils/view/app_bar_title.dart';
-import 'package:bithabit/src/utils/view/section_title.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/habit.dart';
+import '../../service/habit_service.dart';
+import '../../utils/view/app_bar_title.dart';
+import '../../utils/view/section_title.dart';
 import 'habit_color_picker.dart';
 
 class DetailPage extends StatefulWidget {
@@ -70,17 +70,17 @@ class _DetailPageState extends State<DetailPage> {
               },
             ),
             const SizedBox(height: 30),
-            SectionTitle(text: 'Repeat'),
+            const SectionTitle(text: 'Repeat'),
             const SizedBox(height: 12),
-            Text('data'),
+            const Text('data'),
             const SizedBox(height: 30),
-            SectionTitle(text: 'On These Day'),
+            const SectionTitle(text: 'On These Day'),
             const SizedBox(height: 12),
-            Text('data'),
+            const Text('data'),
             const SizedBox(height: 30),
-            SectionTitle(text: 'Reminder'),
+            const SectionTitle(text: 'Reminder'),
             const SizedBox(height: 12),
-            Text('data'),
+            const Text('data'),
             const SizedBox(height: 30),
           ],
         ),

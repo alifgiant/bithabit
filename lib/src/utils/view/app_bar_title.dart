@@ -1,5 +1,6 @@
-import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
+
+import '../res/res_color.dart';
 
 class AppBarTitle extends StatelessWidget {
   final String text;

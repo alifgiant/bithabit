@@ -20,9 +20,9 @@ class HabitColorPicker extends StatelessWidget {
       children: HabitColor.values
           .map(
             (e) => Material(
-              color: e.mainColor,
+              color: e.mainColor.withOpacity(0.6),
               borderRadius: BorderRadius.circular(12),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
+              clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () => onColorSelected(e),
                 child: SizedBox(

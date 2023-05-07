@@ -1,17 +1,16 @@
 import 'dart:ui';
 
 mixin ResColor {
-  static const purple = Color(0xff7D83FF);
-  static const yellow = Color(0xffFFD166);
+  static const red = Color(0xffec0b43);
   static const pink = Color(0xffFF7B9C);
-  static const darkGreen = Color(0xff0CBABA);
-  static const lightGreen = Color(0xffA9E5BB);
-  static const darkBlue = Color(0xff01BAEF);
-  static const lightBlue = Color(0xff58FCEC);
+  static const brown = Color(0xffa44200);
+  static const purple = Color(0xff533a71);
+  static const darkGreen = Color(0xff065143);
+  static const lightGreen = Color(0xff5fad41);
+  static const lightBlue = Color(0xff35A7FF);
+  static const darkBlue = Color(0xff0a2463);
 
   // base
   static const black = Color(0xff172121);
   static const white = Color(0xffFCFCFC);
-  // static const cream = Color(0xffE0FBFC);
-  // static const cream2 = Color(0xff98C1D9);
 }

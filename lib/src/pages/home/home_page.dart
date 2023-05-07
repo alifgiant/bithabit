@@ -1,9 +1,10 @@
-import 'package:bithabit/src/pages/dash/dash_page.dart';
-import 'package:bithabit/src/pages/recap/recap_page.dart';
-import 'package:bithabit/src/pages/setting/setting_page.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+
+import '../dash/dash_page.dart';
+import '../recap/recap_page.dart';
+import '../setting/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,6 +38,35 @@ class _HomePageState extends State<HomePage> {
           setState(() => currentPageIndex = value);
         },
       ),
+      // bottomNavigationBar: DotNavigationBar(
+      //   currentIndex: currentPageIndex,
+      //   onTap: (index) => pageController.animateToPage(
+      //     index,
+      //     duration: const Duration(milliseconds: 350),
+      //     curve: Curves.easeIn,
+      //   ),
+      //   dotIndicatorColor: Colors.black,
+      //   // enableFloatingNavBar: false
+      //   items: [
+      //     /// Home
+      //     DotNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       selectedColor: Colors.purple,
+      //     ),
+
+      //     /// Likes
+      //     DotNavigationBarItem(
+      //       icon: Icon(Icons.favorite_border),
+      //       selectedColor: Colors.pink,
+      //     ),
+
+      //     /// Search
+      //     DotNavigationBarItem(
+      //       icon: Icon(Icons.search),
+      //       selectedColor: Colors.orange,
+      //     ),
+      //   ],
+      // ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: CustomNavigationBar(
