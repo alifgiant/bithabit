@@ -86,7 +86,9 @@ class _DetailPageState extends State<DetailPage> {
           HabitFrequencyPicker(
             selectedFrequency: edittedHabit.frequency,
             onFrequencySelected: (frequency) {
-              //
+              setState(() {
+                edittedHabit = edittedHabit.copy(frequency: frequency);
+              });
             },
           ),
           const SizedBox(height: 30),

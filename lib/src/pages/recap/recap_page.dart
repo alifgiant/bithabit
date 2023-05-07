@@ -16,7 +16,7 @@ class RecapPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const AppBarTitle(text: 'Weekly Habits'),
+        title: const AppBarTitle(text: 'Weekly Recap'),
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context).pushNamed('/detail'),

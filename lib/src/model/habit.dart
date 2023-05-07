@@ -7,13 +7,15 @@ class Habit {
   final String name;
   final HabitColor color;
   final HabitFrequency frequency;
+  final Set<int> selectedDay;
   final List<DateTime> reminder;
 
   const Habit(
     this.id,
     this.name,
     this.color, {
-    this.frequency = const DailyFrequency(),
+    this.frequency = HabitFrequency.daily,
+    this.selectedDay = const {1, 2, 3, 4, 5, 6, 7}, // 7 day of week
     this.reminder = const [],
   });
 
@@ -54,20 +56,10 @@ enum HabitColor {
   final Color textColor;
 }
 
-abstract class HabitFrequency {
-  const HabitFrequency();
-}
+enum HabitFrequency {
+  daily('daily'),
+  monthly('monthly');
 
-class DailyFrequency extends HabitFrequency {
-  final Set<int> selectedDays;
-
-  const DailyFrequency({
-    this.selectedDays = const {0, 1, 2, 3, 4, 5, 6},
-  });
-}
-
-class MonthlyFrequency extends HabitFrequency {
-  final Set<int> selectedDate;
-
-  const MonthlyFrequency({this.selectedDate = const {}});
+  const HabitFrequency(this.name);
+  final String name;
 }
