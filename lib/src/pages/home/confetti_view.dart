@@ -27,7 +27,7 @@ class _ConfettiViewState extends State<ConfettiView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final today = DateTime.now().emptyHour();
+    final today = DateTime.now();
     final habitService = context.watch<HabitService>();
     final habits = habitService.getHabits(day: today).toList();
 

@@ -13,9 +13,9 @@ class DashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const screenPadding = 12.0;
+    const screenPadding = 16.0;
 
-    final today = DateTime.now().emptyHour();
+    final today = DateTime.now();
     final habitService = context.watch<HabitService>();
     final habits = habitService.getHabits(day: today).toList();
 
@@ -68,7 +68,7 @@ class DashPage extends StatelessWidget {
               (_, index) => Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: screenPadding,
-                  vertical: screenPadding / 2,
+                  vertical: 6,
                 ),
                 child: TodayHabit(habit: habits[index]),
               ),

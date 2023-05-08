@@ -12,7 +12,7 @@ class CompletedCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 6 / 10;
+    final width = MediaQuery.of(context).size.width * 5.5 / 10;
     final fraction = total > 0 ? completed / total : 0.0;
 
     return Column(
@@ -23,7 +23,7 @@ class CompletedCount extends StatelessWidget {
           TextSpan(children: [
             const TextSpan(text: 'Today, ', style: TextStyle(fontWeight: FontWeight.w600)),
             TextSpan(
-              text: '$completed of $total is completed',
+              text: '$completed of $total completed',
               style: const TextStyle(fontWeight: FontWeight.w300),
             ),
           ]),

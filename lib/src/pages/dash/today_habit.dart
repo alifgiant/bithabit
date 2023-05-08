@@ -1,4 +1,3 @@
-import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
@@ -8,23 +7,19 @@ import '../../service/timeline_service.dart';
 
 class TodayHabit extends StatelessWidget {
   final Habit habit;
-  late final List<DateTime> week;
+  late final DateTime today;
 
   TodayHabit({
     super.key,
     required this.habit,
   }) {
-    final today = DateTime.now().emptyHour();
-    final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
-    week = List.generate(
-      7,
-      (day) => startOfWeek.add(Duration(days: day)),
-    );
+    today = DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
     final timelineService = context.watch<TimelineService>();
+    final isChecked = timelineService.isHabitChecked(habit, today);
 
     return Material(
       color: habit.color.mainColor.withOpacity(0.6),
@@ -37,11 +32,9 @@ class TodayHabit extends StatelessWidget {
           arguments: habit,
         ),
         child: DefaultTextStyle(
-          style: TextStyle(
-            color: habit.color.textColor,
-          ),
+          style: TextStyle(color: habit.color.textColor),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -55,27 +48,13 @@ class TodayHabit extends StatelessWidget {
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    Text(
-                      week.format(),
-                      style: const TextStyle(fontSize: 12),
+                    _CheckCircle(
+                      habitColor: habit.color,
+                      isChecked: isChecked,
+                      onTap: () => timelineService.check(habit, today),
                     ),
                   ],
                 ),
-                const SizedBox(height: 21),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: week
-                      .map(
-                        (day) => _DayCircle(
-                          date: day,
-                          habitColor: habit.color,
-                          isChecked: timelineService.isHabitChecked(habit, day),
-                          onTap: () => timelineService.check(habit, day),
-                        ),
-                      )
-                      .toList(),
-                ),
-                const SizedBox(height: 4),
               ],
             ),
           ),
@@ -85,60 +64,41 @@ class TodayHabit extends StatelessWidget {
   }
 }
 
-class _DayCircle extends StatelessWidget {
-  final DateTime date;
+class _CheckCircle extends StatelessWidget {
   final HabitColor habitColor;
   final bool isChecked;
   final VoidCallback onTap;
-  late final DateTime today;
 
-  _DayCircle({
-    required this.date,
+  const _CheckCircle({
     required this.habitColor,
     required this.isChecked,
     required this.onTap,
-  }) {
-    today = DateTime.now().emptyHour();
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
-    final isSameAsToday = today.isAtSameMomentAs(date);
-    return Column(
-      children: [
-        Text(
-          date.dayName(),
-          style: TextStyle(
-            fontSize: 10,
-            color: isSameAsToday ? habitColor.mainColor : null,
-            fontWeight: isSameAsToday ? FontWeight.w800 : null,
-          ),
+    return Material(
+      shape: CircleBorder(
+        side: BorderSide(
+          color: habitColor.mainColor,
+          width: 1.5,
         ),
-        const SizedBox(height: 6),
-        Material(
-          shape: CircleBorder(
-            side: BorderSide(
-              color: habitColor.mainColor,
-              width: 1.5,
-            ),
-          ),
-          clipBehavior: Clip.hardEdge,
-          color: isChecked ? habitColor.mainColor : Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            child: SizedBox.square(
-              dimension: 28,
-              child: isChecked
-                  ? Icon(
-                      Icons.check_rounded,
-                      size: 16,
-                      color: habitColor.textColor,
-                    )
-                  : null,
-            ),
-          ),
+      ),
+      clipBehavior: Clip.hardEdge,
+      color: isChecked ? habitColor.mainColor : Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox.square(
+          dimension: 28,
+          child: isChecked
+              ? Icon(
+                  Icons.check_rounded,
+                  size: 16,
+                  color: habitColor.textColor,
+                )
+              : null,
         ),
-      ],
+      ),
     );
   }
 }
