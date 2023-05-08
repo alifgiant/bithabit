@@ -14,8 +14,7 @@ class WeeklyHabit extends StatelessWidget {
     super.key,
     required this.habit,
   }) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
+    final today = DateTime.now().emptyHour();
     final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
     week = List.generate(
       7,
@@ -58,10 +57,7 @@ class WeeklyHabit extends StatelessWidget {
                     ),
                     Text(
                       week.format(),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        // fontWeight: FontWeight.w200,
-                      ),
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
@@ -102,8 +98,7 @@ class _DayCircle extends StatelessWidget {
     required this.isChecked,
     required this.onTap,
   }) {
-    final now = DateTime.now();
-    today = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
+    today = DateTime.now().emptyHour();
   }
 
   @override

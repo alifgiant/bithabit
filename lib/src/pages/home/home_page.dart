@@ -1,3 +1,4 @@
+import 'package:bithabit/src/pages/home/confetti_view.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     pageController.dispose();
+
     super.dispose();
   }
 
@@ -27,16 +29,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: PageView(
-        controller: pageController,
-        children: const [
-          DashPage(),
-          RecapPage(),
-          SettingPage(),
+      body: Stack(
+        children: [
+          PageView(
+            controller: pageController,
+            children: const [
+              DashPage(),
+              RecapPage(),
+              SettingPage(),
+            ],
+            onPageChanged: (value) {
+              setState(() => currentPageIndex = value);
+            },
+          ),
+          //CENTER -- Blast
+          const Align(
+            alignment: Alignment.center,
+            child: ConfettiView(),
+          ),
         ],
-        onPageChanged: (value) {
-          setState(() => currentPageIndex = value);
-        },
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),

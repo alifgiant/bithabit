@@ -42,7 +42,7 @@ class CompletedCount extends StatelessWidget {
                 ),
               ),
               FractionallySizedBox(
-                widthFactor: completed / total,
+                widthFactor: total > 0 ? completed / total : 0,
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.blue,

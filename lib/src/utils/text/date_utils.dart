@@ -11,6 +11,8 @@ mixin AppDateFormat {
 extension DateTimeExt on DateTime {
   String dayName() => AppDateFormat.dayNameFormat.format(this);
   String hourMinute() => AppDateFormat.hourMinuteFormat.format(this);
+
+  DateTime emptyHour() => copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
 }
 
 extension WeekTimeExt on List<DateTime> {

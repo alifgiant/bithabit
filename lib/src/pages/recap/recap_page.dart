@@ -11,7 +11,7 @@ class RecapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final habitService = context.watch<HabitService>();
-    final habits = habitService.habits.toList();
+    final habits = habitService.getHabits().toList();
 
     return Scaffold(
       appBar: AppBar(

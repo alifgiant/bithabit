@@ -59,6 +59,7 @@ abstract class HabitFrequency {
   const HabitFrequency({required this.selected});
 
   HabitFrequency copyWith({Set<int>? selected});
+  bool isEnabledFor(DateTime time);
 }
 
 class DailyFrequency extends HabitFrequency {
@@ -72,6 +73,9 @@ class DailyFrequency extends HabitFrequency {
   DailyFrequency copyWith({Set<int>? selected}) {
     return DailyFrequency(selected: selected ?? this.selected);
   }
+
+  @override
+  bool isEnabledFor(DateTime time) => selected.contains(time.weekday);
 }
 
 class MonthlyFrequency extends HabitFrequency {
@@ -85,6 +89,9 @@ class MonthlyFrequency extends HabitFrequency {
   MonthlyFrequency copyWith({Set<int>? selected}) {
     return MonthlyFrequency(selected: selected ?? this.selected);
   }
+
+  @override
+  bool isEnabledFor(DateTime time) => selected.contains(time.day);
 }
 
 class HabitReminder {

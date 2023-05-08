@@ -1,3 +1,5 @@
+import 'package:bithabit/src/service/timeline_service.dart';
+import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
@@ -11,8 +13,16 @@ class DashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final today = DateTime.now().emptyHour();
     final habitService = context.watch<HabitService>();
-    final habits = habitService.habits.toList();
+    final habits = habitService.getHabits(day: today).toList();
+
+    final timelineService = context.watch<TimelineService>();
+    final completed = habits
+        .where(
+          (habit) => timelineService.isHabitChecked(habit, today),
+        )
+        .length;
 
     return Scaffold(
       body: CustomScrollView(
@@ -39,9 +49,9 @@ class DashPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: MediaQuery.of(context).viewPadding.top),
-                    const CompletedCount(
-                      completed: 0,
-                      total: 4,
+                    CompletedCount(
+                      completed: completed,
+                      total: habits.length,
                     ),
                   ],
                 ),
