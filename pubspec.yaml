@@ -22,7 +22,7 @@ dependencies:
   flutter_advanced_segment: ^3.0.2
   device_preview: ^1.1.0
   confetti: ^0.7.0
-  animated_snack_bar: ^0.3.1
+  achievement_view: ^1.0.0
 
 dev_dependencies:
   flutter_test:

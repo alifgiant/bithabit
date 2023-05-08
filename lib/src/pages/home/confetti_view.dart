@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:achievement_view/achievement_view.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/habit_service.dart';
@@ -36,7 +38,9 @@ class _ConfettiViewState extends State<ConfettiView> {
         )
         .length;
 
-    if (completed == habits.length && habits.isNotEmpty) startAnimation(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (completed == habits.length && habits.isNotEmpty) startAnimation(context);
+    });
   }
 
   @override
@@ -46,6 +50,15 @@ class _ConfettiViewState extends State<ConfettiView> {
   }
 
   Future<void> startAnimation(BuildContext context) async {
+    AchievementView(
+      context,
+      title: "Congrats!",
+      subTitle: "All today's Habit are done",
+      alignment: Alignment.bottomCenter,
+      icon: const Icon(BoxIcons.bx_party, color: Colors.white),
+      borderRadius: BorderRadius.circular(12.0),
+      color: ResColor.darkGreen,
+    ).show();
     confettiController.play();
     await Future.delayed(widget.duration ?? const Duration(seconds: 3));
     confettiController.stop();
