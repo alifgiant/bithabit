@@ -48,7 +48,7 @@ class _HabitFrequencyPickerState extends State<HabitFrequencyPicker> {
     return AdvancedSegment(
       controller: segmentNotifier,
       sliderColor: ResColor.white,
-      backgroundColor: ResColor.grey,
+      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
       sliderOffset: 2.5,
       segments: {
         DailyFrequency: DailyFrequency.name.titleCase,
@@ -101,10 +101,10 @@ class HabitFrequencyValuePicker extends StatelessWidget {
 
           return Material(
             elevation: isSelected ? 2 : 0,
-            color: isSelected ? null : ResColor.grey,
+            color: isSelected ? null : Theme.of(context).primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
-            clipBehavior: Clip.hardEdge,
             child: InkWell(
+              borderRadius: BorderRadius.circular(12),
               onTap: () {
                 final newFreq = updateFrequency(selectedDate: pos);
                 onFrequencySelected(newFreq);

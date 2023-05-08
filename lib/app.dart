@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         title: 'BitHabit',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          useMaterial3: true,
           scaffoldBackgroundColor: ResColor.white,
           primaryTextTheme: const TextTheme(
             titleLarge: TextStyle(color: ResColor.black),

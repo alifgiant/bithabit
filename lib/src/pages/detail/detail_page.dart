@@ -1,12 +1,14 @@
 import 'package:bithabit/src/pages/detail/habit_frequency_picker.dart';
-import 'package:bithabit/src/utils/res/res_color.dart';
+import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../model/habit.dart';
 import '../../service/habit_service.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/section_title.dart';
 import 'habit_color_picker.dart';
+import 'reminder_list.dart';
 
 class DetailPage extends StatefulWidget {
   final Habit? habit;
@@ -49,70 +51,121 @@ class _DetailPageState extends State<DetailPage> {
     const screenPadding = 16.0;
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(elevation: 0),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
-          bottom: kBottomNavigationBarHeight + screenPadding,
+      body: CustomScrollView(slivers: [
+        SliverAppBar.medium(
+          pinned: true,
+          title: AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
         ),
-        children: [
-          AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
-          const SizedBox(height: 21),
-          TextField(
-            controller: titleCtlr,
-            decoration: InputDecoration(
-              filled: true,
-              hintText: 'Title',
-              errorText: isTitleEmpty ? 'Please fill the title' : null,
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
+            bottom: kBottomNavigationBarHeight + screenPadding,
+          ),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                TextField(
+                  controller: titleCtlr,
+                  decoration: InputDecoration(
+                    filled: true,
+                    hintText: 'Habit Name',
+                    errorText: isTitleEmpty ? 'Please fill the title' : null,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      isTitleEmpty = false;
+                      edittedHabit = edittedHabit.copy(name: value);
+                    });
+                  },
+                ),
+                const SizedBox(height: 30),
+                const SectionTitle(text: 'Color'),
+                const SizedBox(height: 10),
+                HabitColorPicker(
+                  screenPadding: 16,
+                  selectedColor: edittedHabit.color,
+                  onColorSelected: (color) {
+                    setState(() {
+                      edittedHabit = edittedHabit.copy(color: color);
+                    });
+                  },
+                ),
+                const SizedBox(height: 30),
+                const SectionTitle(text: 'Repeat'),
+                const SizedBox(height: 10),
+                HabitFrequencyPicker(
+                  selectedFrequency: edittedHabit.frequency,
+                  onFrequencySelected: (frequency) {
+                    setState(() {
+                      edittedHabit = edittedHabit.copy(frequency: frequency);
+                    });
+                  },
+                ),
+                const SizedBox(height: 30),
+                SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
+                const SizedBox(height: 10),
+                HabitFrequencyValuePicker(
+                  selectedFrequency: edittedHabit.frequency,
+                  screenPadding: screenPadding,
+                  onFrequencySelected: (frequency) {
+                    setState(() {
+                      edittedHabit = edittedHabit.copy(frequency: frequency);
+                    });
+                  },
+                ),
+                const SizedBox(height: 30),
+                SectionTitle(
+                  text: 'Reminder',
+                  subtitle: edittedHabit.reminder.isNotEmpty ? 'Swipe right to remove' : '',
+                  suffix: InkWell(
+                    onTap: () async {
+                      final time = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      if (!mounted || time == null) return;
+
+                      final timeExist = edittedHabit.reminder.any((element) => element.time.compareTo(time) == 0);
+
+                      if (timeExist) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('You already added that time')),
+                        );
+                        return;
+                      }
+
+                      edittedHabit.reminder.add(HabitReminder(time, enabled: true));
+                      edittedHabit.reminder.sort((a, b) => a.time.compareTo(b.time));
+                      setState(() {});
+                    },
+                    borderRadius: BorderRadius.circular(16),
+                    child: SizedBox.square(
+                      dimension: 28,
+                      child: Icon(
+                        BoxIcons.bx_alarm_add,
+                        color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                        size: 21,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ReminderList(
+                  reminder: edittedHabit.reminder,
+                  onUpdate: (prev, item) => setState(() {
+                    final index = edittedHabit.reminder.indexOf(prev);
+                    edittedHabit.reminder.remove(prev);
+                    edittedHabit.reminder.insert(index, item);
+                  }),
+                  onRemove: (item) => setState(() {
+                    edittedHabit.reminder.remove(item);
+                  }),
+                ),
+                const SizedBox(height: 30),
+              ],
             ),
-            onChanged: (value) {
-              setState(() {
-                isTitleEmpty = false;
-                edittedHabit = edittedHabit.copy(name: value);
-              });
-            },
           ),
-          const SizedBox(height: 30),
-          const SectionTitle(text: 'Color'),
-          const SizedBox(height: 10),
-          HabitColorPicker(
-            screenPadding: 16,
-            selectedColor: edittedHabit.color,
-            onColorSelected: (color) {
-              setState(() {
-                edittedHabit = edittedHabit.copy(color: color);
-              });
-            },
-          ),
-          const SizedBox(height: 30),
-          const SectionTitle(text: 'Repeat'),
-          const SizedBox(height: 10),
-          HabitFrequencyPicker(
-            selectedFrequency: edittedHabit.frequency,
-            onFrequencySelected: (frequency) {
-              setState(() {
-                edittedHabit = edittedHabit.copy(frequency: frequency);
-              });
-            },
-          ),
-          const SizedBox(height: 30),
-          SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
-          const SizedBox(height: 10),
-          HabitFrequencyValuePicker(
-            selectedFrequency: edittedHabit.frequency,
-            screenPadding: screenPadding,
-            onFrequencySelected: (frequency) {
-              setState(() {
-                edittedHabit = edittedHabit.copy(frequency: frequency);
-              });
-            },
-          ),
-          const SizedBox(height: 30),
-          const SectionTitle(text: 'Reminder'),
-          const SizedBox(height: 10),
-          const Text('data'),
-          const SizedBox(height: 30),
-        ],
-      ),
+        )
+      ]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12).copyWith(
           bottom: MediaQuery.of(context).viewPadding.bottom,

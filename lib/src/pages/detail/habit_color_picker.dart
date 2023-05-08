@@ -27,8 +27,8 @@ class HabitColorPicker extends StatelessWidget {
             (e) => Material(
               color: e.mainColor.withOpacity(0.6),
               borderRadius: BorderRadius.circular(12),
-              clipBehavior: Clip.hardEdge,
               child: InkWell(
+                borderRadius: BorderRadius.circular(12),
                 onTap: () => onColorSelected(e),
                 child: SizedBox(
                   width: buttonSize,

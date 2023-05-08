@@ -29,10 +29,10 @@ class WeeklyHabit extends StatelessWidget {
 
     return Material(
       color: habit.color.mainColor.withOpacity(0.6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      borderRadius: BorderRadius.circular(12),
       elevation: 0,
-      clipBehavior: Clip.hardEdge,
       child: InkWell(
+        borderRadius: BorderRadius.circular(12),
         onTap: () => Navigator.of(context).pushNamed(
           '/detail',
           arguments: habit,

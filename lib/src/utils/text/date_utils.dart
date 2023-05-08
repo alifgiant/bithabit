@@ -1,13 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 mixin AppDateFormat {
   static final dayNameFormat = DateFormat('EEE');
   static final monthDateFormat = DateFormat('MMM d');
   static final onlyDateFormat = DateFormat('d');
+  static final hourMinuteFormat = DateFormat('hh:mm');
 }
 
 extension DateTimeExt on DateTime {
   String dayName() => AppDateFormat.dayNameFormat.format(this);
+  String hourMinute() => AppDateFormat.hourMinuteFormat.format(this);
 }
 
 extension WeekTimeExt on List<DateTime> {
@@ -21,5 +24,15 @@ extension WeekTimeExt on List<DateTime> {
     } else {
       return '${AppDateFormat.monthDateFormat.format(startWeek)} - ${AppDateFormat.monthDateFormat.format(endWeek)}';
     }
+  }
+}
+
+extension TimeOfDayExtension on TimeOfDay {
+  int compareTo(TimeOfDay other) {
+    if (hour < other.hour) return -1;
+    if (hour > other.hour) return 1;
+    if (minute < other.minute) return -1;
+    if (minute > other.minute) return 1;
+    return 0;
   }
 }

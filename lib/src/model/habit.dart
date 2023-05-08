@@ -7,8 +7,7 @@ class Habit {
   final String name;
   final HabitColor color;
   final HabitFrequency frequency;
-
-  final List<DateTime> reminder;
+  final List<HabitReminder> reminder;
 
   const Habit(
     this.id,
@@ -23,14 +22,14 @@ class Habit {
     String? name,
     HabitColor? color,
     HabitFrequency? frequency,
-    List<DateTime>? reminder,
+    List<HabitReminder>? reminder,
   }) {
     return Habit(
       id ?? this.id,
       name ?? this.name,
       color ?? this.color,
       frequency: frequency ?? this.frequency,
-      reminder: reminder ?? this.reminder,
+      reminder: reminder ?? this.reminder.toList(),
     );
   }
 
@@ -85,5 +84,19 @@ class MonthlyFrequency extends HabitFrequency {
   @override
   MonthlyFrequency copyWith({Set<int>? selected}) {
     return MonthlyFrequency(selected: selected ?? this.selected);
+  }
+}
+
+class HabitReminder {
+  final TimeOfDay time;
+  final bool enabled;
+
+  const HabitReminder(this.time, {required this.enabled});
+
+  HabitReminder copyWith({
+    TimeOfDay? time,
+    bool? enabled,
+  }) {
+    return HabitReminder(time ?? this.time, enabled: enabled ?? this.enabled);
   }
 }
