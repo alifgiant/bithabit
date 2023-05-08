@@ -1,18 +1,20 @@
-import 'package:bithabit/src/service/timeline_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 
 import '../../service/habit_service.dart';
+import '../../service/timeline_service.dart';
 import '../../utils/view/app_bar_title.dart';
 import 'completed_count.dart';
+import 'today_habit.dart';
 
 class DashPage extends StatelessWidget {
   const DashPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const screenPadding = 12.0;
+
     final today = DateTime.now().emptyHour();
     final habitService = context.watch<HabitService>();
     final habits = habitService.getHabits(day: today).toList();
@@ -63,23 +65,18 @@ class DashPage extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final habit = habits[index];
-                return ListTile(
-                  title: Text(habit.name.titleCase),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                      '/detail',
-                      arguments: habit,
-                    );
-                  },
-                );
-              },
+              (_, index) => Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: screenPadding,
+                  vertical: screenPadding / 2,
+                ),
+                child: TodayHabit(habit: habits[index]),
+              ),
               childCount: habits.length,
             ),
           ),
           const SliverToBoxAdapter(
-            child: SizedBox(height: kBottomNavigationBarHeight + 16),
+            child: SizedBox(height: kBottomNavigationBarHeight + screenPadding),
           )
         ],
       ),
