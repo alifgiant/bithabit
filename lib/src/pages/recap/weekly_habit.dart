@@ -90,7 +90,7 @@ class _DayCircle extends StatelessWidget {
   final HabitColor habitColor;
   final bool isChecked;
   final VoidCallback onTap;
-  late final DateTime today;
+  late final DateTime now;
 
   _DayCircle({
     required this.date,
@@ -98,12 +98,12 @@ class _DayCircle extends StatelessWidget {
     required this.isChecked,
     required this.onTap,
   }) {
-    today = DateTime.now().emptyHour();
+    now = DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isSameAsToday = today.isAtSameMomentAs(date);
+    final isSameAsToday = now.isSameDay(date);
     return Column(
       children: [
         Text(
