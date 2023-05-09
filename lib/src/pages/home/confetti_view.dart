@@ -27,7 +27,8 @@ class _ConfettiViewState extends State<ConfettiView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final today = DateTime.now();
+
+    final today = DateTime.now().emptyHour();
     final habitService = context.watch<HabitService>();
     final habits = habitService.getHabits(day: today).toList();
 
@@ -39,6 +40,8 @@ class _ConfettiViewState extends State<ConfettiView> {
         .length;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // if updated time is not today, ignore event
+      if (timelineService.lastTimelineUpdated?.isAtSameMomentAs(today) != true) return;
       if (completed == habits.length && habits.isNotEmpty) startAnimation(context);
     });
   }

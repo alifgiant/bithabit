@@ -5,6 +5,7 @@ import '../model/habit.dart';
 
 class TimelineService extends ChangeNotifier {
   final Map<String, Set<DateTime>> _habitTimelineMap = {};
+  DateTime? lastTimelineUpdated;
 
   Future<void> loadTimeline() async {
     // read from DB or whatever
@@ -20,6 +21,7 @@ class TimelineService extends ChangeNotifier {
 
   Future<void> check(Habit habit, DateTime time) async {
     final removedHourTime = time.emptyHour();
+    lastTimelineUpdated = removedHourTime;
     Set<DateTime> timeline;
     if (!_habitTimelineMap.containsKey(habit.id)) {
       // create set if still not loaded

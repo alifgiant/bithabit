@@ -1,9 +1,9 @@
-import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/habit_service.dart';
 import '../../service/timeline_service.dart';
+import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/app_bar_title.dart';
 import 'completed_count.dart';
 import 'today_habit.dart';
@@ -32,11 +32,7 @@ class DashPage extends StatelessWidget {
           SliverAppBar.large(
             pinned: true,
             actions: [
-              IconButton(
-                onPressed: () => Navigator.of(context).pushNamed('/detail'),
-                tooltip: 'Add Habit',
-                icon: const Icon(Icons.add_rounded),
-              ),
+              const AddHabitButton(),
               IconButton(
                 onPressed: () {},
                 tooltip: 'Sort Habit',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/habit_service.dart';
+import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/app_bar_title.dart';
 import 'weekly_habit.dart';
 
@@ -18,11 +19,7 @@ class RecapPage extends StatelessWidget {
         elevation: 0,
         title: const AppBarTitle(text: 'Weekly Recap'),
         actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pushNamed('/detail'),
-            tooltip: 'Add Habit',
-            icon: const Icon(Icons.add_rounded),
-          ),
+          const AddHabitButton(),
           IconButton(
             onPressed: () {},
             tooltip: 'Sort Habit',
