@@ -1,4 +1,3 @@
-import 'package:bithabit/src/pages/home/confetti_view.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -6,6 +5,7 @@ import 'package:icons_plus/icons_plus.dart';
 import '../dash/dash_page.dart';
 import '../recap/recap_page.dart';
 import '../setting/setting_page.dart';
+import 'confetti_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

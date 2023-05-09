@@ -1,9 +1,9 @@
-import 'package:bithabit/src/model/habit.dart';
-import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_segment/flutter_advanced_segment.dart';
 import 'package:recase/recase.dart';
 
+import '../../model/habit.dart';
+import '../../utils/res/res_color.dart';
 import '../../utils/text/date_utils.dart';
 
 class HabitFrequencyPicker extends StatefulWidget {

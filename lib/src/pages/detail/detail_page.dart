@@ -1,4 +1,3 @@
-import 'package:bithabit/src/pages/detail/habit_frequency_picker.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -8,6 +7,7 @@ import '../../service/habit_service.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/section_title.dart';
 import 'habit_color_picker.dart';
+import 'habit_frequency_picker.dart';
 import 'reminder_list.dart';
 
 class DetailPage extends StatefulWidget {
@@ -49,6 +49,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     const screenPadding = 16.0;
+    final paddingBottom = MediaQuery.of(context).viewPadding.bottom;
     return Scaffold(
       extendBody: true,
       body: CustomScrollView(slivers: [
@@ -168,7 +169,7 @@ class _DetailPageState extends State<DetailPage> {
       ]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12).copyWith(
-          bottom: MediaQuery.of(context).viewPadding.bottom,
+          bottom: paddingBottom > 0 ? paddingBottom : 12,
         ),
         child: ElevatedButton(
           onPressed: onSaveClick,

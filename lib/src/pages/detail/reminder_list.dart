@@ -1,8 +1,8 @@
-import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import '../../model/habit.dart';
+import '../../utils/res/res_color.dart';
 
 class ReminderList extends StatelessWidget {
   final List<HabitReminder> reminder;
