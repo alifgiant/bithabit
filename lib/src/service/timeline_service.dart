@@ -1,11 +1,13 @@
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../model/habit.dart';
 
 class TimelineService extends ChangeNotifier {
   final Map<String, Set<DateTime>> _habitTimelineMap = {};
   DateTime? lastTimelineUpdated;
+  final player = AudioPlayer()..setAsset('assets/win-sound.wav');
 
   Future<void> loadTimeline() async {
     // read from DB or whatever
@@ -34,10 +36,20 @@ class TimelineService extends ChangeNotifier {
       timeline.remove(removedHourTime);
     } else {
       timeline.add(removedHourTime);
+
+      player.seek(Duration.zero).then((_) {
+        player.play();
+      });
     }
 
     _habitTimelineMap[habit.id] = timeline;
     // save to DB
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 }
