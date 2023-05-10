@@ -57,10 +57,12 @@ class MyApp extends StatelessWidget {
           '/detail': (context) {
             final args = ModalRoute.of(context)?.settings.arguments;
             final habitService = context.read<HabitService>();
+            final timelineService = context.read<TimelineService>();
 
             return DetailPage(
               habit: args is Habit ? args : null,
               habitService: habitService,
+              timelineService: timelineService,
             );
           }
         },

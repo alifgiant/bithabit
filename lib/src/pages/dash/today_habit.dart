@@ -1,3 +1,4 @@
+import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
@@ -22,7 +23,7 @@ class TodayHabit extends StatelessWidget {
     final isChecked = timelineService.isHabitChecked(habit, today);
 
     return Material(
-      color: habit.color.mainColor.withOpacity(0.6),
+      color: isChecked ? ResColor.black.withOpacity(0.6) : habit.color.mainColor.withOpacity(0.6),
       borderRadius: BorderRadius.circular(12),
       elevation: 0,
       child: InkWell(

@@ -66,7 +66,10 @@ class DashPage extends StatelessWidget {
                   horizontal: screenPadding,
                   vertical: 6,
                 ),
-                child: TodayHabit(habit: habits[index]),
+                child: TodayHabit(
+                  key: ValueKey(habits[index].id),
+                  habit: habits[index],
+                ),
               ),
               childCount: habits.length,
             ),

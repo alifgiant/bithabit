@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:achievement_view/achievement_view.dart';
-import 'package:bithabit/src/utils/text/date_utils.dart';
+import 'package:bithabit/src/pages/home/sound_player.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -19,7 +19,7 @@ class ConfettiView extends StatefulWidget {
   State<ConfettiView> createState() => _ConfettiViewState();
 }
 
-class _ConfettiViewState extends State<ConfettiView> {
+class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
   late final confettiController = ConfettiController(
     duration: const Duration(seconds: 6),
   );
@@ -40,9 +40,17 @@ class _ConfettiViewState extends State<ConfettiView> {
         .length;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // if updated time is not today, ignore event
-      if (timelineService.lastTimelineUpdated?.isSameDay(today) != true) return;
-      if (completed == habits.length && habits.isNotEmpty) startAnimation(context);
+      // if action is not "check", ignore event
+      if (!timelineService.lastActionIsCheck) return;
+
+      // if all today habit are completed, trigger award animation
+      if (completed == habits.length && habits.isNotEmpty) {
+        playCompleteSound();
+        startAnimation(context);
+      } else {
+        // else only play step sound
+        playCheckSound();
+      }
     });
   }
 
@@ -62,6 +70,7 @@ class _ConfettiViewState extends State<ConfettiView> {
       borderRadius: BorderRadius.circular(12.0),
       color: ResColor.darkGreen,
     ).show();
+
     confettiController.play();
     await Future.delayed(widget.duration ?? const Duration(seconds: 3));
     confettiController.stop();

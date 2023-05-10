@@ -1,3 +1,4 @@
+import 'package:bithabit/src/service/timeline_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -13,11 +14,13 @@ import 'reminder_list.dart';
 class DetailPage extends StatefulWidget {
   final Habit? habit;
   final HabitService habitService;
+  final TimelineService timelineService;
 
   const DetailPage({
     super.key,
     this.habit,
     required this.habitService,
+    required this.timelineService,
   });
 
   @override
@@ -207,6 +210,7 @@ class _DetailPageState extends State<DetailPage> {
     }
 
     await widget.habitService.saveHabit(edittedHabit);
+    widget.timelineService.lastActionIsCheck = false;
 
     if (!mounted) return;
     Navigator.of(context).pop(edittedHabit);
