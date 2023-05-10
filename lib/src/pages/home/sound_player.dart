@@ -11,10 +11,10 @@ mixin SoundPlayer<T extends StatefulWidget> on State<T> {
   }
 
   void playCheckSound() {
-    _player.play(AssetSource('small-step.wav'));
+    _player.play(AssetSource('small-step.aac'));
   }
 
   void playCompleteSound() {
-    _player.play(AssetSource('win-sound.wav'));
+    _player.play(AssetSource('win-sound.aac'));
   }
 }
