@@ -23,7 +23,7 @@ class TodayHabit extends StatelessWidget {
     final isChecked = timelineService.isHabitChecked(habit, today);
 
     return Material(
-      color: isChecked ? ResColor.black.withOpacity(0.6) : habit.color.mainColor.withOpacity(0.6),
+      color: isChecked ? ResColor.black.withOpacity(0.3) : habit.color.mainColor.withOpacity(0.6),
       borderRadius: BorderRadius.circular(12),
       elevation: 0,
       child: InkWell(

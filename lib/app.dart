@@ -6,6 +6,7 @@ import 'src/model/habit.dart';
 import 'src/pages/detail/detail_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/service/habit_service.dart';
+import 'src/service/recap_service.dart';
 import 'src/service/timeline_service.dart';
 import 'src/utils/res/res_color.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HabitService()),
         ChangeNotifierProvider(create: (_) => TimelineService()),
         ChangeNotifierProvider(create: (_) => SortingService()),
+        ChangeNotifierProvider(create: (_) => RecapService()),
       ],
       child: MaterialApp(
         locale: locale,
