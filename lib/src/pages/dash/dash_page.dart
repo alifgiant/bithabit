@@ -1,10 +1,12 @@
+import 'package:bithabit/src/service/habit_service.dart';
+import 'package:bithabit/src/service/sorting_service.dart';
+import 'package:bithabit/src/service/timeline_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../service/habit_service.dart';
-import '../../service/timeline_service.dart';
 import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/app_bar_title.dart';
+import '../../utils/view/sort_habit_button.dart';
 import 'completed_count.dart';
 import 'today_habit.dart';
 
@@ -15,29 +17,35 @@ class DashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const screenPadding = 16.0;
 
+    // habit changes watcher
     final today = DateTime.now();
     final habitService = context.watch<HabitService>();
-    final habits = habitService.getHabits(day: today).toList();
+    final sourceHabit = habitService.getHabits(day: today);
 
+    // timeline changes watcher
     final timelineService = context.watch<TimelineService>();
-    final completed = habits
-        .where(
-          (habit) => timelineService.isHabitChecked(habit, today),
-        )
-        .length;
+    final completed = sourceHabit.where(
+      (habit) => timelineService.isHabitChecked(
+        habit,
+        today,
+      ),
+    );
+
+    // sorting changes watcher
+    final sortingService = context.watch<SortingService>();
+    final habits = sortingService.sort(
+      source: sourceHabit,
+      completionChecker: timelineService.isHabitChecked,
+    );
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar.large(
             pinned: true,
-            actions: [
-              const AddHabitButton(),
-              IconButton(
-                onPressed: () {},
-                tooltip: 'Sort Habit',
-                icon: const Icon(Icons.sort_rounded),
-              ),
+            actions: const [
+              AddHabitButton(),
+              SortHabitButton(),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
@@ -46,10 +54,9 @@ class DashPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: MediaQuery.of(context).viewPadding.top),
                     CompletedCount(
-                      completed: completed,
                       total: habits.length,
+                      completed: completed.length,
                     ),
                   ],
                 ),

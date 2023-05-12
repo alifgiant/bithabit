@@ -24,38 +24,50 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
     duration: const Duration(seconds: 6),
   );
 
+  late final HabitService habitService;
+  late final TimelineService timelineService;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final today = DateTime.now();
-    final habitService = context.watch<HabitService>();
-    final habits = habitService.getHabits(day: today).toList();
+    habitService = context.read<HabitService>();
+    timelineService = context.read<TimelineService>();
 
-    final timelineService = context.watch<TimelineService>();
+    /// dont do provider watch,
+    /// it'll trigger widget rebuild
+    /// doing it this way wont trigger widget rebuild
+    habitService.addListener(checkUpdate);
+    timelineService.addListener(checkUpdate);
+  }
+
+  void checkUpdate() {
+    final today = DateTime.now();
+    final habits = habitService.getHabits(day: today).toList();
     final completed = habits
         .where(
           (habit) => timelineService.isHabitChecked(habit, today),
         )
         .length;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // if action is not "check", ignore event
-      if (!timelineService.lastActionIsCheck) return;
+    // if action is not "check", ignore event
+    if (!timelineService.lastActionIsCheck) return;
 
-      // if all today habit are completed, trigger award animation
-      if (completed == habits.length && habits.isNotEmpty) {
-        playCompleteSound();
-        startAnimation(context);
-      } else {
-        // else only play step sound
-        playCheckSound();
-      }
-    });
+    // if all today habit are completed, trigger award animation
+    if (completed == habits.length && habits.isNotEmpty) {
+      playCompleteSound();
+      startAnimation(context);
+    } else {
+      // else only play step sound
+      playCheckSound();
+    }
   }
 
   @override
   void dispose() {
+    habitService.removeListener(checkUpdate);
+    timelineService.removeListener(checkUpdate);
+
     confettiController.dispose();
     super.dispose();
   }

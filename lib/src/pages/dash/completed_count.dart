@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 
 class CompletedCount extends StatelessWidget {
-  final int completed;
   final int total;
+  final int completed;
 
   const CompletedCount({
     super.key,
-    required this.completed,
     required this.total,
+    required this.completed,
   });
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 5.5 / 10;
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width * 5.5 / 10;
     final fraction = total > 0 ? completed / total : 0.0;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: mediaQuery.viewPadding.top),
         Text.rich(
           TextSpan(children: [
             const TextSpan(text: 'Today, ', style: TextStyle(fontWeight: FontWeight.w600)),

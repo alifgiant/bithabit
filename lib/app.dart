@@ -1,3 +1,4 @@
+import 'package:bithabit/src/service/sorting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +25,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => HabitService()),
-        ChangeNotifierProvider(create: (context) => TimelineService()),
+        ChangeNotifierProvider(create: (_) => HabitService()),
+        ChangeNotifierProvider(create: (_) => TimelineService()),
+        ChangeNotifierProvider(create: (_) => SortingService()),
       ],
       child: MaterialApp(
         locale: locale,
