@@ -1,10 +1,10 @@
-import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
+import '../../utils/res/res_color.dart';
 
 class TodayHabit extends StatelessWidget {
   final Habit habit;

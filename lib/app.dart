@@ -1,4 +1,3 @@
-import 'package:bithabit/src/service/sorting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +6,7 @@ import 'src/pages/detail/detail_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
+import 'src/service/sorting_service.dart';
 import 'src/service/timeline_service.dart';
 import 'src/utils/res/res_color.dart';
 

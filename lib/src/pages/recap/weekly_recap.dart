@@ -6,11 +6,11 @@ import 'package:recase/recase.dart';
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
 
-class WeeklyHabit extends StatelessWidget {
+class WeeklyRecap extends StatelessWidget {
   final Habit habit;
   late final List<DateTime> week;
 
-  WeeklyHabit({
+  WeeklyRecap({
     super.key,
     required this.habit,
   }) {

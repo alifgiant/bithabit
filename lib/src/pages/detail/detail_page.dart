@@ -1,10 +1,10 @@
-import 'package:bithabit/src/service/timeline_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import '../../model/habit.dart';
 import '../../service/habit_service.dart';
+import '../../service/timeline_service.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/section_title.dart';
 import 'habit_color_picker.dart';

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:achievement_view/achievement_view.dart';
-import 'package:bithabit/src/pages/home/sound_player.dart';
+import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../service/habit_service.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/res/res_color.dart';
+import 'sound_player.dart';
 
 class ConfettiView extends StatefulWidget {
   final Duration? duration;
@@ -53,8 +54,10 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
     // if action is not "check", ignore event
     if (!timelineService.lastActionIsCheck) return;
 
+    final isEditingTodayHabit = timelineService.lastTimelineUpdated?.isAtSameMomentAs(today.emptyHour());
+
     // if all today habit are completed, trigger award animation
-    if (completed == habits.length && habits.isNotEmpty) {
+    if (isEditingTodayHabit == true && completed == habits.length && habits.isNotEmpty) {
       playCompleteSound();
       startAnimation(context);
     } else {

@@ -85,7 +85,7 @@ class HabitFrequencyValuePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     const buttonSpacing = 8.0;
     final screenWidth = MediaQuery.of(context).size.width;
-    final buttonSize = (screenWidth - (6 * buttonSpacing) - (screenPadding * 2)) / 7;
+    final buttonSize = (screenWidth - (screenPadding * 2) - (6 * buttonSpacing) - 1) / 7;
 
     final isDailyType = selectedFrequency is DailyFrequency;
 

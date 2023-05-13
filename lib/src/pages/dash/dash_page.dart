@@ -1,12 +1,12 @@
-import 'package:bithabit/src/service/habit_service.dart';
-import 'package:bithabit/src/service/sorting_service.dart';
-import 'package:bithabit/src/service/timeline_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../service/habit_service.dart';
+import '../../service/sorting_service.dart';
+import '../../service/timeline_service.dart';
 import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/app_bar_title.dart';
-import '../../utils/view/sort_habit_button.dart';
+import '../home/sort_habit_button.dart';
 import 'completed_count.dart';
 import 'today_habit.dart';
 

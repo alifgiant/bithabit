@@ -1,6 +1,7 @@
-import 'package:bithabit/src/model/habit.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
+
+import '../model/habit.dart';
 
 class SortingService extends ChangeNotifier {
   SortingOption currentSelectedFilter = SortingOption.byName;
