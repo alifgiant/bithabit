@@ -84,44 +84,44 @@ class HabitFrequencyValuePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const buttonSpacing = 8.0;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final buttonSize = (screenWidth - (screenPadding * 2) - (6 * buttonSpacing) - 1) / 7;
-
     final isDailyType = selectedFrequency is DailyFrequency;
 
-    return Wrap(
-      spacing: buttonSpacing,
-      runSpacing: buttonSpacing,
-      children: List.generate(
-        isDailyType ? 7 : 31,
-        (index) => index + 1,
-      ).map(
-        (pos) {
-          final isSelected = selectedFrequency.selected.contains(pos);
-
-          return Material(
-            elevation: isSelected ? 2 : 0,
-            color: isSelected ? null : Theme.of(context).primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () {
-                final newFreq = updateFrequency(selectedDate: pos);
-                onFrequencySelected(newFreq);
-              },
-              child: SizedBox(
-                width: buttonSize,
-                height: buttonSize,
-                child: Center(
-                  child: Text(
-                    isDailyType ? getDayNameText(pos) : pos.toString(),
+    return LayoutBuilder(
+      builder: (ctx, constraint) {
+        final buttonSize = (constraint.maxWidth - (6 * buttonSpacing) - 1) / 7;
+        return Wrap(
+          spacing: buttonSpacing,
+          runSpacing: buttonSpacing,
+          children: List.generate(
+            isDailyType ? 7 : 31,
+            (index) {
+              final pos = index + 1;
+              final isSelected = selectedFrequency.selected.contains(pos);
+              return Material(
+                elevation: isSelected ? 2 : 0,
+                color: isSelected ? null : Theme.of(context).primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    final newFreq = updateFrequency(selectedDate: pos);
+                    onFrequencySelected(newFreq);
+                  },
+                  child: SizedBox(
+                    width: buttonSize,
+                    height: buttonSize,
+                    child: Center(
+                      child: Text(
+                        isDailyType ? getDayNameText(pos) : pos.toString(),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          );
-        },
-      ).toList(),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
