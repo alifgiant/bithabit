@@ -106,7 +106,7 @@ class _DayCircle extends StatelessWidget {
         Text(
           date.dayName(),
           style: TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             color: isSameAsToday ? habitColor.mainColor : null,
             fontWeight: isSameAsToday ? FontWeight.w800 : null,
           ),

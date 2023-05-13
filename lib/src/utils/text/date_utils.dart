@@ -8,6 +8,11 @@ mixin AppDateFormat {
   static final onlyMonthFormat = DateFormat('MMM');
   static final onlyDateFormat = DateFormat('d');
   static final hourMinuteFormat = DateFormat('hh:mm');
+
+  static final dayNames = [
+    ...DateFormat.EEEE().dateSymbols.STANDALONESHORTWEEKDAYS.sublist(1),
+    DateFormat.EEEE().dateSymbols.STANDALONESHORTWEEKDAYS[0],
+  ];
 }
 
 extension DateTimeExt on DateTime {
@@ -17,6 +22,7 @@ extension DateTimeExt on DateTime {
 
   DateTime emptyHour() => copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
   bool isSameDay(DateTime other) => emptyHour().isAtSameMomentAs(other.emptyHour());
+  bool isSameMonth(DateTime other) => month == other.month;
 }
 
 extension WeekTimeExt on List<DateTime> {

@@ -82,7 +82,7 @@ class DashPage extends StatelessWidget {
             ),
           ),
           const SliverToBoxAdapter(
-            child: SizedBox(height: kBottomNavigationBarHeight + screenPadding),
+            child: SizedBox(height: kBottomNavigationBarHeight * 2),
           )
         ],
       ),

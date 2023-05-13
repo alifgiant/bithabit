@@ -70,3 +70,9 @@ enum SortingOption {
   const SortingOption(this.title);
   final String title;
 }
+
+extension ListHabitExt on Iterable<Habit> {
+  List<Habit> sortByName() {
+    return toList()..sort((a, b) => a.name.compareTo(b.name));
+  }
+}
