@@ -150,15 +150,10 @@ class _MonthDayBox extends StatelessWidget {
 
     final isSameAsToday = now.isSameDay(date);
     return Material(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: habitColor.mainColor,
-          width: 1.5,
-        ),
+      shape: CircleBorder(
+        side: BorderSide(color: habitColor.mainColor, width: 1.5),
       ),
       color: isChecked ? habitColor.mainColor : Colors.transparent,
-      clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: onTap,
         child: Center(

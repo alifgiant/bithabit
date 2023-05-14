@@ -119,10 +119,7 @@ class _StreakBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       shape: CircleBorder(
-        side: BorderSide(
-          color: habitColor.mainColor,
-          width: 1.2,
-        ),
+        side: BorderSide(color: habitColor.mainColor, width: 1.2),
       ),
       color: isChecked ? habitColor.mainColor : Colors.transparent,
     );
