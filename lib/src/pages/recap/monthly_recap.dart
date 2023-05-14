@@ -52,7 +52,7 @@ class MonthlyRecap extends StatelessWidget {
             color: habit.color.textColor,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -73,7 +73,8 @@ class MonthlyRecap extends StatelessWidget {
                 LayoutBuilder(
                   builder: (ctx, constraints) {
                     const buttonSpacing = 6.0;
-                    final buttonSize = (constraints.maxWidth - (6 * buttonSpacing) - 1) / 7;
+                    const horizontalItemCount = 7;
+                    final buttonSize = (constraints.maxWidth - ((horizontalItemCount - 1) * buttonSpacing) - 1) / horizontalItemCount;
 
                     return Column(
                       children: [
@@ -119,7 +120,6 @@ class MonthlyRecap extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 4),
               ],
             ),
           ),
