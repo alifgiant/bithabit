@@ -1,10 +1,10 @@
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
+import '../../utils/view/habit_card_title.dart';
 
 class WeeklyRecap extends StatelessWidget {
   final Habit habit;
@@ -45,21 +45,10 @@ class WeeklyRecap extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      habit.name.titleCase,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                    Text(
-                      week.format(),
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ],
+                HabitCardTitle(
+                  title: habit.name,
+                  desc: habit.desc,
+                  date: week.format(),
                 ),
                 const SizedBox(height: 21),
                 Row(

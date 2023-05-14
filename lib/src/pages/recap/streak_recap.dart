@@ -1,9 +1,10 @@
+import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
+import '../../utils/view/habit_card_title.dart';
 
 class StreakRecap extends StatelessWidget {
   final Habit habit;
@@ -56,17 +57,10 @@ class StreakRecap extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      habit.name.titleCase,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ],
+                HabitCardTitle(
+                  title: habit.name,
+                  desc: habit.desc,
+                  date: streakDates.format(),
                 ),
                 const SizedBox(height: 21),
                 LayoutBuilder(
@@ -117,11 +111,14 @@ class _StreakBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAfterToday = date.isAfter(DateTime.now());
+    if (isAfterToday) return const SizedBox.shrink();
+
     return Material(
       shape: CircleBorder(
         side: BorderSide(color: habitColor.mainColor, width: 1.2),
       ),
-      color: isChecked ? habitColor.mainColor : Colors.transparent,
+      color: isChecked ? habitColor.mainColor : habitColor.mainColor.withOpacity(0.2),
     );
   }
 }

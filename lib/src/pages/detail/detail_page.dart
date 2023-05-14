@@ -33,6 +33,7 @@ class _DetailPageState extends State<DetailPage> {
 
   bool isTitleEmpty = false;
   late TextEditingController titleCtlr;
+  late TextEditingController descCtlr;
 
   bool isFrequencyEmpty = false;
 
@@ -41,11 +42,13 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     edittedHabit = widget.habit?.copy() ?? Habit('', '', HabitColor.values.first);
     titleCtlr = TextEditingController(text: edittedHabit.name);
+    descCtlr = TextEditingController(text: edittedHabit.desc);
   }
 
   @override
   void dispose() {
     titleCtlr.dispose();
+    descCtlr.dispose();
     super.dispose();
   }
 
@@ -113,6 +116,21 @@ class _DetailPageState extends State<DetailPage> {
                   onFrequencySelected: (frequency) {
                     setState(() {
                       edittedHabit = edittedHabit.copy(frequency: frequency);
+                    });
+                  },
+                ),
+                const SizedBox(height: 30),
+                const SectionTitle(text: 'Habit Description'),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: descCtlr,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    hintText: 'e.g., Do yoga every morning',
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      edittedHabit = edittedHabit.copy(desc: value);
                     });
                   },
                 ),

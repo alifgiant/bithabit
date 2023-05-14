@@ -1,10 +1,10 @@
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recase/recase.dart';
 
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
+import '../../utils/view/habit_card_title.dart';
 
 class MonthlyRecap extends StatelessWidget {
   final Habit habit;
@@ -56,18 +56,10 @@ class MonthlyRecap extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      habit.name.titleCase,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                    Text(monthName, style: const TextStyle(fontSize: 12)),
-                  ],
+                HabitCardTitle(
+                  title: habit.name,
+                  desc: habit.desc,
+                  date: monthName,
                 ),
                 const SizedBox(height: 21),
                 LayoutBuilder(
@@ -153,6 +145,7 @@ class _MonthDayBox extends StatelessWidget {
       shape: CircleBorder(
         side: BorderSide(color: habitColor.mainColor, width: 1.5),
       ),
+      clipBehavior: Clip.hardEdge,
       color: isChecked ? habitColor.mainColor : Colors.transparent,
       child: InkWell(
         onTap: onTap,
