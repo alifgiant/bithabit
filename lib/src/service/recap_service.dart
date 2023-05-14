@@ -1,8 +1,8 @@
-import 'package:bithabit/src/pages/recap/monthly_recap.dart';
-import 'package:bithabit/src/pages/recap/streak_recap.dart';
 import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
+import '../pages/recap/monthly_recap.dart';
+import '../pages/recap/streak_recap.dart';
 import '../pages/recap/weekly_recap.dart';
 
 class RecapService extends ChangeNotifier {

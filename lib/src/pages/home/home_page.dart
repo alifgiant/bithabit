@@ -41,7 +41,6 @@ class _HomePageState extends State<HomePage> {
               setState(() => currentPageIndex = value);
             },
           ),
-          //CENTER -- Blast
           const Align(
             alignment: Alignment.center,
             child: ConfettiView(),
@@ -70,8 +69,8 @@ class _HomePageState extends State<HomePage> {
               selectedIcon: const Icon(BoxIcons.bxs_calendar_check),
             ),
             CustomNavigationBarItem(
-              icon: const Icon(BoxIcons.bx_user),
-              selectedIcon: const Icon(BoxIcons.bxs_user),
+              icon: const Icon(BoxIcons.bx_grid_alt),
+              selectedIcon: const Icon(BoxIcons.bxs_grid_alt),
             ),
           ],
         ),

@@ -3,13 +3,11 @@ import 'package:recase/recase.dart';
 
 class HabitCardTitle extends StatelessWidget {
   final String title;
-  final String desc;
   final String date;
 
   const HabitCardTitle({
     super.key,
     required this.title,
-    this.desc = '',
     this.date = '',
   });
 

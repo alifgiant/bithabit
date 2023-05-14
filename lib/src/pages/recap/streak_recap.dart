@@ -59,7 +59,6 @@ class StreakRecap extends StatelessWidget {
               children: [
                 HabitCardTitle(
                   title: habit.name,
-                  desc: habit.desc,
                   date: streakDates.format(),
                 ),
                 const SizedBox(height: 21),

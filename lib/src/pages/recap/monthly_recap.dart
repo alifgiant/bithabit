@@ -58,7 +58,6 @@ class MonthlyRecap extends StatelessWidget {
               children: [
                 HabitCardTitle(
                   title: habit.name,
-                  desc: habit.desc,
                   date: monthName,
                 ),
                 const SizedBox(height: 21),

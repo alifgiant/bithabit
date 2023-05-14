@@ -47,7 +47,6 @@ class WeeklyRecap extends StatelessWidget {
               children: [
                 HabitCardTitle(
                   title: habit.name,
-                  desc: habit.desc,
                   date: week.format(),
                 ),
                 const SizedBox(height: 21),

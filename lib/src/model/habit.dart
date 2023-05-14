@@ -6,7 +6,6 @@ class Habit {
   final String id;
   final String name;
   final HabitColor color;
-  final String desc;
   final HabitFrequency frequency;
   final List<HabitReminder> reminder;
 
@@ -14,7 +13,6 @@ class Habit {
     this.id,
     this.name,
     this.color, {
-    this.desc = '',
     this.frequency = const DailyFrequency(),
     this.reminder = const [],
   });
@@ -23,7 +21,6 @@ class Habit {
     String? id,
     String? name,
     HabitColor? color,
-    String? desc,
     HabitFrequency? frequency,
     List<HabitReminder>? reminder,
   }) {
@@ -31,7 +28,6 @@ class Habit {
       id ?? this.id,
       name ?? this.name,
       color ?? this.color,
-      desc: desc ?? this.desc,
       frequency: frequency ?? this.frequency,
       reminder: reminder ?? this.reminder.toList(),
     );
@@ -39,7 +35,7 @@ class Habit {
 
   @override
   String toString() {
-    return 'Habit($id,$name,$color,$desc,$frequency,$reminder)';
+    return 'Habit($id,$name,$color,$frequency,$reminder)';
   }
 }
 

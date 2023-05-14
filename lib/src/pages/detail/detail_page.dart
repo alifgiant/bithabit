@@ -33,7 +33,6 @@ class _DetailPageState extends State<DetailPage> {
 
   bool isTitleEmpty = false;
   late TextEditingController titleCtlr;
-  late TextEditingController descCtlr;
 
   bool isFrequencyEmpty = false;
 
@@ -42,13 +41,11 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     edittedHabit = widget.habit?.copy() ?? Habit('', '', HabitColor.values.first);
     titleCtlr = TextEditingController(text: edittedHabit.name);
-    descCtlr = TextEditingController(text: edittedHabit.desc);
   }
 
   @override
   void dispose() {
     titleCtlr.dispose();
-    descCtlr.dispose();
     super.dispose();
   }
 
@@ -84,9 +81,7 @@ class _DetailPageState extends State<DetailPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 30),
                 const SectionTitle(text: 'Color'),
-                const SizedBox(height: 10),
                 HabitColorPicker(
                   screenPadding: 16,
                   selectedColor: edittedHabit.color,
@@ -96,9 +91,7 @@ class _DetailPageState extends State<DetailPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 30),
                 const SectionTitle(text: 'Repeat'),
-                const SizedBox(height: 10),
                 HabitFrequencyPicker(
                   selectedFrequency: edittedHabit.frequency,
                   onFrequencySelected: (frequency) {
@@ -107,9 +100,7 @@ class _DetailPageState extends State<DetailPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 30),
                 SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
-                const SizedBox(height: 10),
                 HabitFrequencyValuePicker(
                   selectedFrequency: edittedHabit.frequency,
                   screenPadding: screenPadding,
@@ -119,22 +110,6 @@ class _DetailPageState extends State<DetailPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 30),
-                const SectionTitle(text: 'Habit Description'),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: descCtlr,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    hintText: 'e.g., Do yoga every morning',
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      edittedHabit = edittedHabit.copy(desc: value);
-                    });
-                  },
-                ),
-                const SizedBox(height: 30),
                 SectionTitle(
                   text: 'Reminder',
                   subtitle: edittedHabit.reminder.isNotEmpty ? 'Swipe right to remove' : '',
@@ -170,7 +145,6 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
                 ReminderList(
                   reminder: edittedHabit.reminder,
                   onUpdate: (prev, item) => setState(() {
@@ -182,7 +156,6 @@ class _DetailPageState extends State<DetailPage> {
                     edittedHabit.reminder.remove(item);
                   }),
                 ),
-                const SizedBox(height: 30),
               ],
             ),
           ),
