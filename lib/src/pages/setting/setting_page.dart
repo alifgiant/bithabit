@@ -78,7 +78,10 @@ class SettingPage extends StatelessWidget {
           _SettingTile(
             title: 'Licenses',
             icon: BoxIcons.bx_file_blank,
-            onTap: () {},
+            onTap: () async => showLicensePage(
+              context: context,
+              applicationVersion: await AppVersion.getText(),
+            ),
           ),
           const AppVersion(),
         ],

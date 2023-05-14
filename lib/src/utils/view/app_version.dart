@@ -4,18 +4,20 @@ import 'package:package_info_plus/package_info_plus.dart';
 class AppVersion extends StatelessWidget {
   const AppVersion({super.key});
 
+  static Future<String> getText() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    final currentVersion = packageInfo.version;
+    final currentBuild = packageInfo.buildNumber;
+
+    return 'v$currentVersion-$currentBuild';
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
       title: FutureBuilder<String>(
-        future: Future.microtask(() async {
-          final packageInfo = await PackageInfo.fromPlatform();
-          final currentVersion = packageInfo.version;
-          final currentBuild = packageInfo.buildNumber;
-
-          return 'v$currentVersion-$currentBuild';
-        }),
+        future: getText(),
         builder: (context, snapshot) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
