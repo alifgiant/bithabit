@@ -9,6 +9,7 @@ import '../../utils/res/res_color.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/app_version.dart';
 import '../../utils/view/section_title.dart';
+import 'subscribe_tile.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -34,24 +35,19 @@ class SettingPage extends StatelessWidget {
             title: 'Today View Sorting',
             icon: Icons.sort_rounded,
             onTap: () {
-              ViewUtils.showFloatingModalBottomSheet(
+              ViewUtils.showOptionListBottomSheet(
                 context: context,
-                builder: (context) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: SortingOption.values
-                        .map(
-                          (e) => ListTile(
-                            title: Text(e.title),
-                            onTap: () {
-                              context.read<SortingService>().updateOption(e);
-                              Navigator.maybePop(context);
-                            },
-                          ),
-                        )
-                        .toList(),
-                  );
-                },
+                children: SortingOption.values
+                    .map(
+                      (e) => ListTile(
+                        title: Text(e.title),
+                        onTap: () {
+                          context.read<SortingService>().updateOption(e);
+                          Navigator.maybePop(context);
+                        },
+                      ),
+                    )
+                    .toList(),
               );
             },
           ),
@@ -59,24 +55,19 @@ class SettingPage extends StatelessWidget {
             title: 'Recap View Style',
             icon: Icons.calendar_month_outlined,
             onTap: () {
-              ViewUtils.showFloatingModalBottomSheet(
+              ViewUtils.showOptionListBottomSheet(
                 context: context,
-                builder: (context) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: RecapOption.values
-                        .map(
-                          (e) => ListTile(
-                            title: Text(e.menuTitle),
-                            onTap: () {
-                              context.read<RecapService>().updateOption(e);
-                              Navigator.maybePop(context);
-                            },
-                          ),
-                        )
-                        .toList(),
-                  );
-                },
+                children: RecapOption.values
+                    .map(
+                      (e) => ListTile(
+                        title: Text(e.menuTitle),
+                        onTap: () {
+                          context.read<RecapService>().updateOption(e);
+                          Navigator.maybePop(context);
+                        },
+                      ),
+                    )
+                    .toList(),
               );
             },
           ),
@@ -86,10 +77,11 @@ class SettingPage extends StatelessWidget {
             onTap: () {},
           ),
           _SettingTile(
-            title: 'Data Export/Import',
+            title: 'Export/Import Data',
             icon: Icons.import_export,
             onTap: () {},
           ),
+          const SubscribeTile(),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: screenPadding),
             child: SectionTitle(text: 'About App'),

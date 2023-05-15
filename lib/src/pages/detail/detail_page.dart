@@ -60,19 +60,26 @@ class _DetailPageState extends State<DetailPage> {
       body: CustomScrollView(slivers: [
         SliverAppBar.medium(
           pinned: true,
+          centerTitle: false,
           actions: [
-            if (!isNewHabit)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextButton(
-                  onPressed: onDeleteClick,
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: ResColor.red.withOpacity(0.9),
-                  ),
-                  child: const Icon(BoxIcons.bx_trash),
+            if (!isNewHabit) ...[
+              const SizedBox(width: 12),
+              IconButton(
+                tooltip: 'Charts',
+                onPressed: () {},
+                icon: const Icon(Icons.bar_chart_rounded),
+              ),
+              const SizedBox(width: 12),
+              IconButton(
+                tooltip: 'Archive',
+                onPressed: onDeleteClick,
+                icon: Icon(
+                  BoxIcons.bx_trash,
+                  color: ResColor.red.withOpacity(0.9),
                 ),
               ),
+              const SizedBox(width: 12),
+            ]
           ],
           title: AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
         ),

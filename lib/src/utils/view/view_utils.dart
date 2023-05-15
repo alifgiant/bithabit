@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import '../res/res_color.dart';
 
 mixin ViewUtils {
-  static Future<T?> showFloatingModalBottomSheet<T>({
+  static Future<T?> showOptionListBottomSheet<T>({
     required BuildContext context,
-    required WidgetBuilder builder,
-    Color? backgroundColor,
+    required List<Widget> children,
   }) {
     return showModalBottomSheet<T>(
       enableDrag: true,
       context: context,
       isScrollControlled: true,
-      builder: (context) => SafeArea(child: builder(context)),
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: children,
+        ),
+      ),
     );
   }
 }
