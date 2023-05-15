@@ -1,6 +1,10 @@
+import 'package:bithabit/src/utils/view/floating_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:provider/provider.dart';
 
+import '../../service/recap_service.dart';
+import '../../service/sorting_service.dart';
 import '../../utils/res/res_color.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/app_version.dart';
@@ -29,12 +33,52 @@ class SettingPage extends StatelessWidget {
           _SettingTile(
             title: 'Today View Sorting',
             icon: Icons.sort_rounded,
-            onTap: () {},
+            onTap: () {
+              showFloatingModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: SortingOption.values
+                        .map(
+                          (e) => ListTile(
+                            title: Text(e.title),
+                            onTap: () {
+                              context.read<SortingService>().updateOption(e);
+                              Navigator.maybePop(context);
+                            },
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              );
+            },
           ),
           _SettingTile(
             title: 'Recap View Style',
             icon: Icons.calendar_month_outlined,
-            onTap: () {},
+            onTap: () {
+              showFloatingModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: RecapOption.values
+                        .map(
+                          (e) => ListTile(
+                            title: Text(e.menuTitle),
+                            onTap: () {
+                              context.read<RecapService>().updateOption(e);
+                              Navigator.maybePop(context);
+                            },
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              );
+            },
           ),
           _SettingTile(
             title: 'Archieved Habit',

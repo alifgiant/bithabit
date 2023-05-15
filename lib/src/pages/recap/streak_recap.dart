@@ -9,6 +9,7 @@ import '../../utils/view/habit_card_title.dart';
 class StreakRecap extends StatelessWidget {
   final Habit habit;
   final int weekCount;
+  late final DateTime today;
   late final List<DateTime> streakDates;
 
   StreakRecap({
@@ -16,10 +17,10 @@ class StreakRecap extends StatelessWidget {
     required this.habit,
     this.weekCount = 27,
   }) {
-    final now = DateTime.now();
+    today = DateTime.now();
 
     final totalDays = weekCount * 7 /* 7 days in a week */;
-    final dayWeek = now.weekday;
+    final dayWeek = today.weekday;
 
     streakDates = List.generate(
       totalDays,
@@ -29,7 +30,7 @@ class StreakRecap extends StatelessWidget {
         final flipPos = row + (column * 7);
 
         final addedDay = (totalDays - (7 - dayWeek) - 1) - flipPos;
-        return now.add(Duration(days: -addedDay));
+        return today.add(Duration(days: -addedDay));
       },
     );
   }
@@ -59,7 +60,7 @@ class StreakRecap extends StatelessWidget {
               children: [
                 HabitCardTitle(
                   title: habit.name,
-                  date: streakDates.format(),
+                  date: [streakDates.first, today].format(),
                 ),
                 const SizedBox(height: 21),
                 LayoutBuilder(

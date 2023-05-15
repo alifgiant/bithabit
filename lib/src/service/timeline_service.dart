@@ -5,8 +5,7 @@ import '../model/habit.dart';
 
 class TimelineService extends ChangeNotifier {
   final Map<String, Set<DateTime>> _habitTimelineMap = {};
-  DateTime? lastTimelineUpdated;
-  bool lastActionIsCheck = false;
+  TimelineAction? lastAction;
 
   Future<void> loadTimeline() async {
     // read from DB or whatever
@@ -20,10 +19,12 @@ class TimelineService extends ChangeNotifier {
     return timeline.contains(removedHourTime);
   }
 
+  void resetLastAction() {
+    lastAction = null;
+  }
+
   Future<void> check(Habit habit, DateTime time) async {
     final removedHourTime = time.emptyHour();
-
-    lastTimelineUpdated = removedHourTime;
 
     Set<DateTime> timeline;
     if (!_habitTimelineMap.containsKey(habit.id)) {
@@ -34,10 +35,10 @@ class TimelineService extends ChangeNotifier {
     }
 
     if (timeline.contains(removedHourTime)) {
-      lastActionIsCheck = false;
+      lastAction = CheckAction(removedHourTime, false);
       timeline.remove(removedHourTime);
     } else {
-      lastActionIsCheck = true;
+      lastAction = CheckAction(removedHourTime, true);
       timeline.add(removedHourTime);
     }
 
@@ -45,4 +46,16 @@ class TimelineService extends ChangeNotifier {
     // save to DB
     notifyListeners();
   }
+}
+
+class TimelineAction {
+  final bool isCheck;
+
+  TimelineAction(this.isCheck);
+}
+
+class CheckAction extends TimelineAction {
+  final DateTime time;
+
+  CheckAction(this.time, super.isCheck);
 }

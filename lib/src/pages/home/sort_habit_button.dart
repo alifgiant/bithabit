@@ -8,7 +8,6 @@ class SortHabitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sortingService = context.read<SortingService>();
     return PopupMenuButton(
       icon: const Icon(Icons.sort_rounded),
       tooltip: 'Sort Habit',
@@ -16,7 +15,7 @@ class SortHabitButton extends StatelessWidget {
           .map(
             (e) => PopupMenuItem(
               child: Text(e.title),
-              onTap: () => sortingService.updateOption(e),
+              onTap: () => context.read<SortingService>().updateOption(e),
             ),
           )
           .toList(),

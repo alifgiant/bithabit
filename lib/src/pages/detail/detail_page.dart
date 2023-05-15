@@ -62,7 +62,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
-            bottom: kBottomNavigationBarHeight + screenPadding,
+            bottom: kBottomNavigationBarHeight * 2,
           ),
           sliver: SliverList(
             delegate: SliverChildListDelegate(
@@ -200,8 +200,8 @@ class _DetailPageState extends State<DetailPage> {
       return;
     }
 
+    widget.timelineService.resetLastAction();
     await widget.habitService.saveHabit(edittedHabit);
-    widget.timelineService.lastActionIsCheck = false;
 
     if (!mounted) return;
     Navigator.of(context).pop(edittedHabit);

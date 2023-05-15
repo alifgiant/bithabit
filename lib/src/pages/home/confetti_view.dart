@@ -51,12 +51,14 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
         )
         .length;
 
-    // if action is not "check", ignore event
-    if (!timelineService.lastActionIsCheck) return;
+    final lastAction = timelineService.lastAction;
+    if (lastAction == null || lastAction is! CheckAction) return;
 
-    final isEditingTodayHabit = timelineService.lastTimelineUpdated?.isAtSameMomentAs(today.emptyHour());
+    // if action is not "check", ignore event
+    if (!lastAction.isCheck) return;
 
     // if all today habit are completed, trigger award animation
+    final isEditingTodayHabit = lastAction.time.isAtSameMomentAs(today.emptyHour());
     if (isEditingTodayHabit == true && completed == habits.length && habits.isNotEmpty) {
       playCompleteSound();
       startAnimation(context);
