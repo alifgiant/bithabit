@@ -1,3 +1,4 @@
+import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -7,6 +8,7 @@ import '../../service/habit_service.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/section_title.dart';
+import '../../utils/view/view_utils.dart';
 import 'habit_color_picker.dart';
 import 'habit_frequency_picker.dart';
 import 'reminder_list.dart';
@@ -58,6 +60,20 @@ class _DetailPageState extends State<DetailPage> {
       body: CustomScrollView(slivers: [
         SliverAppBar.medium(
           pinned: true,
+          actions: [
+            if (!isNewHabit)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextButton(
+                  onPressed: onDeleteClick,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: ResColor.red.withOpacity(0.9),
+                  ),
+                  child: const Icon(BoxIcons.bx_trash),
+                ),
+              ),
+          ],
           title: AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
         ),
         SliverPadding(
@@ -190,6 +206,21 @@ class _DetailPageState extends State<DetailPage> {
       default:
         return 'On These Day';
     }
+  }
+
+  void onDeleteClick() async {
+    final result = await ConfirmingDialog.show(
+      context,
+      'Archive this habit?',
+      "Don't worry, you can bring it back on setting page.",
+    );
+    if (result == null || result == ConfirmationResult.no) return;
+    if (!mounted) return;
+
+    widget.timelineService.resetLastAction();
+    widget.habitService.deleteHabit(edittedHabit.id);
+
+    Navigator.of(context).maybePop();
   }
 
   void onSaveClick() async {

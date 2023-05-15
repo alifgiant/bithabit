@@ -1,4 +1,4 @@
-import 'package:bithabit/src/utils/view/floating_modal.dart';
+import 'package:bithabit/src/utils/view/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,7 @@ class SettingPage extends StatelessWidget {
             title: 'Today View Sorting',
             icon: Icons.sort_rounded,
             onTap: () {
-              showFloatingModalBottomSheet(
+              ViewUtils.showFloatingModalBottomSheet(
                 context: context,
                 builder: (context) {
                   return Column(
@@ -59,7 +59,7 @@ class SettingPage extends StatelessWidget {
             title: 'Recap View Style',
             icon: Icons.calendar_month_outlined,
             onTap: () {
-              showFloatingModalBottomSheet(
+              ViewUtils.showFloatingModalBottomSheet(
                 context: context,
                 builder: (context) {
                   return Column(
@@ -81,7 +81,7 @@ class SettingPage extends StatelessWidget {
             },
           ),
           _SettingTile(
-            title: 'Archieved Habit',
+            title: 'Archived Habit',
             icon: BoxIcons.bx_archive_out,
             onTap: () {},
           ),

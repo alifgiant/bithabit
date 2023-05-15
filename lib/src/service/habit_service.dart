@@ -29,7 +29,7 @@ class HabitService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteHabit(String id) async {
+  Future<void> deleteHabit(String id, {bool permanent = false}) async {
     _habitMap.remove(id);
     notifyListeners();
   }
