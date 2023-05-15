@@ -5,10 +5,13 @@ import '../model/habit.dart';
 class HabitService extends ChangeNotifier {
   final Map<String, Habit> _habitMap = {};
 
-  // Iterable<Habit> get habits => _habitMap.values;
+  HabitService() {
+    loadHabit();
+  }
 
   Future<void> loadHabit() async {
     // read from DB or whatever
+    notifyListeners();
   }
 
   Iterable<Habit> getHabits({DateTime? day}) {
@@ -31,6 +34,11 @@ class HabitService extends ChangeNotifier {
 
   Future<void> deleteHabit(String id, {bool permanent = false}) async {
     _habitMap.remove(id);
+    if (permanent) {
+      // TODO: delete from db
+    } else {
+      // TODO: mark archive
+    }
     notifyListeners();
   }
 
@@ -38,10 +46,14 @@ class HabitService extends ChangeNotifier {
     // TODO: create new id
     final newId = DateTime.now().toIso8601String();
     _habitMap[newId] = habit.copy(id: newId);
+
+    // TODO: save to db
   }
 
   Future<void> _updateHabit(Habit habit) async {
     // update async
     _habitMap[habit.id] = habit;
+
+    // TODO: save to db
   }
 }
