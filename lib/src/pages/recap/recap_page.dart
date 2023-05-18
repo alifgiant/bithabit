@@ -27,18 +27,35 @@ class RecapPage extends StatelessWidget {
           RecapOptionButton(),
         ],
       ),
-      body: ListView.separated(
-        padding: EdgeInsets.all(
-          recapService.currentView == RecapOption.byMonth ? 24 : 16,
-        ).copyWith(
-          bottom: kBottomNavigationBarHeight * 2,
-        ),
-        itemBuilder: (_, index) => recapService.createView(habits[index]),
-        separatorBuilder: (_, __) => SizedBox(
-          height: recapService.currentView == RecapOption.byMonth ? 24 : 16,
-        ),
-        itemCount: habits.length,
-      ),
+      body: habits.isNotEmpty
+          ? ListView.separated(
+              padding: EdgeInsets.all(
+                recapService.currentView == RecapOption.byMonth ? 24 : 16,
+              ).copyWith(
+                bottom: kBottomNavigationBarHeight * 2,
+              ),
+              itemBuilder: (_, index) => recapService.createView(habits[index]),
+              separatorBuilder: (_, __) => SizedBox(
+                height: recapService.currentView == RecapOption.byMonth ? 24 : 16,
+              ),
+              itemCount: habits.length,
+            )
+          : Center(
+              child: InkWell(
+                onTap: () => AddHabitButton.navToAddHabit(context),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.add_circle_rounded, size: 52),
+                      SizedBox(height: 18),
+                      Text("Let's start your first Habit!"),
+                    ],
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }

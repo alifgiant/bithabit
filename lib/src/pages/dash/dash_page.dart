@@ -16,6 +16,8 @@ class DashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const screenPadding = 16.0;
+    final mediaQuery = MediaQuery.of(context);
+    final halfScreen = mediaQuery.size.height / 2;
 
     // habit changes watcher
     final today = DateTime.now();
@@ -66,21 +68,34 @@ class DashPage extends StatelessWidget {
               title: const AppBarTitle(),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (_, index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: screenPadding,
-                  vertical: 6,
+          if (habits.isNotEmpty)
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (_, index) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: screenPadding,
+                    vertical: 6,
+                  ),
+                  child: TodayHabit(
+                    key: ValueKey(habits[index].id),
+                    habit: habits[index],
+                  ),
                 ),
-                child: TodayHabit(
-                  key: ValueKey(habits[index].id),
-                  habit: habits[index],
-                ),
+                childCount: habits.length,
               ),
-              childCount: habits.length,
+            )
+          else
+            SliverToBoxAdapter(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: halfScreen - 152 /* app bar sie */ - 21),
+                  const Icon(Icons.offline_bolt_rounded, size: 52),
+                  const SizedBox(height: 18),
+                  const Text('No Schedule for Today'),
+                ],
+              ),
             ),
-          ),
           const SliverToBoxAdapter(
             child: SizedBox(height: kBottomNavigationBarHeight * 2),
           )
