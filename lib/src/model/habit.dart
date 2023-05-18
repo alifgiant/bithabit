@@ -6,6 +6,7 @@ class Habit {
   final String id;
   final String name;
   final HabitColor color;
+  final HabitState state;
   final HabitFrequency frequency;
   final List<HabitReminder> reminder;
 
@@ -13,6 +14,7 @@ class Habit {
     this.id,
     this.name,
     this.color, {
+    this.state = HabitState.enabled,
     this.frequency = const DailyFrequency(),
     this.reminder = const [],
   });
@@ -21,6 +23,7 @@ class Habit {
     String? id,
     String? name,
     HabitColor? color,
+    HabitState? state,
     HabitFrequency? frequency,
     List<HabitReminder>? reminder,
   }) {
@@ -28,6 +31,7 @@ class Habit {
       id ?? this.id,
       name ?? this.name,
       color ?? this.color,
+      state: state ?? this.state,
       frequency: frequency ?? this.frequency,
       reminder: reminder ?? this.reminder.toList(),
     );
@@ -35,9 +39,11 @@ class Habit {
 
   @override
   String toString() {
-    return 'Habit($id,$name,$color,$frequency,$reminder)';
+    return 'Habit($id,$name,$color,$state,$frequency,$reminder)';
   }
 }
+
+enum HabitState { enabled, archieved }
 
 enum HabitColor {
   red(ResColor.red, ResColor.white),

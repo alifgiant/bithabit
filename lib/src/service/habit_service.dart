@@ -14,12 +14,18 @@ class HabitService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Iterable<Habit> getHabits({DateTime? day}) {
-    if (day == null) return _habitMap.values;
-
-    return _habitMap.values.where(
-      (habit) => habit.frequency.isEnabledFor(day),
-    );
+  Iterable<Habit> getHabits({
+    DateTime? day,
+    HabitState state = HabitState.enabled,
+  }) {
+    final habits = _habitMap.values.where((habit) => habit.state == state);
+    if (day == null) {
+      return habits;
+    } else {
+      return habits.where(
+        (habit) => habit.frequency.isEnabledFor(day),
+      );
+    }
   }
 
   Future<void> saveHabit(Habit habit) async {
@@ -33,11 +39,19 @@ class HabitService extends ChangeNotifier {
   }
 
   Future<void> deleteHabit(String id, {bool permanent = false}) async {
-    _habitMap.remove(id);
+    final habit = _habitMap[id];
+    if (habit == null) return;
+
     if (permanent) {
       // TODO: delete from db
+      _habitMap.remove(id);
+
+      // TODO: save to db
     } else {
       // TODO: mark archive
+      _habitMap[id] = habit.copy(state: HabitState.archieved);
+
+      // TODO: save to db
     }
     notifyListeners();
   }
