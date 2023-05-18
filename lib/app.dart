@@ -1,15 +1,17 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'src/model/habit.dart';
+import 'src/pages/archived/archived_page.dart';
+import 'src/pages/charts/chart_page.dart';
 import 'src/pages/detail/detail_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
 import 'src/service/sorting_service.dart';
 import 'src/service/timeline_service.dart';
+import 'src/utils/const/app_route.dart';
 
 class MyApp extends StatelessWidget {
   final Locale? locale;
@@ -53,8 +55,8 @@ class MyApp extends StatelessWidget {
         ),
         themeMode: ThemeMode.light,
         routes: {
-          '/': (context) => const HomePage(),
-          '/detail': (context) {
+          AppRoute.home: (context) => const HomePage(),
+          AppRoute.detail: (context) {
             final args = ModalRoute.of(context)?.settings.arguments;
             final habitService = context.read<HabitService>();
             final timelineService = context.read<TimelineService>();
@@ -64,7 +66,12 @@ class MyApp extends StatelessWidget {
               habitService: habitService,
               timelineService: timelineService,
             );
-          }
+          },
+          AppRoute.archive: (context) => const ArchivedPage(),
+          AppRoute.charts: (context) {
+            final args = ModalRoute.of(context)?.settings.arguments;
+            return ChartPage(habit: args as Habit);
+          },
         },
       ),
     );

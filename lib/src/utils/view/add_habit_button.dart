@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../model/habit.dart';
+import '../const/app_route.dart';
+
 class AddHabitButton extends StatelessWidget {
   const AddHabitButton({super.key});
 
@@ -12,7 +15,10 @@ class AddHabitButton extends StatelessWidget {
     );
   }
 
-  static Future<T?> navToAddHabit<T>(BuildContext context) {
-    return Navigator.of(context).pushNamed('/detail');
+  static Future<T?> navToAddHabit<T>(
+    BuildContext context, {
+    Habit? habit,
+  }) {
+    return Navigator.of(context).pushNamed(AppRoute.detail, arguments: habit);
   }
 }

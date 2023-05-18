@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
+import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/habit_card_title.dart';
 
 class WeeklyRecap extends StatelessWidget {
@@ -32,10 +33,7 @@ class WeeklyRecap extends StatelessWidget {
       elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => Navigator.of(context).pushNamed(
-          '/detail',
-          arguments: habit,
-        ),
+        onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),
         child: DefaultTextStyle(
           style: TextStyle(
             color: habit.color.textColor,

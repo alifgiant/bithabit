@@ -5,6 +5,7 @@ import 'package:recase/recase.dart';
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
 import '../res/res_color.dart';
+import 'add_habit_button.dart';
 
 class SimpleHabitView extends StatelessWidget {
   final Habit habit;
@@ -30,10 +31,7 @@ class SimpleHabitView extends StatelessWidget {
       elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => Navigator.of(context).pushNamed(
-          '/detail',
-          arguments: habit,
-        ),
+        onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),
         child: DefaultTextStyle(
           style: TextStyle(color: habit.color.textColor),
           child: Padding(

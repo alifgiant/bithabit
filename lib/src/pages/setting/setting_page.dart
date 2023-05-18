@@ -1,4 +1,3 @@
-import 'package:bithabit/src/pages/archived/archived_page.dart';
 import 'package:bithabit/src/utils/view/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -7,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../service/recap_service.dart';
 import '../../service/sorting_service.dart';
+import '../../utils/const/app_route.dart';
 import '../../utils/res/res_color.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/app_version.dart';
@@ -76,9 +76,7 @@ class SettingPage extends StatelessWidget {
           _SettingTile(
             title: 'Archived Habit',
             icon: BoxIcons.bx_archive_out,
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const ArchivedPage(),
-            )),
+            onTap: () => Navigator.of(context).pushNamed(AppRoute.archive),
           ),
           _SettingTile(
             title: 'Export/Import Data',

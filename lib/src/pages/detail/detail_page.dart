@@ -5,6 +5,7 @@ import 'package:icons_plus/icons_plus.dart';
 import '../../model/habit.dart';
 import '../../service/habit_service.dart';
 import '../../service/timeline_service.dart';
+import '../../utils/const/app_route.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/section_title.dart';
 import '../../utils/view/view_utils.dart';
@@ -71,7 +72,7 @@ class _DetailPageState extends State<DetailPage> {
               const SizedBox(width: 12),
               IconButton(
                 tooltip: 'Charts',
-                onPressed: () {},
+                onPressed: onChartClick,
                 icon: const Icon(Icons.bar_chart_rounded),
               ),
               const SizedBox(width: 12),
@@ -234,6 +235,10 @@ class _DetailPageState extends State<DetailPage> {
     edittedHabit.reminder.add(HabitReminder(time, enabled: true));
     edittedHabit.reminder.sort((a, b) => a.time.compareTo(b.time));
     setState(() {});
+  }
+
+  void onChartClick() {
+    Navigator.of(context).pushNamed(AppRoute.charts, arguments: edittedHabit);
   }
 
   void onDeleteClick() async {

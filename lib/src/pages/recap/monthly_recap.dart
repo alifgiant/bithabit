@@ -1,4 +1,5 @@
 import 'package:bithabit/src/utils/text/date_utils.dart';
+import 'package:bithabit/src/utils/view/add_habit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,10 +44,7 @@ class MonthlyRecap extends StatelessWidget {
       elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => Navigator.of(context).pushNamed(
-          '/detail',
-          arguments: habit,
-        ),
+        onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),
         child: DefaultTextStyle(
           style: TextStyle(
             color: habit.color.textColor,
