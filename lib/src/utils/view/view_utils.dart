@@ -63,7 +63,7 @@ class ConfirmingDialog extends StatelessWidget {
                   onPressed: () => Navigator.maybePop(context, ConfirmationResult.yes),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: ResColor.red.withOpacity(0.9),
+                    backgroundColor: Theme.of(context).colorScheme.error,
                   ),
                   child: Text(confirmText ?? 'Okay'),
                 ),

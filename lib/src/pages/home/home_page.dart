@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: CustomNavigationBar(
+          selectedColor: Theme.of(context).primaryColor,
           currentIndex: currentPageIndex,
           elevation: 4,
           borderRadius: const Radius.circular(12),

@@ -1,4 +1,3 @@
-import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -41,7 +40,13 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    edittedHabit = widget.habit?.copy() ?? Habit('', '', HabitColor.values.first);
+    edittedHabit = widget.habit?.copy() ??
+        Habit(
+          '',
+          '',
+          HabitColor.values.first,
+          reminder: List.empty(growable: true),
+        );
     titleCtlr = TextEditingController(text: edittedHabit.name);
   }
 
@@ -75,7 +80,7 @@ class _DetailPageState extends State<DetailPage> {
                 onPressed: onDeleteClick,
                 icon: Icon(
                   BoxIcons.bx_trash,
-                  color: ResColor.red.withOpacity(0.9),
+                  color: Theme.of(context).colorScheme.error,
                 ),
               ),
               const SizedBox(width: 12),
@@ -148,7 +153,9 @@ class _DetailPageState extends State<DetailPage> {
 
                       if (timeExist) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('You already added that time')),
+                          const SnackBar(
+                            content: Text('You already added that time'),
+                          ),
                         );
                         return;
                       }

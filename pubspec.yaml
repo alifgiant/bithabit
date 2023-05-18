@@ -25,6 +25,8 @@ dependencies:
   flutter_advanced_segment: ^3.0.2
   package_info_plus: ^4.0.0
   url_launcher: ^6.1.11
+  flex_color_scheme: ^7.0.5
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:

@@ -35,23 +35,17 @@ class CompletedCount extends StatelessWidget {
           width: width,
           height: 10.0,
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: Theme.of(context).colorScheme.secondaryContainer,
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Stack(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
               AnimatedContainer(
                 width: width * fraction,
                 height: 12,
                 duration: const Duration(milliseconds: 500),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),

@@ -13,13 +13,20 @@ class AppBarTitle extends StatelessWidget {
 
     return RichText(
       text: TextSpan(
-        style: const TextStyle(color: ResColor.black, fontSize: 24),
+        style: const TextStyle(
+          fontSize: 24,
+          color: ResColor.black,
+        ),
         children: text.isNotEmpty
             ? splitted
                 .map(
                   (e) => TextSpan(
                     text: '$e ',
-                    style: e == splitted.last ? const TextStyle(fontWeight: FontWeight.w700) : null,
+                    style: e == splitted.last
+                        ? const TextStyle(
+                            fontWeight: FontWeight.w700,
+                          )
+                        : null,
                   ),
                 )
                 .toList()

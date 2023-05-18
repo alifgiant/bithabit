@@ -1,4 +1,6 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'src/model/habit.dart';
@@ -8,7 +10,6 @@ import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
 import 'src/service/sorting_service.dart';
 import 'src/service/timeline_service.dart';
-import 'src/utils/res/res_color.dart';
 
 class MyApp extends StatelessWidget {
   final Locale? locale;
@@ -37,25 +38,20 @@ class MyApp extends StatelessWidget {
         useInheritedMediaQuery: useInheritedMediaQuery,
         title: 'BitHabit',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
+        theme: FlexThemeData.light(
+          scheme: FlexScheme.sanJuanBlue,
+          subThemesData: const FlexSubThemesData(
+            inputDecoratorBorderType: FlexInputBorderType.underline,
+            tooltipSchemeColor: SchemeColor.inverseSurface,
+          ),
+          keyColors: const FlexKeyColors(),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
-          scaffoldBackgroundColor: ResColor.white,
-          primaryTextTheme: const TextTheme(
-            titleLarge: TextStyle(color: ResColor.black),
-          ),
-          appBarTheme: const AppBarTheme(
-            color: ResColor.white,
-            titleTextStyle: TextStyle(
-              color: ResColor.black,
-            ),
-            toolbarTextStyle: TextStyle(
-              color: ResColor.black,
-            ),
-            iconTheme: IconThemeData(
-              color: ResColor.black,
-            ),
-          ),
+          swapLegacyOnMaterial3: true,
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
+        themeMode: ThemeMode.light,
         routes: {
           '/': (context) => const HomePage(),
           '/detail': (context) {

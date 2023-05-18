@@ -21,10 +21,14 @@ class RecapPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        centerTitle: false,
         title: AppBarTitle(text: '${recapService.currentView.title} Recap'),
         actions: const [
+          SizedBox(width: 8),
           AddHabitButton(),
+          SizedBox(width: 8),
           RecapOptionButton(),
+          SizedBox(width: 8),
         ],
       ),
       body: habits.isNotEmpty
