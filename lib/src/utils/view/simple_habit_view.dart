@@ -4,15 +4,17 @@ import 'package:recase/recase.dart';
 
 import '../../model/habit.dart';
 import '../../service/timeline_service.dart';
-import '../../utils/res/res_color.dart';
+import '../res/res_color.dart';
 
-class TodayHabit extends StatelessWidget {
+class SimpleHabitView extends StatelessWidget {
   final Habit habit;
+  final bool isCheckable;
   late final DateTime today;
 
-  TodayHabit({
+  SimpleHabitView({
     super.key,
     required this.habit,
+    this.isCheckable = true,
   }) {
     today = DateTime.now();
   }
@@ -23,7 +25,7 @@ class TodayHabit extends StatelessWidget {
     final isChecked = timelineService.isHabitChecked(habit, today);
 
     return Material(
-      color: isChecked ? ResColor.black.withOpacity(0.3) : habit.color.mainColor.withOpacity(0.6),
+      color: isCheckable && isChecked ? ResColor.black.withOpacity(0.3) : habit.color.mainColor.withOpacity(0.6),
       borderRadius: BorderRadius.circular(12),
       elevation: 0,
       child: InkWell(
@@ -49,11 +51,12 @@ class TodayHabit extends StatelessWidget {
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    _CheckCircle(
-                      habitColor: habit.color,
-                      isChecked: isChecked,
-                      onTap: () => timelineService.check(habit, today),
-                    ),
+                    if (isCheckable)
+                      _CheckCircle(
+                        habitColor: habit.color,
+                        isChecked: isChecked,
+                        onTap: () => timelineService.check(habit, today),
+                      ),
                   ],
                 ),
               ],

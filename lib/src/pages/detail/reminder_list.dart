@@ -8,12 +8,14 @@ class ReminderList extends StatelessWidget {
   final List<HabitReminder> reminder;
   final void Function(HabitReminder prev, HabitReminder item) onUpdate;
   final void Function(HabitReminder item) onRemove;
+  final bool enabled;
 
   const ReminderList({
     super.key,
     required this.reminder,
     required this.onUpdate,
     required this.onRemove,
+    this.enabled = true,
   });
 
   @override
@@ -22,6 +24,14 @@ class ReminderList extends StatelessWidget {
 
     return Column(
       children: reminder.map((item) {
+        final tile = SwitchListTile(
+          value: item.enabled,
+          dense: true,
+          contentPadding: EdgeInsets.zero,
+          onChanged: enabled ? (state) => onUpdate(item, item.copyWith(enabled: state)) : null,
+          title: Text(item.time.format(context)),
+        );
+        if (!enabled) return tile;
         return Dismissible(
           key: ValueKey(item.time),
           direction: DismissDirection.startToEnd,
@@ -35,13 +45,7 @@ class ReminderList extends StatelessWidget {
               Text('Remove', style: TextStyle(color: ResColor.red)),
             ],
           ),
-          child: SwitchListTile(
-            value: item.enabled,
-            dense: true,
-            contentPadding: EdgeInsets.zero,
-            onChanged: (enabled) => onUpdate(item, item.copyWith(enabled: enabled)),
-            title: Text(item.time.format(context)),
-          ),
+          child: tile,
         );
       }).toList(),
     );

@@ -76,7 +76,7 @@ class _DetailPageState extends State<DetailPage> {
               ),
               const SizedBox(width: 12),
               IconButton(
-                tooltip: 'Archive',
+                tooltip: edittedHabit.isEnabled ? 'Archive' : 'Delete',
                 onPressed: onDeleteClick,
                 icon: Icon(
                   BoxIcons.bx_trash,
@@ -86,7 +86,7 @@ class _DetailPageState extends State<DetailPage> {
               const SizedBox(width: 12),
             ]
           ],
-          title: AppBarTitle(text: isNewHabit ? 'Create Habit' : 'Update Habit'),
+          title: AppBarTitle(text: screenTitle),
         ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
@@ -96,6 +96,7 @@ class _DetailPageState extends State<DetailPage> {
             delegate: SliverChildListDelegate(
               [
                 TextField(
+                  enabled: edittedHabit.isEnabled,
                   controller: titleCtlr,
                   decoration: InputDecoration(
                     filled: true,
@@ -111,6 +112,7 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 const SectionTitle(text: 'Color'),
                 HabitColorPicker(
+                  enabled: edittedHabit.isEnabled,
                   screenPadding: 16,
                   selectedColor: edittedHabit.color,
                   onColorSelected: (color) {
@@ -121,6 +123,7 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 const SectionTitle(text: 'Repeat'),
                 HabitFrequencyPicker(
+                  enabled: edittedHabit.isEnabled,
                   selectedFrequency: edittedHabit.frequency,
                   onFrequencySelected: (frequency) {
                     setState(() {
@@ -130,6 +133,7 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
                 HabitFrequencyValuePicker(
+                  enabled: edittedHabit.isEnabled,
                   selectedFrequency: edittedHabit.frequency,
                   screenPadding: screenPadding,
                   onFrequencySelected: (frequency) {
@@ -142,28 +146,7 @@ class _DetailPageState extends State<DetailPage> {
                   text: 'Reminder',
                   subtitle: edittedHabit.reminder.isNotEmpty ? 'Swipe right to remove' : '',
                   suffix: InkWell(
-                    onTap: () async {
-                      final time = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      if (!mounted || time == null) return;
-
-                      final timeExist = edittedHabit.reminder.any((element) => element.time.compareTo(time) == 0);
-
-                      if (timeExist) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('You already added that time'),
-                          ),
-                        );
-                        return;
-                      }
-
-                      edittedHabit.reminder.add(HabitReminder(time, enabled: true));
-                      edittedHabit.reminder.sort((a, b) => a.time.compareTo(b.time));
-                      setState(() {});
-                    },
+                    onTap: edittedHabit.isEnabled ? addReminderClick : () => ViewUtils.showHabitArchieved(context),
                     borderRadius: BorderRadius.circular(16),
                     child: SizedBox.square(
                       dimension: 28,
@@ -176,6 +159,7 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 ReminderList(
+                  enabled: edittedHabit.isEnabled,
                   reminder: edittedHabit.reminder,
                   onUpdate: (prev, item) => setState(() {
                     final index = edittedHabit.reminder.indexOf(prev);
@@ -196,19 +180,26 @@ class _DetailPageState extends State<DetailPage> {
           bottom: paddingBottom > 0 ? paddingBottom : 12,
         ),
         child: ElevatedButton(
-          onPressed: onSaveClick,
+          onPressed: edittedHabit.isEnabled ? onSaveClick : onRestoreClick,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.background,
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text('Save'),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: edittedHabit.isEnabled ? const Text('Save') : const Text('Restore'),
           ),
         ),
       ),
     );
+  }
+
+  String get screenTitle {
+    if (edittedHabit.isArchived) return 'Archived Habit';
+    return isNewHabit ? 'Create Habit' : 'Update Habit';
   }
 
   String frequencyValueDetail(Type selectionType) {
@@ -222,17 +213,43 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
+  void addReminderClick() async {
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (!mounted || time == null) return;
+
+    final timeExist = edittedHabit.reminder.any((element) => element.time.compareTo(time) == 0);
+
+    if (timeExist) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You already added that time'),
+        ),
+      );
+      return;
+    }
+
+    edittedHabit.reminder.add(HabitReminder(time, enabled: true));
+    edittedHabit.reminder.sort((a, b) => a.time.compareTo(b.time));
+    setState(() {});
+  }
+
   void onDeleteClick() async {
     final result = await ConfirmingDialog.show(
       context,
-      'Archive this habit?',
-      "Don't worry, you can bring it back on setting page.",
+      edittedHabit.isEnabled ? 'Archive this habit?' : 'Permanent delete?',
+      edittedHabit.isEnabled ? "Don't worry, you can bring it back on setting page." : "You won't be able to restore this habit anymore",
     );
     if (result == null || result == ConfirmationResult.no) return;
     if (!mounted) return;
 
     widget.timelineService.resetLastAction();
-    widget.habitService.deleteHabit(edittedHabit.id);
+    widget.habitService.deleteHabit(
+      edittedHabit.id,
+      permanent: edittedHabit.isEnabled ? false : true,
+    );
 
     Navigator.of(context).maybePop();
   }
@@ -250,5 +267,14 @@ class _DetailPageState extends State<DetailPage> {
 
     if (!mounted) return;
     Navigator.of(context).pop(edittedHabit);
+  }
+
+  void onRestoreClick() async {
+    // TODO: check subscription
+
+    widget.timelineService.resetLastAction();
+    widget.habitService.restoreHabit(edittedHabit.id);
+
+    Navigator.of(context).maybePop();
   }
 }

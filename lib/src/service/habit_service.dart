@@ -35,6 +35,7 @@ class HabitService extends ChangeNotifier {
     } else {
       await _createHabit(habit);
     }
+    // TODO: run reminder service to remove reminder
     notifyListeners();
   }
 
@@ -42,17 +43,30 @@ class HabitService extends ChangeNotifier {
     final habit = _habitMap[id];
     if (habit == null) return;
 
+    // TODO: run reminder service to remove reminder
+
     if (permanent) {
-      // TODO: delete from db
       _habitMap.remove(id);
 
-      // TODO: save to db
+      // TODO: delete from db
     } else {
-      // TODO: mark archive
       _habitMap[id] = habit.copy(state: HabitState.archieved);
 
       // TODO: save to db
     }
+    notifyListeners();
+  }
+
+  Future<void> restoreHabit(String id) async {
+    final habit = _habitMap[id];
+    if (habit == null) return;
+
+    _habitMap[id] = habit.copy(state: HabitState.enabled);
+
+    // TODO: run reminder service to restore reminder
+
+    // TODO: save to db
+
     notifyListeners();
   }
 

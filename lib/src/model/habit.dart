@@ -37,6 +37,9 @@ class Habit {
     );
   }
 
+  bool get isEnabled => state == HabitState.enabled;
+  bool get isArchived => state == HabitState.archieved;
+
   @override
   String toString() {
     return 'Habit($id,$name,$color,$state,$frequency,$reminder)';

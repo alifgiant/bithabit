@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../res/res_color.dart';
-
 mixin ViewUtils {
   static Future<T?> showOptionListBottomSheet<T>({
     required BuildContext context,
@@ -17,6 +15,12 @@ mixin ViewUtils {
           children: children,
         ),
       ),
+    );
+  }
+
+  static void showHabitArchieved(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Restore this habit to edit')),
     );
   }
 }

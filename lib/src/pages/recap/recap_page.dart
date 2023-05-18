@@ -20,7 +20,6 @@ class RecapPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         centerTitle: false,
         title: AppBarTitle(text: '${recapService.currentView.title} Recap'),
         actions: const [

@@ -5,15 +5,18 @@ import 'package:recase/recase.dart';
 import '../../model/habit.dart';
 import '../../utils/res/res_color.dart';
 import '../../utils/text/date_utils.dart';
+import '../../utils/view/view_utils.dart';
 
 class HabitFrequencyPicker extends StatefulWidget {
   final HabitFrequency selectedFrequency;
   final void Function(HabitFrequency frequency) onFrequencySelected;
+  final bool enabled;
 
   const HabitFrequencyPicker({
     super.key,
     required this.selectedFrequency,
     required this.onFrequencySelected,
+    this.enabled = true,
   });
 
   @override
@@ -46,7 +49,7 @@ class _HabitFrequencyPickerState extends State<HabitFrequencyPicker> {
   @override
   Widget build(BuildContext context) {
     return AdvancedSegment(
-      controller: segmentNotifier,
+      controller: widget.enabled ? segmentNotifier : null,
       sliderColor: ResColor.white,
       backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
       sliderOffset: 2.5,
@@ -73,12 +76,14 @@ class HabitFrequencyValuePicker extends StatelessWidget {
   final HabitFrequency selectedFrequency;
   final void Function(HabitFrequency frequency) onFrequencySelected;
   final double screenPadding;
+  final bool enabled;
 
   const HabitFrequencyValuePicker({
     super.key,
     required this.selectedFrequency,
     required this.onFrequencySelected,
     this.screenPadding = 16,
+    this.enabled = true,
   });
 
   @override
@@ -103,10 +108,12 @@ class HabitFrequencyValuePicker extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(12),
-                  onTap: () {
-                    final newFreq = updateFrequency(selectedDate: pos);
-                    onFrequencySelected(newFreq);
-                  },
+                  onTap: enabled
+                      ? () {
+                          final newFreq = updateFrequency(selectedDate: pos);
+                          onFrequencySelected(newFreq);
+                        }
+                      : () => ViewUtils.showHabitArchieved(context),
                   child: SizedBox(
                     width: buttonSize,
                     height: buttonSize,

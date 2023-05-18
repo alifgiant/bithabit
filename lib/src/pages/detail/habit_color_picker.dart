@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../../model/habit.dart';
+import '../../utils/view/view_utils.dart';
 
 class HabitColorPicker extends StatelessWidget {
   final HabitColor selectedColor;
   final void Function(HabitColor color) onColorSelected;
   final double screenPadding;
+  final bool enabled;
 
   const HabitColorPicker({
     super.key,
     required this.selectedColor,
     required this.onColorSelected,
     this.screenPadding = 16,
+    this.enabled = true,
   });
 
   @override
@@ -29,7 +32,7 @@ class HabitColorPicker extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: InkWell(
                 borderRadius: BorderRadius.circular(12),
-                onTap: () => onColorSelected(e),
+                onTap: enabled ? () => onColorSelected(e) : () => ViewUtils.showHabitArchieved(context),
                 child: SizedBox(
                   width: buttonSize,
                   height: buttonSize,

@@ -8,7 +8,7 @@ import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../home/sort_habit_button.dart';
 import 'completed_count.dart';
-import 'today_habit.dart';
+import '../../utils/view/simple_habit_view.dart';
 
 class DashPage extends StatelessWidget {
   const DashPage({super.key});
@@ -79,7 +79,7 @@ class DashPage extends StatelessWidget {
                     horizontal: screenPadding,
                     vertical: 6,
                   ),
-                  child: TodayHabit(
+                  child: SimpleHabitView(
                     key: ValueKey(habits[index].id),
                     habit: habits[index],
                   ),

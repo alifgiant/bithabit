@@ -22,18 +22,12 @@ class AppBarTitle extends StatelessWidget {
                 .map(
                   (e) => TextSpan(
                     text: '$e ',
-                    style: e == splitted.last
-                        ? const TextStyle(
-                            fontWeight: FontWeight.w700,
-                          )
-                        : null,
+                    style: e == splitted.last ? const TextStyle(fontWeight: FontWeight.w700) : null,
                   ),
                 )
                 .toList()
             : const [
-                TextSpan(
-                  text: 'Bit',
-                ),
+                TextSpan(text: 'Bit'),
                 TextSpan(
                   text: 'Habit',
                   style: TextStyle(fontWeight: FontWeight.w700),
