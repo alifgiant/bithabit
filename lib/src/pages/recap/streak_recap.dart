@@ -17,8 +17,9 @@ class StreakRecap extends StatelessWidget {
     super.key,
     required this.habit,
     this.weekCount = 27,
+    DateTime? date,
   }) {
-    today = DateTime.now();
+    today = date ?? DateTime.now();
 
     final totalDays = weekCount * 7 /* 7 days in a week */;
     final dayWeek = today.weekday;

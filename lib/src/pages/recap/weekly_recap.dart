@@ -14,8 +14,9 @@ class WeeklyRecap extends StatelessWidget {
   WeeklyRecap({
     super.key,
     required this.habit,
+    DateTime? date,
   }) {
-    final today = DateTime.now().emptyHour();
+    final today = date?.emptyHour() ?? DateTime.now().emptyHour();
     final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
     week = List.generate(
       7,
