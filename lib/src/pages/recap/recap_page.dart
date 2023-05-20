@@ -33,14 +33,10 @@ class RecapPage extends StatelessWidget {
       body: habits.isNotEmpty
           ? ListView.separated(
               padding: EdgeInsets.all(
-                recapService.currentView == RecapOption.byMonth ? 24 : 16,
-              ).copyWith(
-                bottom: kBottomNavigationBarHeight * 2,
-              ),
+                recapService.currentView == RecapOption.byMonth ? 0 : 16,
+              ).copyWith(bottom: kBottomNavigationBarHeight * 2),
               itemBuilder: (_, index) => recapService.createView(habits[index]),
-              separatorBuilder: (_, __) => SizedBox(
-                height: recapService.currentView == RecapOption.byMonth ? 24 : 16,
-              ),
+              separatorBuilder: (_, __) => const SizedBox(height: 16),
               itemCount: habits.length,
             )
           : Center(

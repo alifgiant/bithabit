@@ -4,19 +4,23 @@ class SectionTitle extends StatelessWidget {
   final String text;
   final String subtitle;
   final Widget? suffix;
+  final double topPadding;
+  final double bottomPadding;
 
   const SectionTitle({
     super.key,
     required this.text,
     this.subtitle = '',
     this.suffix,
+    this.topPadding = 30,
+    this.bottomPadding = 10,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 30),
+        SizedBox(height: topPadding),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,7 +48,7 @@ class SectionTitle extends StatelessWidget {
             if (suffix != null) suffix!,
           ],
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: bottomPadding),
       ],
     );
   }

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 mixin AppDateFormat {
   static final dayNameFormat = DateFormat('EEE');
   static final monthDateFormat = DateFormat('MMM d');
+  static final monthYearFormat = DateFormat('MMM y');
   static final onlyMonthFormat = DateFormat('MMM');
   static final onlyDateFormat = DateFormat('d');
   static final hourMinuteFormat = DateFormat('hh:mm');
@@ -16,7 +17,11 @@ mixin AppDateFormat {
 }
 
 extension DateTimeExt on DateTime {
-  String monthName() => AppDateFormat.onlyMonthFormat.format(this);
+  String monthName({bool withYear = true}) {
+    if (withYear) return AppDateFormat.monthYearFormat.format(this);
+    return AppDateFormat.onlyMonthFormat.format(this);
+  }
+
   String dayName() => AppDateFormat.dayNameFormat.format(this);
   String hourMinute() => AppDateFormat.hourMinuteFormat.format(this);
 
