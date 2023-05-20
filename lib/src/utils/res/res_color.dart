@@ -5,6 +5,7 @@ mixin ResColor {
   static const pink = Color(0xffFF7B9C);
   static const brown = Color(0xffa44200);
   static const purple = Color(0xff533a71);
+  static const lightPurple = Color(0xffb038ae);
   static const darkGreen = Color(0xff065143);
   static const lightGreen = Color(0xff5fad41);
   static const lightBlue = Color(0xff35A7FF);

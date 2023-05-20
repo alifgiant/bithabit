@@ -11,6 +11,21 @@ class TimelineService extends ChangeNotifier {
     // read from DB or whatever
   }
 
+  int countHabit(
+    Habit habit, {
+    int? month,
+    int? year,
+  }) {
+    final timeline = _habitTimelineMap[habit.id];
+    if (timeline == null) return 0;
+
+    Iterable<DateTime> times = timeline.toList();
+    if (month != null) times = times.where((time) => time.month == month);
+    if (year != null) times = times.where((time) => time.year == year);
+
+    return times.length;
+  }
+
   bool isHabitChecked(Habit habit, DateTime time) {
     final removedHourTime = time.emptyHour();
     final timeline = _habitTimelineMap[habit.id];

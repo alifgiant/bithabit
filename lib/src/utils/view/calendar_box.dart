@@ -8,6 +8,7 @@ import '../../service/timeline_service.dart';
 class CalendarBox extends StatelessWidget {
   final Habit habit;
   final DateTime firstDayOfMonth;
+  final bool enableClick;
 
   late final List<DateTime> monthDates;
 
@@ -18,6 +19,7 @@ class CalendarBox extends StatelessWidget {
     required this.habit,
     required this.firstDayOfMonth,
     this.unselectedTextColor,
+    this.enableClick = true,
   }) {
     // Get first day of month's weekday. to help position date:1 on correct day position
     // final firstDayOfMonth = DateTime(today.year, today.month, 1);
@@ -83,7 +85,7 @@ class CalendarBox extends StatelessWidget {
                         habitColor: habit.color,
                         isChecked: timelineService.isHabitChecked(habit, day),
                         unselectedTextColor: unselectedTextColor,
-                        onTap: () => timelineService.check(habit, day),
+                        onTap: enableClick ? () => timelineService.check(habit, day) : null,
                       ),
                     ),
                   )
@@ -102,7 +104,7 @@ class _MonthDayBox extends StatelessWidget {
     required this.date,
     required this.habitColor,
     required this.isChecked,
-    required this.onTap,
+    this.onTap,
     this.unselectedTextColor,
   });
 
@@ -111,7 +113,7 @@ class _MonthDayBox extends StatelessWidget {
   final HabitColor habitColor;
   final bool isChecked;
   final Color? unselectedTextColor;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
