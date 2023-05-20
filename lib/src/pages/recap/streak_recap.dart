@@ -11,7 +11,7 @@ class StreakRecap extends StatelessWidget {
   final Habit habit;
   final int weekCount;
   late final DateTime today;
-  late final List<DateTime> streakDates;
+  late final DateTime firstStreakDate;
 
   StreakRecap({
     super.key,
@@ -20,20 +20,13 @@ class StreakRecap extends StatelessWidget {
     DateTime? date,
   }) {
     today = date ?? DateTime.now();
-
     final totalDays = weekCount * 7 /* 7 days in a week */;
+
     final dayWeek = today.weekday;
-
-    streakDates = List.generate(
-      totalDays,
-      (index) {
-        final row = index ~/ weekCount;
-        final column = index % weekCount;
-        final flipPos = row + (column * 7);
-
-        final addedDay = (totalDays - (7 - dayWeek) - 1) - flipPos;
-        return today.add(Duration(days: -addedDay));
-      },
+    firstStreakDate = today.subtract(
+      Duration(
+        days: (totalDays - (7 - dayWeek) - 1),
+      ),
     );
   }
 
@@ -49,9 +42,7 @@ class StreakRecap extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),
         child: DefaultTextStyle(
-          style: TextStyle(
-            color: habit.color.textColor,
-          ),
+          style: TextStyle(color: habit.color.textColor),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             child: Column(
@@ -59,32 +50,65 @@ class StreakRecap extends StatelessWidget {
               children: [
                 HabitCardTitle(
                   title: habit.name,
-                  date: [streakDates.first, today].format(),
+                  date: [firstStreakDate, today].format(),
                 ),
                 const SizedBox(height: 21),
                 LayoutBuilder(
                   builder: (ctx, constraints) {
                     const buttonSpacing = 2.0;
-                    final buttonSize = (constraints.maxWidth - ((weekCount - 1) * buttonSpacing) - 1) / weekCount;
+                    final totalHSpacing = (weekCount - 1) * buttonSpacing;
+                    final buttonSize = (constraints.maxWidth - totalHSpacing - 1) / weekCount;
 
-                    return Wrap(
-                      spacing: buttonSpacing,
-                      runSpacing: buttonSpacing,
-                      children: streakDates
-                          .map(
-                            (day) => SizedBox.square(
-                              dimension: buttonSize,
-                              child: _StreakBox(
-                                date: day,
-                                habitColor: habit.color,
-                                isChecked: timelineService.isHabitChecked(
-                                  habit,
-                                  day,
-                                ),
+                    const totalVSpacing = 7 * buttonSpacing;
+                    final verticalSpan = buttonSize * 7 + totalVSpacing;
+
+                    return SizedBox(
+                      height: verticalSpan,
+                      child: ListView.builder(
+                        reverse: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int hIndex) {
+                          final totalDays = weekCount * 7 /* 7 days in a week */;
+                          final day = today.subtract(Duration(
+                            days: totalDays * hIndex,
+                          ));
+                          final dayWeek = day.weekday;
+                          final streakDates = List.generate(
+                            totalDays,
+                            (index) => day.subtract(
+                              Duration(
+                                days: (totalDays - (7 - dayWeek) - 1) - index,
                               ),
                             ),
-                          )
-                          .toList(),
+                          );
+                          return Container(
+                            height: verticalSpan,
+                            margin: const EdgeInsets.only(left: buttonSpacing),
+                            child: Wrap(
+                              direction: Axis.vertical,
+                              verticalDirection: VerticalDirection.down,
+                              spacing: buttonSpacing,
+                              runSpacing: buttonSpacing,
+                              children: streakDates
+                                  .map(
+                                    (day) => SizedBox.square(
+                                      dimension: buttonSize,
+                                      child: _StreakBox(
+                                        date: day,
+                                        habitColor: habit.color,
+                                        isChecked: timelineService.isHabitChecked(
+                                          habit,
+                                          day,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          );
+                        },
+                        itemCount: null,
+                      ),
                     );
                   },
                 ),
