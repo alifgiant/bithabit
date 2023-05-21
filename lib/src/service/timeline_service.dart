@@ -1,4 +1,5 @@
 import 'package:bithabit/src/utils/text/date_utils.dart';
+import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
@@ -12,18 +13,34 @@ class TimelineService extends ChangeNotifier {
   }
 
   int countHabit(
-    Habit habit, {
+    Habit habit,
+    int year, {
     int? month,
-    int? year,
   }) {
     final timeline = _habitTimelineMap[habit.id];
     if (timeline == null) return 0;
 
-    Iterable<DateTime> times = timeline.toList();
+    Iterable<DateTime> times = timeline.where((time) => time.year == year);
     if (month != null) times = times.where((time) => time.month == month);
-    if (year != null) times = times.where((time) => time.year == year);
 
     return times.length;
+  }
+
+  double habitCompletion(
+    Habit habit,
+    int year, {
+    int? month,
+  }) {
+    final count = countHabit(habit, year, month: month);
+
+    int totalDays;
+    if (month != null) {
+      totalDays = month.getMonthTotalDays(year: year);
+    } else {
+      totalDays = year.getYearTotalDays();
+    }
+
+    return count / totalDays;
   }
 
   bool isHabitChecked(Habit habit, DateTime time) {

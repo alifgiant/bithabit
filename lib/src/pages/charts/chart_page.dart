@@ -6,6 +6,7 @@ import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/streak_dots.dart';
 import 'monthly_progress.dart';
 import 'overview_progress.dart';
+import 'score_progress.dart';
 
 class ChartPage extends StatelessWidget {
   final Habit habit;
@@ -28,12 +29,12 @@ class ChartPage extends StatelessWidget {
       StreakDots(habit: habit, horizontalPadding: 12),
       const Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPadding),
-        child: SectionTitle(text: 'Monthly Score'),
+        child: SectionTitle(text: 'All Months Score'),
       ),
-      Text('Monthly Score'),
+      ScoreProgress(habit: habit),
       const Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPadding),
-        child: SectionTitle(text: 'Monthly Progress'),
+        child: SectionTitle(text: 'Monthly Recap'),
       ),
       MonthlyProgress(habit: habit),
     ];

@@ -2,7 +2,7 @@ import 'package:bithabit/src/model/habit.dart';
 import 'package:bithabit/src/service/timeline_service.dart';
 import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
-import 'package:bithabit/src/utils/text/double_utils.dart';
+import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,24 +20,12 @@ class OverviewProgress extends StatelessWidget {
 
     final timelineService = context.watch<TimelineService>();
 
-    final prevMonthCount = timelineService.countHabit(habit, month: today.month - 1);
-    final prevMonthTotalDate = DateTime(today.year, today.month, 0).day;
-    final prevMonthRatio = prevMonthCount / prevMonthTotalDate;
-
-    final curMonthCount = timelineService.countHabit(habit, month: today.month);
-    final curMonthTotalDate = DateTime(today.year, today.month + 1, 0).day;
-    final curMonthRatio = curMonthCount / curMonthTotalDate;
-
+    final prevMonthRatio = timelineService.habitCompletion(habit, today.year, month: today.month - 1);
+    final curMonthRatio = timelineService.habitCompletion(habit, today.year, month: today.month);
     final monthDiff = curMonthRatio - prevMonthRatio;
 
-    final prevYearCount = timelineService.countHabit(habit, year: today.year - 1);
-    final prevYearTotalDay = (today.year - 1).getYearTotalDays();
-    final prevYearRatio = prevYearCount / prevYearTotalDay;
-
-    final curYearCount = timelineService.countHabit(habit, year: today.year);
-    final curYearTotalDay = today.year.getYearTotalDays();
-    final curYearRatio = curYearCount / curYearTotalDay;
-
+    final prevYearRatio = timelineService.habitCompletion(habit, today.year - 1);
+    final curYearRatio = timelineService.habitCompletion(habit, today.year);
     final yearDiff = curYearRatio - prevYearRatio;
 
     return Padding(

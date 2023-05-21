@@ -14,9 +14,9 @@ class MonthlyProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final today = DateTime.now().emptyHour();
-    return LayoutBuilder(
-      builder: (ctx, cons) => SizedBox(
-        height: cons.maxWidth * 1,
+    return AspectRatio(
+      aspectRatio: 1.1,
+      child: SizedBox(
         child: PageView.builder(
           controller: PageController(viewportFraction: 0.8),
           reverse: true,
@@ -47,7 +47,7 @@ class MonthlyProgress extends StatelessWidget {
                           habit: habit,
                           firstDayOfMonth: firstDayOfMonth,
                           unselectedTextColor: ResColor.black,
-                          enableClick: true,
+                          enableClick: true, // todo: set to false
                         ),
                       ],
                     ),

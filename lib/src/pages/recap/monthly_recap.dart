@@ -16,21 +16,23 @@ class MonthlyRecap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final today = DateTime.now().emptyHour();
-    return LayoutBuilder(
-      builder: (ctx, cons) => SizedBox(
-        height: cons.maxWidth * 0.75,
-        child: PageView.builder(
-          controller: PageController(viewportFraction: 0.8),
-          reverse: true,
-          itemCount: null,
-          itemBuilder: (BuildContext context, int index) {
-            final firstDayOfMonth = DateTime(today.year, today.month - index, 1);
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: SingleMonth(habit: habit, firstDayOfMonth: firstDayOfMonth),
-            );
-          },
-        ),
+    return AspectRatio(
+      aspectRatio: 1.14,
+      child: PageView.builder(
+        controller: PageController(viewportFraction: 0.8),
+        reverse: true,
+        itemCount: null,
+        itemBuilder: (BuildContext context, int index) {
+          final firstDayOfMonth = DateTime(today.year, today.month - index, 1);
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: SingleMonth(habit: habit, firstDayOfMonth: firstDayOfMonth),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
