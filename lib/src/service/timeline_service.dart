@@ -12,13 +12,34 @@ class TimelineService extends ChangeNotifier {
     // read from DB or whatever
   }
 
+  int countBestStreak(Habit habit) {
+    final timeline = _habitTimelineMap[habit.id];
+    if (timeline == null || timeline.isEmpty) return 0;
+
+    int best = 1;
+    int count = 1;
+    final sortedTime = timeline.toList()..sort();
+
+    for (int i = 1; i < sortedTime.length; i++) {
+      final prevTime = sortedTime[i - 1];
+      final time = sortedTime[i];
+      if (time.difference(prevTime).inDays == 1) {
+        count += 1;
+        if (best < count) best = count;
+      } else {
+        count = 1;
+      }
+    }
+    return best;
+  }
+
   int countHabit(
     Habit habit,
     int year, {
     int? month,
   }) {
     final timeline = _habitTimelineMap[habit.id];
-    if (timeline == null) return 0;
+    if (timeline == null || timeline.isEmpty) return 0;
 
     Iterable<DateTime> times = timeline.where((time) => time.year == year);
     if (month != null) times = times.where((time) => time.month == month);
@@ -51,10 +72,6 @@ class TimelineService extends ChangeNotifier {
     return timeline.contains(removedHourTime);
   }
 
-  void resetLastAction() {
-    lastAction = null;
-  }
-
   Future<void> check(Habit habit, DateTime time) async {
     final removedHourTime = time.emptyHour();
 
@@ -77,6 +94,10 @@ class TimelineService extends ChangeNotifier {
     _habitTimelineMap[habit.id] = timeline;
     // save to DB
     notifyListeners();
+  }
+
+  void resetLastAction() {
+    lastAction = null;
   }
 }
 

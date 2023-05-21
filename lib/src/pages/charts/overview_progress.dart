@@ -28,6 +28,8 @@ class OverviewProgress extends StatelessWidget {
     final curYearRatio = timelineService.habitCompletion(habit, today.year);
     final yearDiff = curYearRatio - prevYearRatio;
 
+    final bestStreak = timelineService.countBestStreak(habit);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
@@ -49,6 +51,12 @@ class OverviewProgress extends StatelessWidget {
             habit: habit,
             value: yearDiff.toPercentage(),
             text: 'Prev\nYear',
+            mode: _OverviewMode.text,
+          ),
+          _DetailOverview(
+            habit: habit,
+            value: bestStreak.formatShort(),
+            text: 'Best\nStreak',
             mode: _OverviewMode.text,
           ),
         ],
@@ -104,7 +112,7 @@ class _DetailOverview extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
       decoration: BoxDecoration(
         color: habit.color.mainColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(12),

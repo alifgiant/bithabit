@@ -26,4 +26,11 @@ extension IntExt on int {
   int getMonthTotalDays({int? year}) {
     return DateTime(year ?? DateTime.now().year, this + 1, 0).day;
   }
+
+  String formatShort() {
+    if (this < 1000) return toString();
+    if (this < 1000000) return '${(this / 1000).toStringAsFixed(1)}k';
+    if (this < 1000000000) return '${(this / 1000000).toStringAsFixed(1)}m';
+    return '${(this / 1000000000000).toStringAsFixed(1)}b';
+  }
 }
