@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/streak_dots.dart';
+import 'day_radar.dart';
 import 'monthly_progress.dart';
 import 'overview_progress.dart';
 import 'score_progress.dart';
@@ -32,6 +33,11 @@ class ChartPage extends StatelessWidget {
         child: SectionTitle(text: 'All Months Score'),
       ),
       ScoreProgress(habit: habit),
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenPadding),
+        child: SectionTitle(text: 'Day Frequency'),
+      ),
+      DayRadar(habit: habit),
       const Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPadding),
         child: SectionTitle(text: 'Monthly Recap'),

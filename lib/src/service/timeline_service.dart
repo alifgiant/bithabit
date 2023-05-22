@@ -35,6 +35,16 @@ class TimelineService extends ChangeNotifier {
 
   int countHabit(
     Habit habit,
+    int dayOfWeek,
+  ) {
+    final timeline = _habitTimelineMap[habit.id];
+    if (timeline == null || timeline.isEmpty) return 0;
+
+    return timeline.where((time) => time.weekday == dayOfWeek).length;
+  }
+
+  double habitCompletion(
+    Habit habit,
     int year, {
     int? month,
   }) {
@@ -44,15 +54,7 @@ class TimelineService extends ChangeNotifier {
     Iterable<DateTime> times = timeline.where((time) => time.year == year);
     if (month != null) times = times.where((time) => time.month == month);
 
-    return times.length;
-  }
-
-  double habitCompletion(
-    Habit habit,
-    int year, {
-    int? month,
-  }) {
-    final count = countHabit(habit, year, month: month);
+    final count = times.length;
 
     int totalDays;
     if (month != null) {
