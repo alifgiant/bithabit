@@ -44,7 +44,7 @@ class ArchivedPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
-                    Icon(BoxIcons.bxs_award, size: 52),
+                    Icon(BoxIcons.bxs_badge_check, size: 52),
                     SizedBox(height: 18),
                     Text.rich(
                       TextSpan(children: [

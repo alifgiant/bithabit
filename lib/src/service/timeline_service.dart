@@ -6,6 +6,8 @@ import '../model/habit.dart';
 
 class TimelineService extends ChangeNotifier {
   final Map<String, Set<DateTime>> _habitTimelineMap = {};
+  Map<String, Set<DateTime>> get timelineMap => _habitTimelineMap;
+
   TimelineAction? lastAction;
 
   Future<void> loadTimeline() async {

@@ -3,4 +3,5 @@ mixin AppRoute {
   static const detail = '/detail';
   static const archive = '/archive';
   static const charts = '/charts';
+  static const premium = '/premium';
 }

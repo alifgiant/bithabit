@@ -1,5 +1,9 @@
+import 'package:bithabit/src/pages/setting/setting_tile.dart';
+import 'package:bithabit/src/service/subs_service.dart';
+import 'package:bithabit/src/utils/const/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/res/res_color.dart';
 
@@ -8,6 +12,15 @@ class SubscribeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final subsService = context.watch<SubsService>();
+    if (subsService.isPremiumUser) {
+      return SettingTile(
+        title: 'BitHabit Pro',
+        icon: BoxIcons.bx_extension,
+        onTap: () => Navigator.of(context).pushNamed(AppRoute.premium),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16).copyWith(bottom: 0),
       child: ListTile(
@@ -15,7 +28,7 @@ class SubscribeTile extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        onTap: () {},
+        onTap: () => Navigator.of(context).pushNamed(AppRoute.premium),
         leading: const Icon(
           BoxIcons.bxs_extension,
           size: 32,

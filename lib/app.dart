@@ -7,9 +7,11 @@ import 'src/pages/archived/archived_page.dart';
 import 'src/pages/charts/chart_page.dart';
 import 'src/pages/detail/detail_page.dart';
 import 'src/pages/home/home_page.dart';
+import 'src/pages/subscription/subscription_page.dart';
 import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
 import 'src/service/sorting_service.dart';
+import 'src/service/subs_service.dart';
 import 'src/service/timeline_service.dart';
 import 'src/utils/const/app_route.dart';
 
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => SubsService()),
         ChangeNotifierProvider(create: (_) => HabitService()),
         ChangeNotifierProvider(create: (_) => TimelineService()),
         ChangeNotifierProvider(create: (_) => SortingService()),
@@ -50,8 +53,6 @@ class MyApp extends StatelessWidget {
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
           swapLegacyOnMaterial3: true,
-          // To use the Playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
         themeMode: ThemeMode.light,
         routes: {
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
             final args = ModalRoute.of(context)?.settings.arguments;
             return ChartPage(habit: args as Habit);
           },
+          AppRoute.premium: (context) => const SubscriptionPage(),
         },
       ),
     );
