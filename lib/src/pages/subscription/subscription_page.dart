@@ -138,12 +138,44 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
                 ),
               ),
               if (isPremiumUser)
-                const SectionTitle(text: "Features you've unlock:")
+                const SectionTitle(text: "Features you've unlocked:")
               else
                 const SectionTitle(text: "Features you'll unlock:"),
-              ListTile(
-                title: const Text('Export/Import Data'),
-                onTap: () {},
+              const _FeatureTile(
+                title: 'Export Data',
+                subtitle: 'Generate a file from your habits and completions',
+                icon: BoxIcons.bxs_arrow_from_bottom,
+                color: ResColor.darkBlue,
+              ),
+              const _FeatureTile(
+                title: 'Import Data',
+                subtitle: 'Switching phones? Restore a previously exported backup',
+                icon: BoxIcons.bxs_arrow_from_top,
+                color: ResColor.lightBlue,
+              ),
+              const _FeatureTile(
+                title: 'Unlimited tracked day',
+                subtitle: 'Track an habit for more than 3 months',
+                icon: BoxIcons.bxs_collection,
+                color: Colors.orange,
+              ),
+              const _FeatureTile(
+                title: 'Charts',
+                subtitle: 'Visualize your progress to better understand yourself',
+                icon: BoxIcons.bx_line_chart,
+                color: ResColor.lightGreen,
+              ),
+              const _FeatureTile(
+                title: 'Restore Archived',
+                subtitle: 'Restore unactive habit when you feel like it',
+                icon: BoxIcons.bx_upload,
+                color: ResColor.lightPurple,
+              ),
+              const _FeatureTile(
+                title: 'Support Indie Develpoer',
+                subtitle: 'You help us maintain the app',
+                icon: BoxIcons.bx_pulse,
+                color: ResColor.red,
               ),
             ],
           ),
@@ -166,6 +198,42 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _FeatureTile extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color color;
+
+  const _FeatureTile({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 6),
+      leading: Container(
+        height: 54,
+        width: 54,
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.6),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          icon,
+          color: ResColor.white,
+          size: 32,
+        ),
+      ),
+      title: Text(title),
+      subtitle: Text(subtitle),
     );
   }
 }

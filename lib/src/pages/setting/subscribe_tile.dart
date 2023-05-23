@@ -55,7 +55,7 @@ class SubscribeTile extends StatelessWidget {
         ),
         subtitle: const Text(
           style: TextStyle(color: ResColor.grey, fontSize: 12),
-          'Export/Import Data, Unlimited saved day, Charts, Restore Archived',
+          'Export/Import Data, Unlimited tracked day, Charts, Restore Archived',
         ),
       ),
     );

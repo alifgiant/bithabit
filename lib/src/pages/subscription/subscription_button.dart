@@ -15,7 +15,7 @@ class SubscriptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final subsService = context.watch<SubsService>();
-    final priceText = subsService.getPrice(kind);
+    final priceText = subsService.subsKind == kind ? 'Subscribed' : subsService.getPrice(kind);
 
     final double buttonLength = (priceText.length * 10) + 12;
 
@@ -25,7 +25,7 @@ class SubscriptionButton extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
-          color: subsService.subsKind == kind ? ResColor.lightGreen : Theme.of(context).colorScheme.primary,
+          color: subsService.subsKind == kind ? ResColor.darkGreen.withOpacity(0.9) : Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(12),
         ),
         width: subsService.isLoading ? 50 : buttonLength,
@@ -40,7 +40,7 @@ class SubscriptionButton extends StatelessWidget {
                 )
               : FittedBox(
                   child: Text(
-                    subsService.subsKind == kind ? 'Paid' : subsService.getPrice(kind),
+                    priceText,
                     style: TextStyle(color: Theme.of(context).colorScheme.background),
                   ),
                 ),
