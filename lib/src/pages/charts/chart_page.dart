@@ -1,8 +1,8 @@
-import 'package:bithabit/src/model/habit.dart';
-import 'package:bithabit/src/utils/view/section_title.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/habit.dart';
 import '../../utils/view/app_bar_title.dart';
+import '../../utils/view/section_title.dart';
 import '../../utils/view/streak_dots.dart';
 import 'day_radar.dart';
 import 'monthly_progress.dart';

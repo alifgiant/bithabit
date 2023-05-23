@@ -1,8 +1,8 @@
 import 'package:bithabit/src/utils/text/date_utils.dart';
-import 'package:bithabit/src/utils/view/add_habit_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/habit.dart';
+import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/calendar_box.dart';
 import '../../utils/view/habit_card_title.dart';
 

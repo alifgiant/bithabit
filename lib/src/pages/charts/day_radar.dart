@@ -1,9 +1,9 @@
-import 'package:bithabit/src/service/timeline_service.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/habit.dart';
+import '../../service/timeline_service.dart';
 import '../../utils/text/date_utils.dart';
 
 class DayRadar extends StatelessWidget {

@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:achievement_view/achievement_view.dart';
-import 'package:bithabit/src/pages/home/sound_player.dart';
-import 'package:bithabit/src/service/subs_service.dart';
-import 'package:bithabit/src/utils/view/section_title.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
+import '../../service/subs_service.dart';
 import '../../utils/res/res_color.dart';
 import '../../utils/view/app_bar_title.dart';
+import '../../utils/view/section_title.dart';
+import '../home/sound_player.dart';
+import 'subscription_button.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({super.key});
@@ -140,6 +141,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
                 const SectionTitle(text: "Features you've unlock:")
               else
                 const SectionTitle(text: "Features you'll unlock:"),
+              ListTile(
+                title: const Text('Export/Import Data'),
+                onTap: () {},
+              ),
             ],
           ),
           Align(
@@ -160,52 +165,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SubscriptionButton extends StatelessWidget {
-  final SubsKind kind;
-
-  const SubscriptionButton({
-    super.key,
-    required this.kind,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final subsService = context.watch<SubsService>();
-    final priceText = subsService.getPrice(kind);
-
-    final double buttonLength = (priceText.length * 10) + 12;
-
-    return InkWell(
-      onTap: subsService.subsKind == kind ? null : () => subsService.subscribe(kind),
-      borderRadius: BorderRadius.circular(12),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        decoration: BoxDecoration(
-          color: subsService.subsKind == kind ? ResColor.lightGreen : Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        width: subsService.isLoading ? 50 : buttonLength,
-        height: 42,
-        child: Center(
-          child: subsService.isLoading
-              ? SizedBox.square(
-                  dimension: 12,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.background),
-                  ),
-                )
-              : FittedBox(
-                  child: Text(
-                    subsService.subsKind == kind ? 'Paid' : subsService.getPrice(kind),
-                    style: TextStyle(color: Theme.of(context).colorScheme.background),
-                  ),
-                ),
-        ),
       ),
     );
   }

@@ -1,9 +1,9 @@
-import 'package:bithabit/src/model/habit.dart';
 import 'package:bithabit/src/service/sorting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/habit.dart';
 import '../../service/habit_service.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/simple_habit_view.dart';

@@ -1,8 +1,9 @@
-import 'package:bithabit/src/model/habit.dart';
-import 'package:bithabit/src/utils/res/res_color.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
-import 'package:bithabit/src/utils/view/calendar_box.dart';
 import 'package:flutter/material.dart';
+
+import '../../model/habit.dart';
+import '../../utils/res/res_color.dart';
+import '../../utils/view/calendar_box.dart';
 
 class MonthlyProgress extends StatelessWidget {
   final Habit habit;

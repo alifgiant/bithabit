@@ -1,4 +1,3 @@
-import 'package:bithabit/src/utils/view/view_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +9,7 @@ import '../../utils/const/app_route.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/app_version.dart';
 import '../../utils/view/section_title.dart';
+import '../../utils/view/view_utils.dart';
 import 'setting_tile.dart';
 import 'subscribe_tile.dart';
 
