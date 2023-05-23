@@ -14,8 +14,12 @@ class TimelineService extends ChangeNotifier {
     // read from DB or whatever
   }
 
+  Set<DateTime>? getHabitTimeline(String habitId) {
+    return _habitTimelineMap[habitId];
+  }
+
   int countBestStreak(Habit habit) {
-    final timeline = _habitTimelineMap[habit.id];
+    final timeline = getHabitTimeline(habit.id);
     if (timeline == null || timeline.isEmpty) return 0;
 
     int best = 1;
@@ -39,7 +43,7 @@ class TimelineService extends ChangeNotifier {
     Habit habit,
     int dayOfWeek,
   ) {
-    final timeline = _habitTimelineMap[habit.id];
+    final timeline = getHabitTimeline(habit.id);
     if (timeline == null || timeline.isEmpty) return 0;
 
     return timeline.where((time) => time.weekday == dayOfWeek).length;
@@ -50,7 +54,7 @@ class TimelineService extends ChangeNotifier {
     int year, {
     int? month,
   }) {
-    final timeline = _habitTimelineMap[habit.id];
+    final timeline = getHabitTimeline(habit.id);
     if (timeline == null || timeline.isEmpty) return 0;
 
     Iterable<DateTime> times = timeline.where((time) => time.year == year);
@@ -70,13 +74,14 @@ class TimelineService extends ChangeNotifier {
 
   bool isHabitChecked(Habit habit, DateTime time) {
     final removedHourTime = time.emptyHour();
-    final timeline = _habitTimelineMap[habit.id];
+
+    final timeline = getHabitTimeline(habit.id);
     if (timeline == null) return false;
 
     return timeline.contains(removedHourTime);
   }
 
-  Future<void> check(Habit habit, DateTime time) async {
+  Future<void> check(Habit habit, DateTime time, {bool setAction = true}) async {
     final removedHourTime = time.emptyHour();
 
     Set<DateTime> timeline;
@@ -88,10 +93,10 @@ class TimelineService extends ChangeNotifier {
     }
 
     if (timeline.contains(removedHourTime)) {
-      lastAction = CheckAction(removedHourTime, false);
+      if (setAction) lastAction = CheckAction(removedHourTime, false);
       timeline.remove(removedHourTime);
     } else {
-      lastAction = CheckAction(removedHourTime, true);
+      if (setAction) lastAction = CheckAction(removedHourTime, true);
       timeline.add(removedHourTime);
     }
 

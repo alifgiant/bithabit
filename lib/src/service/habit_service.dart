@@ -29,7 +29,7 @@ class HabitService extends ChangeNotifier {
   }
 
   Future<void> saveHabit(Habit habit) async {
-    final isExist = _habitMap.containsKey(habit.id);
+    final isExist = habit.id.isNotEmpty;
     if (isExist) {
       await _updateHabit(habit);
     } else {

@@ -81,7 +81,7 @@ class SettingPage extends StatelessWidget {
           SettingTile(
             title: 'Export/Import Data',
             icon: Icons.import_export,
-            onTap: () {},
+            onTap: () => Navigator.of(context).pushNamed(AppRoute.export),
           ),
           const SubscribeTile(),
           const Padding(

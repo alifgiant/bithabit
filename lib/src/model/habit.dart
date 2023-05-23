@@ -44,31 +44,96 @@ class Habit {
   String toString() {
     return 'Habit($id,$name,$color,$state,$frequency,$reminder)';
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'color': color.key,
+      'state': state.key,
+      'frequency': frequency.toMap(),
+      'reminder': reminder.map((e) => e.toMap()).toList()
+    };
+  }
+
+  static Habit fromJson(Map<String, dynamic> json) {
+    return Habit(
+      json['id'] ?? '',
+      json['name'] ?? '',
+      HabitColor.parse(json['color'] ?? ''),
+      state: HabitState.parse(json['state'] ?? ''),
+      frequency: HabitFrequency.fromJson(json['frequency'] ?? {}),
+      reminder: (json['reminder'] as List?)
+              ?.map(
+                (e) => HabitReminder.fromJson(e),
+              )
+              .toList() ??
+          [],
+    );
+  }
 }
 
-enum HabitState { enabled, archieved }
+enum HabitState {
+  enabled('enabled'),
+  archieved('archieved');
+
+  const HabitState(this.key);
+  final String key;
+
+  static HabitState parse(String key) {
+    return HabitState.values.firstWhere(
+      (e) => e.key == key,
+      orElse: () => HabitState.enabled,
+    );
+  }
+}
 
 enum HabitColor {
-  red(ResColor.red, ResColor.white),
-  pink(ResColor.pink, ResColor.white),
-  purple(ResColor.purple, ResColor.white),
-  darkGreen(ResColor.darkGreen, ResColor.white),
-  lightGreen(ResColor.lightGreen, ResColor.white),
-  darkBlue(ResColor.darkBlue, ResColor.white),
-  lightBlue(ResColor.lightBlue, ResColor.white),
-  brown(ResColor.brown, ResColor.white);
+  red(ResColor.red, ResColor.white, 'red'),
+  pink(ResColor.pink, ResColor.white, 'pink'),
+  purple(ResColor.purple, ResColor.white, 'purple'),
+  darkGreen(ResColor.darkGreen, ResColor.white, 'darkGreen'),
+  lightGreen(ResColor.lightGreen, ResColor.white, 'lightGreen'),
+  darkBlue(ResColor.darkBlue, ResColor.white, 'darkBlue'),
+  lightBlue(ResColor.lightBlue, ResColor.white, 'lightBlue'),
+  brown(ResColor.brown, ResColor.white, 'brown');
 
-  const HabitColor(this.mainColor, this.textColor);
+  const HabitColor(this.mainColor, this.textColor, this.key);
   final Color mainColor;
   final Color textColor;
+  final String key;
+
+  static HabitColor parse(String key) {
+    return HabitColor.values.firstWhere(
+      (e) => e.key == key,
+      orElse: () => HabitColor.red,
+    );
+  }
 }
 
 abstract class HabitFrequency {
+  final String typeKey;
   final Set<int> selected;
-  const HabitFrequency({required this.selected});
+  const HabitFrequency({required this.selected, required this.typeKey});
 
   HabitFrequency copyWith({Set<int>? selected});
   bool isEnabledFor(DateTime time);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': typeKey,
+      'selected': selected.toList(),
+    };
+  }
+
+  static HabitFrequency fromJson(Map<String, dynamic> json) {
+    switch (json['name']) {
+      case DailyFrequency.name:
+        return DailyFrequency(selected: (json['selected'] as List).cast<int>().toSet());
+      default:
+        return MonthlyFrequency(selected: (json['selected'] as List).cast<int>().toSet());
+    }
+  }
 }
 
 class DailyFrequency extends HabitFrequency {
@@ -76,7 +141,7 @@ class DailyFrequency extends HabitFrequency {
 
   const DailyFrequency({
     super.selected = const {1, 2, 3, 4, 5, 6, 7},
-  });
+  }) : super(typeKey: name);
 
   @override
   DailyFrequency copyWith({Set<int>? selected}) {
@@ -92,7 +157,7 @@ class MonthlyFrequency extends HabitFrequency {
 
   const MonthlyFrequency({
     super.selected = const {},
-  });
+  }) : super(typeKey: name);
 
   @override
   MonthlyFrequency copyWith({Set<int>? selected}) {
@@ -114,5 +179,20 @@ class HabitReminder {
     bool? enabled,
   }) {
     return HabitReminder(time ?? this.time, enabled: enabled ?? this.enabled);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'hour': time.hour,
+      'minute': time.minute,
+      'enabled': enabled,
+    };
+  }
+
+  static HabitReminder fromJson(Map<String, dynamic> json) {
+    return HabitReminder(
+      TimeOfDay(hour: json['hour'], minute: json['minute']),
+      enabled: json['enabled'],
+    );
   }
 }

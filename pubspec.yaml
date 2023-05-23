@@ -27,6 +27,7 @@ dependencies:
   url_launcher: ^6.1.11
   flex_color_scheme: ^7.0.5
   fl_chart: ^0.62.0
+  file_picker: ^5.3.0
 
 dev_dependencies:
   flutter_test:

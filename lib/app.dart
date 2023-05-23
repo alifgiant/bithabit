@@ -6,6 +6,7 @@ import 'src/model/habit.dart';
 import 'src/pages/archived/archived_page.dart';
 import 'src/pages/charts/chart_page.dart';
 import 'src/pages/detail/detail_page.dart';
+import 'src/pages/export/export_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/pages/subscription/subscription_page.dart';
 import 'src/service/habit_service.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
             final args = ModalRoute.of(context)?.settings.arguments;
             return ChartPage(habit: args as Habit);
           },
+          AppRoute.export: (context) => const ExportPage(),
           AppRoute.premium: (context) => const SubscriptionPage(),
         },
       ),

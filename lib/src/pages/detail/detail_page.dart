@@ -225,9 +225,7 @@ class _DetailPageState extends State<DetailPage> {
 
     if (timeExist) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('You already added that time'),
-        ),
+        const SnackBar(content: Text('You already added that time')),
       );
       return;
     }

@@ -1,4 +1,3 @@
-import 'package:bithabit/src/pages/setting/setting_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../service/subs_service.dart';
 import '../../utils/const/app_route.dart';
 import '../../utils/res/res_color.dart';
+import 'setting_tile.dart';
 
 class SubscribeTile extends StatelessWidget {
   const SubscribeTile({super.key});
