@@ -7,7 +7,7 @@ version: 1.0.0+1
 environment:
   sdk: '>=2.19.6 <3.0.0'
 
-isar_version: &isar_version 3.1.0 # define the version to be used
+isar_version: &isar_version 3.1.0+1 # define the version to be used
 
 dependencies:
   # The following adds the Cupertino Icons font to your application.
