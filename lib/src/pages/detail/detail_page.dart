@@ -46,7 +46,7 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     edittedHabit = widget.habit?.copy() ??
         Habit(
-          '',
+          0,
           '',
           HabitColor.values.first,
           reminder: List.empty(growable: true),
@@ -134,7 +134,7 @@ class _DetailPageState extends State<DetailPage> {
                       });
                     },
                   ),
-                  SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
+                  SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.type)),
                   HabitFrequencyValuePicker(
                     enabled: edittedHabit.isEnabled,
                     selectedFrequency: edittedHabit.frequency,
@@ -205,14 +205,12 @@ class _DetailPageState extends State<DetailPage> {
     return isNewHabit ? 'Create Habit' : 'Update Habit';
   }
 
-  String frequencyValueDetail(Type selectionType) {
+  String frequencyValueDetail(FrequencyType selectionType) {
     switch (selectionType) {
-      case DailyFrequency:
+      case FrequencyType.daily:
         return 'On These Day';
-      case MonthlyFrequency:
+      case FrequencyType.monthly:
         return 'On These Date';
-      default:
-        return 'On These Day';
     }
   }
 
@@ -232,7 +230,7 @@ class _DetailPageState extends State<DetailPage> {
       return;
     }
 
-    edittedHabit.reminder.add(HabitReminder(time, enabled: true));
+    edittedHabit.reminder.add(HabitReminder(time: time));
     edittedHabit.reminder.sort((a, b) => a.time.compareTo(b.time));
     setState(() {});
   }

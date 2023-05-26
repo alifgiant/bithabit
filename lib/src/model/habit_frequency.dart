@@ -1,56 +1,63 @@
-abstract class HabitFrequency {
-  final String typeKey;
-  final Set<int> selected;
-  const HabitFrequency({required this.selected, required this.typeKey});
+import 'package:isar/isar.dart';
 
-  HabitFrequency copyWith({Set<int>? selected});
-  bool isEnabledFor(DateTime time);
+@embedded
+class HabitFrequency {
+  @Enumerated(EnumType.value, 'key')
+  final FrequencyType type;
+  final List<int> selected;
+  const HabitFrequency({
+    this.type = FrequencyType.daily,
+    this.selected = const [1, 2, 3, 4, 5, 6, 7],
+  });
+
+  HabitFrequency copyWith({List<int>? selected}) {
+    return HabitFrequency(
+      selected: selected ?? this.selected,
+      type: type,
+    );
+  }
+
+  bool isEnabledFor(DateTime time) {
+    return selected.contains(type.checkTime(time));
+  }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': typeKey,
+      'type': type.key,
       'selected': selected.toList(),
     };
   }
 
-  static HabitFrequency fromJson(Map<String, dynamic> json) {
-    switch (json['name']) {
-      case DailyFrequency.name:
-        return DailyFrequency(selected: (json['selected'] as List).cast<int>().toSet());
+  factory HabitFrequency.fromJson(Map<String, dynamic> json) {
+    return HabitFrequency(
+      selected: (json['selected'] as List).cast<int>(),
+      type: FrequencyType.parse(json['type'] as String),
+    );
+  }
+}
+
+enum FrequencyType {
+  daily('daily'),
+  monthly('monthly');
+
+  const FrequencyType(this.key);
+  final String key;
+
+  static FrequencyType parse(String key) {
+    switch (key) {
+      case 'daily':
+        return FrequencyType.daily;
       default:
-        return MonthlyFrequency(selected: (json['selected'] as List).cast<int>().toSet());
+        return FrequencyType.monthly;
     }
   }
-}
 
-class DailyFrequency extends HabitFrequency {
-  static const name = 'daily';
-
-  const DailyFrequency({
-    super.selected = const {1, 2, 3, 4, 5, 6, 7},
-  }) : super(typeKey: name);
-
-  @override
-  DailyFrequency copyWith({Set<int>? selected}) {
-    return DailyFrequency(selected: selected ?? this.selected);
+  int checkTime(DateTime time) {
+    if (this == FrequencyType.daily) {
+      return time.weekday;
+    } else {
+      // this == FrequencyType.monthly
+      return time.day;
+    }
   }
-
-  @override
-  bool isEnabledFor(DateTime time) => selected.contains(time.weekday);
-}
-
-class MonthlyFrequency extends HabitFrequency {
-  static const name = 'monthly';
-
-  const MonthlyFrequency({
-    super.selected = const {},
-  }) : super(typeKey: name);
-
-  @override
-  MonthlyFrequency copyWith({Set<int>? selected}) {
-    return MonthlyFrequency(selected: selected ?? this.selected);
-  }
-
-  @override
-  bool isEnabledFor(DateTime time) => selected.contains(time.day);
 }

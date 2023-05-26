@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../model/habit.dart';
 
 class TimelineService extends ChangeNotifier {
-  final Map<String, Set<DateTime>> _habitTimelineMap = {};
-  Map<String, Set<DateTime>> get timelineMap => _habitTimelineMap;
+  final Map<int, Set<DateTime>> _habitTimelineMap = {};
+  Map<int, Set<DateTime>> get timelineMap => _habitTimelineMap;
 
   TimelineAction? lastAction;
 
@@ -14,7 +14,7 @@ class TimelineService extends ChangeNotifier {
     // read from DB or whatever
   }
 
-  Set<DateTime>? getHabitTimeline(String habitId) {
+  Set<DateTime>? getHabitTimeline(int habitId) {
     return _habitTimelineMap[habitId];
   }
 

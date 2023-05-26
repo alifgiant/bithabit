@@ -4,7 +4,7 @@ import '../model/habit.dart';
 import '../model/habit_state.dart';
 
 class HabitService extends ChangeNotifier {
-  final Map<String, Habit> _habitMap = {};
+  final Map<int, Habit> _habitMap = {};
 
   HabitService() {
     loadHabit();
@@ -30,7 +30,7 @@ class HabitService extends ChangeNotifier {
   }
 
   Future<void> saveHabit(Habit habit) async {
-    final isExist = habit.id.isNotEmpty;
+    final isExist = habit.id > 0;
     if (isExist) {
       await _updateHabit(habit);
     } else {
@@ -40,7 +40,7 @@ class HabitService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteHabit(String id, {bool permanent = false}) async {
+  Future<void> deleteHabit(int id, {bool permanent = false}) async {
     final habit = _habitMap[id];
     if (habit == null) return;
 
@@ -58,7 +58,7 @@ class HabitService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> restoreHabit(String id) async {
+  Future<void> restoreHabit(int id) async {
     final habit = _habitMap[id];
     if (habit == null) return;
 
@@ -73,8 +73,10 @@ class HabitService extends ChangeNotifier {
 
   Future<void> _createHabit(Habit habit) async {
     // TODO: create new id
-    final newId = DateTime.now().toIso8601String();
-    _habitMap[newId] = habit.copy(id: newId);
+    final newId = DateTime.now().millisecondsSinceEpoch;
+    _habitMap[newId] = habit.copy(
+      id: newId,
+    );
 
     // TODO: save to db
   }

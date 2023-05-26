@@ -16,6 +16,13 @@ class ExporterUtils {
     // TODO: handle web file
     final file = File('$selectedDirectory/export-${DateTime.now().millisecondsSinceEpoch}.json');
 
+    final time = data.timelines.map(
+      (key, value) => MapEntry(
+        key.toString(),
+        value.map((time) => time.millisecondsSinceEpoch).toList(),
+      ),
+    );
+
     // Write the file
     final jsonString = jsonEncode({
       'habits': data.habits.map((e) => e.toMap()).toList(),
@@ -53,10 +60,15 @@ class ExporterUtils {
       final encondedData = await file.readAsString();
       try {
         final json = jsonDecode(encondedData);
-        final habits = (json['habits'] as List?)?.map((e) => Habit.fromJson(e)) ?? [];
-        final timelines = <String, Set<DateTime>>{};
-        for (final element in (json['timeline'] as Map).entries) {
-          timelines[element.key] = (element.value as List)
+        final rawJsonHabit = json['habits'] as List<dynamic>?;
+        final habits = rawJsonHabit?.cast<Map<String, dynamic>>().map(
+                  Habit.fromJson,
+                ) ??
+            [];
+        final timelines = <int, Set<DateTime>>{};
+        final rawJsonTimeline = json['timeline'] as Map<String, dynamic>;
+        for (final element in rawJsonTimeline.entries) {
+          timelines[int.parse(element.key)] = (element.value as List<dynamic>)
               .cast<int>()
               .map(
                 DateTime.fromMillisecondsSinceEpoch,
@@ -65,7 +77,7 @@ class ExporterUtils {
         }
 
         return SuccessImportResult(BundleData(habits, timelines));
-      } catch (_) {
+      } catch (e) {
         return ErrorImportResult(ErrorType.fileCorrupt);
       }
     }
@@ -74,7 +86,7 @@ class ExporterUtils {
 
 class BundleData {
   final Iterable<Habit> habits;
-  final Map<String, Set<DateTime>> timelines;
+  final Map<int, Set<DateTime>> timelines;
 
   BundleData(this.habits, this.timelines);
 }

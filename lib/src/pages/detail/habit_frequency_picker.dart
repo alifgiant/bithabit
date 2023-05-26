@@ -24,13 +24,13 @@ class HabitFrequencyPicker extends StatefulWidget {
 }
 
 class _HabitFrequencyPickerState extends State<HabitFrequencyPicker> {
-  late final ValueNotifier<Type> segmentNotifier;
+  late final ValueNotifier<FrequencyType> segmentNotifier;
   HabitFrequency get edittedFrequency => widget.selectedFrequency;
 
   @override
   void initState() {
     super.initState();
-    segmentNotifier = ValueNotifier(edittedFrequency.runtimeType);
+    segmentNotifier = ValueNotifier(edittedFrequency.type);
     segmentNotifier.addListener(
       () {
         final newFrequency = updateFrequency(frequencyType: segmentNotifier.value);
@@ -54,21 +54,17 @@ class _HabitFrequencyPickerState extends State<HabitFrequencyPicker> {
       backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
       sliderOffset: 2.5,
       segments: {
-        DailyFrequency: DailyFrequency.name.titleCase,
-        MonthlyFrequency: MonthlyFrequency.name.titleCase,
+        FrequencyType.daily: FrequencyType.daily.key.titleCase,
+        FrequencyType.monthly: FrequencyType.monthly.key.titleCase,
       },
     );
   }
 
-  HabitFrequency updateFrequency({required Type frequencyType}) {
-    switch (frequencyType) {
-      case DailyFrequency:
-        return DailyFrequency(selected: edittedFrequency.selected);
-      case MonthlyFrequency:
-        return MonthlyFrequency(selected: edittedFrequency.selected);
-      default:
-        return DailyFrequency(selected: edittedFrequency.selected);
-    }
+  HabitFrequency updateFrequency({required FrequencyType frequencyType}) {
+    return HabitFrequency(
+      selected: edittedFrequency.selected,
+      type: frequencyType,
+    );
   }
 }
 
@@ -89,7 +85,7 @@ class HabitFrequencyValuePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const buttonSpacing = 8.0;
-    final isDailyType = selectedFrequency is DailyFrequency;
+    final isDailyType = selectedFrequency.type == FrequencyType.daily;
 
     return LayoutBuilder(
       builder: (ctx, constraint) {
@@ -150,6 +146,6 @@ class HabitFrequencyValuePicker extends StatelessWidget {
       newSet.add(selectedDate);
     }
 
-    return selectedFrequency.copyWith(selected: newSet);
+    return selectedFrequency.copyWith(selected: newSet.toList());
   }
 }

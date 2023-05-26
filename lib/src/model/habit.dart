@@ -1,27 +1,37 @@
+import 'package:isar/isar.dart';
+
 import 'habit_color.dart';
 import 'habit_frequency.dart';
 import 'habit_reminder.dart';
 import 'habit_state.dart';
 
+// part 'habit.g.dart';
+
+@collection
 class Habit {
-  final String id;
+  Id id = Isar.autoIncrement; // you can also use id = null to auto increment
+
+  // final String id;
+  @Index(type: IndexType.value)
   final String name;
+  @Enumerated(EnumType.value, 'key')
   final HabitColor color;
+  @Enumerated(EnumType.value, 'key')
   final HabitState state;
   final HabitFrequency frequency;
   final List<HabitReminder> reminder;
 
-  const Habit(
+  Habit(
     this.id,
     this.name,
     this.color, {
     this.state = HabitState.enabled,
-    this.frequency = const DailyFrequency(),
+    this.frequency = const HabitFrequency(),
     this.reminder = const [],
   });
 
   Habit copy({
-    String? id,
+    int? id,
     String? name,
     HabitColor? color,
     HabitState? state,
@@ -59,14 +69,17 @@ class Habit {
 
   factory Habit.fromJson(Map<String, dynamic> json) {
     return Habit(
-      json['id'] ?? '',
-      json['name'] ?? '',
-      HabitColor.parse(json['color'] ?? ''),
-      state: HabitState.parse(json['state'] ?? ''),
-      frequency: HabitFrequency.fromJson(json['frequency'] ?? {}),
+      json['id'] as int? ?? 0,
+      json['name'] as String? ?? '',
+      HabitColor.parse(json['color'] as String? ?? ''),
+      state: HabitState.parse(json['state'] as String? ?? ''),
+      frequency: HabitFrequency.fromJson(
+        json['frequency'] as Map<String, dynamic>? ?? {},
+      ),
       reminder: (json['reminder'] as List?)
-              ?.map<HabitReminder>(
-                (e) => HabitReminder.fromJson(e),
+              ?.cast<Map<String, dynamic>>()
+              .map<HabitReminder>(
+                HabitReminder.fromJson,
               )
               .toList() ??
           [],
