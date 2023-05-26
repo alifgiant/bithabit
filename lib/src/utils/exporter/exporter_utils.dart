@@ -8,7 +8,7 @@ import '../../model/habit.dart';
 
 class ExporterUtils {
   Future<File?> dumpFile(BundleData data) async {
-    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    final selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
     // User canceled the picker
     if (selectedDirectory == null) return null;
@@ -54,12 +54,12 @@ class ExporterUtils {
       try {
         final json = jsonDecode(encondedData);
         final habits = (json['habits'] as List?)?.map((e) => Habit.fromJson(e)) ?? [];
-        Map<String, Set<DateTime>> timelines = {};
+        final timelines = <String, Set<DateTime>>{};
         for (final element in (json['timeline'] as Map).entries) {
           timelines[element.key] = (element.value as List)
               .cast<int>()
               .map(
-                (e) => DateTime.fromMillisecondsSinceEpoch(e),
+                DateTime.fromMillisecondsSinceEpoch,
               )
               .toSet();
         }

@@ -35,7 +35,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
     subsService.addListener(checkSubs);
   }
 
-  void checkSubs() async {
+  Future<void> checkSubs() async {
     if (subsService.isPremiumUser && isPremiumUser != subsService.isPremiumUser) {
       startAnimation(context);
       playCompleteSound();
@@ -49,15 +49,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
   Future<void> startAnimation(BuildContext context) async {
     AchievementView(
       context,
-      title: "Thank You!",
-      subTitle: "Hope you have fantastic journey",
+      title: 'Thank You!',
+      subTitle: 'Hope you have fantastic journey',
       alignment: Alignment.bottomCenter,
       icon: const Icon(
         BoxIcons.bxs_medal,
         color: ResColor.white,
         size: 42,
       ),
-      borderRadius: BorderRadius.circular(12.0),
+      borderRadius: BorderRadius.circular(12),
       color: ResColor.brown,
     ).show();
 
@@ -92,7 +92,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
             children: [
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -125,7 +125,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
                         )
                       else
                         TextButton(
-                          onPressed: () => subsService.restorePurchase(),
+                          onPressed: subsService.restorePurchase,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
@@ -180,7 +180,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
             ],
           ),
           Align(
-            alignment: Alignment.center,
             child: ConfettiWidget(
               key: const Key('Subscription Page Confetti'),
               confettiController: confettiController,

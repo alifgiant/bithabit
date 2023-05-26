@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../model/habit.dart';
+import '../../model/habit_reminder.dart';
 import '../../utils/res/res_color.dart';
 
 class ReminderList extends StatelessWidget {
@@ -11,11 +11,11 @@ class ReminderList extends StatelessWidget {
   final bool enabled;
 
   const ReminderList({
-    super.key,
     required this.reminder,
     required this.onUpdate,
     required this.onRemove,
     this.enabled = true,
+    super.key,
   });
 
   @override
@@ -37,7 +37,6 @@ class ReminderList extends StatelessWidget {
           direction: DismissDirection.startToEnd,
           onDismissed: (_) => onRemove(item),
           background: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: const [
               SizedBox(width: 4),
               Icon(BoxIcons.bx_trash, size: 21, color: ResColor.red),

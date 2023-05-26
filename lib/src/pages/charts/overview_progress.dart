@@ -11,8 +11,8 @@ class OverviewProgress extends StatelessWidget {
   final Habit habit;
 
   const OverviewProgress({
-    super.key,
     required this.habit,
+    super.key,
   });
 
   @override
@@ -76,7 +76,7 @@ class _DetailOverview extends StatelessWidget {
     required this.habit,
     required this.value,
     required this.text,
-    this.mode = _OverviewMode.text,
+    required this.mode,
   });
 
   @override

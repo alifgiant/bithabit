@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
+import '../model/habit_state.dart';
 
 class HabitService extends ChangeNotifier {
   final Map<String, Habit> _habitMap = {};

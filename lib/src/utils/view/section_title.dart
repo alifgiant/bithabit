@@ -8,12 +8,12 @@ class SectionTitle extends StatelessWidget {
   final double bottomPadding;
 
   const SectionTitle({
-    super.key,
     required this.text,
     this.subtitle = '',
     this.suffix,
     this.topPadding = 30,
     this.bottomPadding = 10,
+    super.key,
   });
 
   @override
@@ -23,7 +23,6 @@ class SectionTitle extends StatelessWidget {
         SizedBox(height: topPadding),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

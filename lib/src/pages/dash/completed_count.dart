@@ -5,9 +5,9 @@ class CompletedCount extends StatelessWidget {
   final int completed;
 
   const CompletedCount({
-    super.key,
     required this.total,
     required this.completed,
+    super.key,
   });
 
   @override
@@ -22,21 +22,23 @@ class CompletedCount extends StatelessWidget {
       children: [
         SizedBox(height: mediaQuery.viewPadding.top),
         Text.rich(
-          TextSpan(children: [
-            const TextSpan(text: 'Today, ', style: TextStyle(fontWeight: FontWeight.w600)),
-            TextSpan(
-              text: '$completed of $total completed',
-              style: const TextStyle(fontWeight: FontWeight.w300),
-            ),
-          ]),
+          TextSpan(
+            children: [
+              const TextSpan(text: 'Today, ', style: TextStyle(fontWeight: FontWeight.w600)),
+              TextSpan(
+                text: '$completed of $total completed',
+                style: const TextStyle(fontWeight: FontWeight.w300),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 10),
         Container(
           width: width,
-          height: 10.0,
+          height: 10,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondaryContainer,
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Stack(
             children: [
@@ -46,7 +48,7 @@ class CompletedCount extends StatelessWidget {
                 duration: const Duration(milliseconds: 500),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
             ],

@@ -14,7 +14,10 @@ import 'sound_player.dart';
 
 class ConfettiView extends StatefulWidget {
   final Duration? duration;
-  const ConfettiView({super.key, this.duration});
+  const ConfettiView({
+    this.duration,
+    super.key,
+  });
 
   @override
   State<ConfettiView> createState() => _ConfettiViewState();
@@ -80,11 +83,11 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
   Future<void> startAnimation(BuildContext context) async {
     AchievementView(
       context,
-      title: "Congrats!",
+      title: 'Congrats!',
       subTitle: "All today's Habit are done",
       alignment: Alignment.bottomCenter,
       icon: const Icon(BoxIcons.bx_party, color: Colors.white),
-      borderRadius: BorderRadius.circular(12.0),
+      borderRadius: BorderRadius.circular(12),
       color: ResColor.darkGreen,
     ).show();
 
@@ -126,8 +129,15 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
     path.moveTo(size.width, halfWidth);
 
     for (double step = 0; step < fullAngle; step += degreesPerStep) {
-      path.lineTo(halfWidth + externalRadius * cos(step), halfWidth + externalRadius * sin(step));
-      path.lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep), halfWidth + internalRadius * sin(step + halfDegreesPerStep));
+      path
+        ..lineTo(
+          halfWidth + externalRadius * cos(step),
+          halfWidth + externalRadius * sin(step),
+        )
+        ..lineTo(
+          halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+          halfWidth + internalRadius * sin(step + halfDegreesPerStep),
+        );
     }
     path.close();
     return path;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/habit.dart';
+import '../../model/habit_color.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/habit_card_title.dart';
@@ -12,9 +13,9 @@ class WeeklyRecap extends StatelessWidget {
   late final List<DateTime> week;
 
   WeeklyRecap({
-    super.key,
     required this.habit,
     DateTime? date,
+    super.key,
   }) {
     final today = date?.emptyHour() ?? DateTime.now().emptyHour();
     final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
@@ -31,7 +32,6 @@ class WeeklyRecap extends StatelessWidget {
     return Material(
       color: habit.color.mainColor.withOpacity(0.6),
       borderRadius: BorderRadius.circular(12),
-      elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),

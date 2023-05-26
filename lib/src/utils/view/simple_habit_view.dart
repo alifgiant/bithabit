@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 
 import '../../model/habit.dart';
+import '../../model/habit_color.dart';
 import '../../service/timeline_service.dart';
 import '../res/res_color.dart';
 import 'add_habit_button.dart';
@@ -13,9 +14,9 @@ class SimpleHabitView extends StatelessWidget {
   late final DateTime today;
 
   SimpleHabitView({
-    super.key,
     required this.habit,
     this.isCheckable = true,
+    super.key,
   }) {
     today = DateTime.now();
   }
@@ -28,7 +29,6 @@ class SimpleHabitView extends StatelessWidget {
     return Material(
       color: isCheckable && isChecked ? ResColor.black.withOpacity(0.3) : habit.color.mainColor.withOpacity(0.6),
       borderRadius: BorderRadius.circular(12),
-      elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),

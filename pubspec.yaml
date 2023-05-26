@@ -10,11 +10,11 @@ environment:
 isar_version: &isar_version 3.1.0 # define the version to be used
 
 dependencies:
-  flutter:
-    sdk: flutter
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
 
   # core
   provider: ^6.0.5
@@ -41,12 +41,12 @@ dependencies:
   isar_flutter_libs: *isar_version # contains Isar Core
 
 dev_dependencies:
+  build_runner: any
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
   isar_generator: *isar_version
   very_good_analysis: ^4.0.0+1
-  build_runner: any
 
 flutter:
   # The following line ensures that the Material Iconss font is

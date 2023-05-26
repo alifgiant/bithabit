@@ -5,7 +5,10 @@ import '../res/res_color.dart';
 class AppBarTitle extends StatelessWidget {
   final String text;
 
-  const AppBarTitle({super.key, this.text = ''});
+  const AppBarTitle({
+    this.text = '',
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

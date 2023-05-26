@@ -8,8 +8,8 @@ class SubscriptionButton extends StatelessWidget {
   final SubsKind kind;
 
   const SubscriptionButton({
-    super.key,
     required this.kind,
+    super.key,
   });
 
   @override
@@ -17,7 +17,7 @@ class SubscriptionButton extends StatelessWidget {
     final subsService = context.watch<SubsService>();
     final priceText = subsService.subsKind == kind ? 'Subscribed' : subsService.getPrice(kind);
 
-    final double buttonLength = (priceText.length * 10) + 12;
+    final buttonLength = (priceText.length * 10) + 12.0;
 
     return InkWell(
       onTap: subsService.subsKind == kind ? null : () => subsService.subscribe(kind),
@@ -28,7 +28,7 @@ class SubscriptionButton extends StatelessWidget {
           color: subsService.subsKind == kind ? ResColor.darkGreen.withOpacity(0.9) : Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(12),
         ),
-        width: subsService.isLoading ? 50 : buttonLength,
+        width: subsService.isLoading ? 50.0 : buttonLength,
         height: 42,
         child: Center(
           child: subsService.isLoading

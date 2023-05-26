@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_segment/flutter_advanced_segment.dart';
 import 'package:recase/recase.dart';
 
-import '../../model/habit.dart';
+import '../../model/habit_frequency.dart';
 import '../../utils/res/res_color.dart';
 import '../../utils/text/date_utils.dart';
 import '../../utils/view/view_utils.dart';
@@ -13,10 +13,10 @@ class HabitFrequencyPicker extends StatefulWidget {
   final bool enabled;
 
   const HabitFrequencyPicker({
-    super.key,
     required this.selectedFrequency,
     required this.onFrequencySelected,
     this.enabled = true,
+    super.key,
   });
 
   @override
@@ -79,11 +79,11 @@ class HabitFrequencyValuePicker extends StatelessWidget {
   final bool enabled;
 
   const HabitFrequencyValuePicker({
-    super.key,
     required this.selectedFrequency,
     required this.onFrequencySelected,
     this.screenPadding = 16,
     this.enabled = true,
+    super.key,
   });
 
   @override
@@ -143,7 +143,7 @@ class HabitFrequencyValuePicker extends StatelessWidget {
   HabitFrequency updateFrequency({
     required int selectedDate,
   }) {
-    Set<int> newSet = selectedFrequency.selected.toSet();
+    final newSet = selectedFrequency.selected.toSet();
     if (newSet.contains(selectedDate)) {
       newSet.remove(selectedDate);
     } else {

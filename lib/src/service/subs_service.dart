@@ -6,11 +6,11 @@ class SubsService extends ChangeNotifier {
 
   bool get isPremiumUser => subsKind != SubsKind.none;
 
-  void checkSubscription() async {
+  Future<void> checkSubscription() async {
     // TODO: use google service to check subs
   }
 
-  void restorePurchase() async {
+  Future<void> restorePurchase() async {
     isLoading = true;
     notifyListeners();
 
@@ -22,7 +22,7 @@ class SubsService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void subscribe(SubsKind kind) async {
+  Future<void> subscribe(SubsKind kind) async {
     isLoading = true;
     notifyListeners();
 
@@ -45,7 +45,7 @@ class SubsService extends ChangeNotifier {
     }
   }
 
-  void cancel(BuildContext context) async {
+  Future<void> cancel(BuildContext context) async {
     isLoading = true;
     notifyListeners();
 

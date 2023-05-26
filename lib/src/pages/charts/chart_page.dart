@@ -12,7 +12,10 @@ import 'score_progress.dart';
 class ChartPage extends StatelessWidget {
   final Habit habit;
 
-  const ChartPage({super.key, required this.habit});
+  const ChartPage({
+    required this.habit,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

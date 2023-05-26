@@ -6,9 +6,9 @@ import '../../service/sorting_service.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/view/add_habit_button.dart';
 import '../../utils/view/app_bar_title.dart';
+import '../../utils/view/simple_habit_view.dart';
 import '../home/sort_habit_button.dart';
 import 'completed_count.dart';
-import '../../utils/view/simple_habit_view.dart';
 
 class DashPage extends StatelessWidget {
   const DashPage({super.key});
@@ -44,7 +44,6 @@ class DashPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.large(
-            pinned: true,
             actions: const [
               SizedBox(width: 8),
               AddHabitButton(),

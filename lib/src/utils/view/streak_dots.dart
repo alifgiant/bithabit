@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/habit.dart';
+import '../../model/habit_color.dart';
 import '../../service/timeline_service.dart';
 
 class StreakDots extends StatelessWidget {
@@ -11,11 +12,11 @@ class StreakDots extends StatelessWidget {
   late final DateTime today;
 
   StreakDots({
-    super.key,
     required this.habit,
     this.weekCount = 27,
     this.horizontalPadding = 0,
     DateTime? date,
+    super.key,
   }) {
     today = date ?? DateTime.now();
   }
@@ -62,14 +63,12 @@ class StreakDots extends StatelessWidget {
                 padding: const EdgeInsets.only(left: buttonSpacing - 0.2),
                 child: Wrap(
                   direction: Axis.vertical,
-                  verticalDirection: VerticalDirection.down,
                   spacing: buttonSpacing,
                   runSpacing: buttonSpacing - 0.2,
                   children: streakDates,
                 ),
               );
             },
-            itemCount: null,
           ),
         );
       },

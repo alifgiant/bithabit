@@ -22,10 +22,10 @@ class MyApp extends StatelessWidget {
   final bool useInheritedMediaQuery;
 
   const MyApp({
-    super.key,
     this.locale,
     this.builder,
     this.useInheritedMediaQuery = false,
+    super.key,
   });
 
   @override

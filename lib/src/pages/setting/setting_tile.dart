@@ -8,7 +8,12 @@ class SettingTile extends StatelessWidget {
   final IconData icon;
   final void Function()? onTap;
 
-  const SettingTile({required this.title, required this.icon, this.onTap});
+  const SettingTile({
+    required this.title,
+    required this.icon,
+    this.onTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

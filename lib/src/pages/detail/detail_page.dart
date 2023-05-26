@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import '../../model/habit.dart';
+import '../../model/habit_color.dart';
+import '../../model/habit_frequency.dart';
+import '../../model/habit_reminder.dart';
 import '../../service/habit_service.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/const/app_route.dart';
@@ -19,10 +22,10 @@ class DetailPage extends StatefulWidget {
   final TimelineService timelineService;
 
   const DetailPage({
-    super.key,
-    this.habit,
     required this.habitService,
     required this.timelineService,
+    this.habit,
+    super.key,
   });
 
   @override
@@ -63,119 +66,118 @@ class _DetailPageState extends State<DetailPage> {
     final paddingBottom = MediaQuery.of(context).viewPadding.bottom;
     return Scaffold(
       extendBody: true,
-      body: CustomScrollView(slivers: [
-        SliverAppBar.medium(
-          pinned: true,
-          centerTitle: false,
-          actions: [
-            if (!isNewHabit) ...[
-              const SizedBox(width: 12),
-              IconButton(
-                tooltip: 'Charts',
-                onPressed: onChartClick,
-                icon: const Icon(Icons.bar_chart_rounded),
-              ),
-              const SizedBox(width: 12),
-              IconButton(
-                tooltip: edittedHabit.isEnabled ? 'Archive' : 'Delete',
-                onPressed: onDeleteClick,
-                icon: Icon(
-                  BoxIcons.bx_trash,
-                  color: Theme.of(context).colorScheme.error,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar.medium(
+            centerTitle: false,
+            actions: [
+              if (!isNewHabit) ...[
+                const SizedBox(width: 12),
+                IconButton(
+                  tooltip: 'Charts',
+                  onPressed: onChartClick,
+                  icon: const Icon(Icons.bar_chart_rounded),
                 ),
-              ),
-              const SizedBox(width: 12),
-            ]
-          ],
-          title: AppBarTitle(text: screenTitle),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
-            bottom: kBottomNavigationBarHeight * 2,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                TextField(
-                  enabled: edittedHabit.isEnabled,
-                  controller: titleCtlr,
-                  decoration: InputDecoration(
-                    filled: true,
-                    hintText: 'Habit Name',
-                    errorText: isTitleEmpty ? 'Please fill the title' : null,
+                const SizedBox(width: 12),
+                IconButton(
+                  tooltip: edittedHabit.isEnabled ? 'Archive' : 'Delete',
+                  onPressed: onDeleteClick,
+                  icon: Icon(
+                    BoxIcons.bx_trash,
+                    color: Theme.of(context).colorScheme.error,
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      isTitleEmpty = false;
-                      edittedHabit = edittedHabit.copy(name: value);
-                    });
-                  },
                 ),
-                const SectionTitle(text: 'Color'),
-                HabitColorPicker(
-                  enabled: edittedHabit.isEnabled,
-                  screenPadding: 16,
-                  selectedColor: edittedHabit.color,
-                  onColorSelected: (color) {
-                    setState(() {
-                      edittedHabit = edittedHabit.copy(color: color);
-                    });
-                  },
-                ),
-                const SectionTitle(text: 'Repeat'),
-                HabitFrequencyPicker(
-                  enabled: edittedHabit.isEnabled,
-                  selectedFrequency: edittedHabit.frequency,
-                  onFrequencySelected: (frequency) {
-                    setState(() {
-                      edittedHabit = edittedHabit.copy(frequency: frequency);
-                    });
-                  },
-                ),
-                SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
-                HabitFrequencyValuePicker(
-                  enabled: edittedHabit.isEnabled,
-                  selectedFrequency: edittedHabit.frequency,
-                  screenPadding: screenPadding,
-                  onFrequencySelected: (frequency) {
-                    setState(() {
-                      edittedHabit = edittedHabit.copy(frequency: frequency);
-                    });
-                  },
-                ),
-                SectionTitle(
-                  text: 'Reminder',
-                  subtitle: edittedHabit.reminder.isNotEmpty ? 'Swipe right to remove' : '',
-                  suffix: InkWell(
-                    onTap: edittedHabit.isEnabled ? addReminderClick : () => ViewUtils.showHabitArchieved(context),
-                    borderRadius: BorderRadius.circular(16),
-                    child: SizedBox.square(
-                      dimension: 28,
-                      child: Icon(
-                        BoxIcons.bx_alarm_add,
-                        color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                        size: 21,
+                const SizedBox(width: 12),
+              ]
+            ],
+            title: AppBarTitle(text: screenTitle),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
+              bottom: kBottomNavigationBarHeight * 2,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  TextField(
+                    enabled: edittedHabit.isEnabled,
+                    controller: titleCtlr,
+                    decoration: InputDecoration(
+                      filled: true,
+                      hintText: 'Habit Name',
+                      errorText: isTitleEmpty ? 'Please fill the title' : null,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        isTitleEmpty = false;
+                        edittedHabit = edittedHabit.copy(name: value);
+                      });
+                    },
+                  ),
+                  const SectionTitle(text: 'Color'),
+                  HabitColorPicker(
+                    enabled: edittedHabit.isEnabled,
+                    selectedColor: edittedHabit.color,
+                    onColorSelected: (color) {
+                      setState(() {
+                        edittedHabit = edittedHabit.copy(color: color);
+                      });
+                    },
+                  ),
+                  const SectionTitle(text: 'Repeat'),
+                  HabitFrequencyPicker(
+                    enabled: edittedHabit.isEnabled,
+                    selectedFrequency: edittedHabit.frequency,
+                    onFrequencySelected: (frequency) {
+                      setState(() {
+                        edittedHabit = edittedHabit.copy(frequency: frequency);
+                      });
+                    },
+                  ),
+                  SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.runtimeType)),
+                  HabitFrequencyValuePicker(
+                    enabled: edittedHabit.isEnabled,
+                    selectedFrequency: edittedHabit.frequency,
+                    onFrequencySelected: (frequency) {
+                      setState(() {
+                        edittedHabit = edittedHabit.copy(frequency: frequency);
+                      });
+                    },
+                  ),
+                  SectionTitle(
+                    text: 'Reminder',
+                    subtitle: edittedHabit.reminder.isNotEmpty ? 'Swipe right to remove' : '',
+                    suffix: InkWell(
+                      onTap: edittedHabit.isEnabled ? addReminderClick : () => ViewUtils.showHabitArchieved(context),
+                      borderRadius: BorderRadius.circular(16),
+                      child: SizedBox.square(
+                        dimension: 28,
+                        child: Icon(
+                          BoxIcons.bx_alarm_add,
+                          color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                          size: 21,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                ReminderList(
-                  enabled: edittedHabit.isEnabled,
-                  reminder: edittedHabit.reminder,
-                  onUpdate: (prev, item) => setState(() {
-                    final index = edittedHabit.reminder.indexOf(prev);
-                    edittedHabit.reminder.remove(prev);
-                    edittedHabit.reminder.insert(index, item);
-                  }),
-                  onRemove: (item) => setState(() {
-                    edittedHabit.reminder.remove(item);
-                  }),
-                ),
-              ],
+                  ReminderList(
+                    enabled: edittedHabit.isEnabled,
+                    reminder: edittedHabit.reminder,
+                    onUpdate: (prev, item) => setState(() {
+                      final index = edittedHabit.reminder.indexOf(prev);
+                      edittedHabit.reminder.remove(prev);
+                      edittedHabit.reminder.insert(index, item);
+                    }),
+                    onRemove: (item) => setState(() {
+                      edittedHabit.reminder.remove(item);
+                    }),
+                  ),
+                ],
+              ),
             ),
-          ),
-        )
-      ]),
+          )
+        ],
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12).copyWith(
           bottom: paddingBottom > 0 ? paddingBottom : 12,
@@ -190,7 +192,7 @@ class _DetailPageState extends State<DetailPage> {
             foregroundColor: Theme.of(context).colorScheme.background,
           ),
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             child: edittedHabit.isEnabled ? const Text('Save') : const Text('Restore'),
           ),
         ),
@@ -214,7 +216,7 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
-  void addReminderClick() async {
+  Future<void> addReminderClick() async {
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -239,7 +241,7 @@ class _DetailPageState extends State<DetailPage> {
     Navigator.of(context).pushNamed(AppRoute.charts, arguments: edittedHabit);
   }
 
-  void onDeleteClick() async {
+  Future<void> onDeleteClick() async {
     final result = await ConfirmingDialog.show(
       context,
       edittedHabit.isEnabled ? 'Archive this habit?' : 'Permanent delete?',
@@ -254,10 +256,11 @@ class _DetailPageState extends State<DetailPage> {
       permanent: edittedHabit.isEnabled ? false : true,
     );
 
+    if (!mounted) return;
     Navigator.of(context).maybePop();
   }
 
-  void onSaveClick() async {
+  Future<void> onSaveClick() async {
     if (edittedHabit.name.isEmpty) {
       setState(() {
         isTitleEmpty = true;
@@ -272,12 +275,13 @@ class _DetailPageState extends State<DetailPage> {
     Navigator.of(context).pop(edittedHabit);
   }
 
-  void onRestoreClick() async {
+  Future<void> onRestoreClick() async {
     // TODO: check subscription
 
     widget.timelineService.resetLastAction();
     widget.habitService.restoreHabit(edittedHabit.id);
 
+    if (!mounted) return;
     Navigator.of(context).maybePop();
   }
 }

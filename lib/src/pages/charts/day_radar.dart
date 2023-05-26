@@ -10,8 +10,8 @@ class DayRadar extends StatelessWidget {
   final Habit habit;
 
   const DayRadar({
-    super.key,
     required this.habit,
+    super.key,
   });
 
   @override

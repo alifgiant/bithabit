@@ -9,8 +9,8 @@ import '../../utils/view/habit_card_title.dart';
 class MonthlyRecap extends StatelessWidget {
   final Habit habit;
   const MonthlyRecap({
-    super.key,
     required this.habit,
+    super.key,
   });
 
   @override
@@ -27,7 +27,7 @@ class MonthlyRecap extends StatelessWidget {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: SingleMonth(habit: habit, firstDayOfMonth: firstDayOfMonth),
               ),
             ],
@@ -45,9 +45,9 @@ class SingleMonth extends StatelessWidget {
   final DateTime firstDayOfMonth;
 
   SingleMonth({
-    super.key,
     required this.habit,
     required this.firstDayOfMonth,
+    super.key,
   }) {
     monthName = firstDayOfMonth.monthName();
   }

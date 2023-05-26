@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/habit.dart';
+import '../../model/habit_color.dart';
 import '../../utils/view/view_utils.dart';
 
 class HabitColorPicker extends StatelessWidget {
@@ -10,11 +10,11 @@ class HabitColorPicker extends StatelessWidget {
   final bool enabled;
 
   const HabitColorPicker({
-    super.key,
     required this.selectedColor,
     required this.onColorSelected,
     this.screenPadding = 16,
     this.enabled = true,
+    super.key,
   });
 
   @override

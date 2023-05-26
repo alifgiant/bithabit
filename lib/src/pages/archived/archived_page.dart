@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/habit.dart';
+import '../../model/habit_state.dart';
 import '../../service/habit_service.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/simple_habit_view.dart';
@@ -40,17 +40,22 @@ class ArchivedPage extends StatelessWidget {
             )
           : Center(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
                     Icon(BoxIcons.bxs_badge_check, size: 52),
                     SizedBox(height: 18),
                     Text.rich(
-                      TextSpan(children: [
-                        TextSpan(text: 'You Rocks!\n', style: TextStyle(fontWeight: FontWeight.w700)),
-                        TextSpan(text: 'Every habit are active'),
-                      ]),
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'You Rocks!\n',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          TextSpan(text: 'Every habit are active'),
+                        ],
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],

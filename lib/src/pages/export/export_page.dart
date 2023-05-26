@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/habit.dart';
+import '../../model/habit_state.dart';
 import '../../service/habit_service.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/exporter/exporter_utils.dart';
@@ -26,7 +26,7 @@ class ExportPage extends StatelessWidget {
         centerTitle: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.all(32),
         child: Column(
           children: [
             const SizedBox(height: 32),
@@ -34,19 +34,22 @@ class ExportPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () async {
                   final scaffoldMessenger = ScaffoldMessenger.of(context);
-                  final file = await ExporterUtils().dumpFile(BundleData(
-                    [...enabledHabits, ...disabledHabits],
-                    timelineService.timelineMap,
-                  ));
+                  final file = await ExporterUtils().dumpFile(
+                    BundleData(
+                      [...enabledHabits, ...disabledHabits],
+                      timelineService.timelineMap,
+                    ),
+                  );
                   if (file == null) return;
 
-                  scaffoldMessenger.showSnackBar(SnackBar(
-                    content: Text('Habit Data Exported on ${file.path}'),
-                  ));
+                  scaffoldMessenger.showSnackBar(
+                    SnackBar(
+                      content: Text('Habit Data Exported on ${file.path}'),
+                    ),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
                     Icon(BoxIcons.bxs_arrow_from_bottom, size: 42),
                     SizedBox(width: 32),
@@ -72,7 +75,6 @@ class ExportPage extends StatelessWidget {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
                     Icon(BoxIcons.bxs_arrow_from_top, size: 42),
                     SizedBox(width: 32),

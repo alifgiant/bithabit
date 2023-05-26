@@ -13,8 +13,8 @@ class ScoreProgress extends StatelessWidget {
   final now = DateTime.now();
 
   ScoreProgress({
-    super.key,
     required this.habit,
+    super.key,
   });
 
   @override
@@ -30,7 +30,7 @@ class ScoreProgress extends StatelessWidget {
 
   LineChartData mainData(BuildContext context) {
     final timelineService = context.watch<TimelineService>();
-    final List<Color> gradientColors = [
+    final gradientColors = <Color>[
       habit.color.mainColor.withOpacity(0.3),
       habit.color.mainColor,
     ];

@@ -8,8 +8,8 @@ import '../../utils/view/calendar_box.dart';
 class MonthlyProgress extends StatelessWidget {
   final Habit habit;
   const MonthlyProgress({
-    super.key,
     required this.habit,
+    super.key,
   });
 
   @override

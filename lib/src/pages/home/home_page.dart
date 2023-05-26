@@ -42,13 +42,12 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           const Align(
-            alignment: Alignment.center,
             child: ConfettiView(),
           ),
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 12.0),
+        padding: const EdgeInsets.only(bottom: 12),
         child: CustomNavigationBar(
           selectedColor: Theme.of(context).primaryColor,
           currentIndex: currentPageIndex,

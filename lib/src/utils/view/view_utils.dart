@@ -6,7 +6,6 @@ mixin ViewUtils {
     required List<Widget> children,
   }) {
     return showModalBottomSheet<T>(
-      enableDrag: true,
       context: context,
       isScrollControlled: true,
       builder: (context) => SafeArea(
@@ -34,16 +33,16 @@ class ConfirmingDialog extends StatelessWidget {
   const ConfirmingDialog(
     this.title,
     this.desc, {
-    super.key,
     this.confirmText,
     this.declineText,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Padding(
-        padding: const EdgeInsets.all(21.0),
+        padding: const EdgeInsets.all(21),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +78,7 @@ class ConfirmingDialog extends StatelessWidget {
     );
   }
 
-  static Future<ConfirmationResult?> show<T>(
+  static Future<ConfirmationResult?> show(
     BuildContext context,
     String title,
     String desc, {

@@ -11,10 +11,10 @@ class StreakRecap extends StatelessWidget {
   late final DateTime today;
 
   StreakRecap({
-    super.key,
     required this.habit,
     this.weekCount = 27,
     DateTime? date,
+    super.key,
   }) {
     today = date ?? DateTime.now();
   }
@@ -24,7 +24,6 @@ class StreakRecap extends StatelessWidget {
     return Material(
       color: habit.color.mainColor.withOpacity(0.6),
       borderRadius: BorderRadius.circular(12),
-      elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),

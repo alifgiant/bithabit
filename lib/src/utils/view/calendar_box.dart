@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/habit.dart';
+import '../../model/habit_color.dart';
 import '../../service/timeline_service.dart';
 
 class CalendarBox extends StatelessWidget {
@@ -15,11 +16,11 @@ class CalendarBox extends StatelessWidget {
   final Color? unselectedTextColor;
 
   CalendarBox({
-    super.key,
     required this.habit,
     required this.firstDayOfMonth,
     this.unselectedTextColor,
     this.enableClick = true,
+    super.key,
   }) {
     // Get first day of month's weekday. to help position date:1 on correct day position
     // final firstDayOfMonth = DateTime(today.year, today.month, 1);

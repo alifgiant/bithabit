@@ -6,9 +6,9 @@ class HabitCardTitle extends StatelessWidget {
   final String date;
 
   const HabitCardTitle({
-    super.key,
     required this.title,
     this.date = '',
+    super.key,
   });
 
   @override
