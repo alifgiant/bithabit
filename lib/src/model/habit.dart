@@ -9,7 +9,7 @@ part 'habit.g.dart';
 
 @collection
 class Habit {
-  Id id = Isar.autoIncrement; // you can also use id = null to auto increment
+  Id id; // you can also use id = null to auto increment
 
   // final String id;
   @Index(type: IndexType.value)
@@ -22,9 +22,9 @@ class Habit {
   final List<HabitReminder> reminder;
 
   Habit(
-    this.id,
     this.name,
     this.color, {
+    this.id = Isar.autoIncrement,
     this.state = HabitState.enabled,
     this.frequency = const HabitFrequency(),
     this.reminder = const [],
@@ -39,9 +39,9 @@ class Habit {
     List<HabitReminder>? reminder,
   }) {
     return Habit(
-      id ?? this.id,
       name ?? this.name,
       color ?? this.color,
+      id: id ?? this.id,
       state: state ?? this.state,
       frequency: frequency ?? this.frequency,
       reminder: reminder ?? this.reminder.toList(),
@@ -69,9 +69,9 @@ class Habit {
 
   factory Habit.fromJson(Map<String, dynamic> json) {
     return Habit(
-      json['id'] as int? ?? 0,
       json['name'] as String? ?? '',
       HabitColor.parse(json['color'] as String? ?? ''),
+      id: json['id'] as int? ?? 0,
       state: HabitState.parse(json['state'] as String? ?? ''),
       frequency: HabitFrequency.fromJson(
         json['frequency'] as Map<String, dynamic>? ?? {},

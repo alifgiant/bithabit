@@ -1,17 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 
 import '../model/habit.dart';
 import '../model/habit_state.dart';
 
 class HabitService extends ChangeNotifier {
+  final Isar isar;
   final Map<int, Habit> _habitMap = {};
 
-  HabitService() {
+  HabitService(this.isar) {
     loadHabit();
   }
 
   Future<void> loadHabit() async {
-    // read from DB or whatever
+    final habits = await isar.habits.where().findAll();
+    for (final habit in habits) {
+      _habitMap[habit.id] = habit;
+    }
+
     notifyListeners();
   }
 
@@ -19,6 +27,7 @@ class HabitService extends ChangeNotifier {
     DateTime? day,
     HabitState state = HabitState.enabled,
   }) {
+    // TODO: return stream directly from DB
     final habits = _habitMap.values.where((habit) => habit.state == state);
     if (day == null) {
       return habits;
@@ -30,12 +39,12 @@ class HabitService extends ChangeNotifier {
   }
 
   Future<void> saveHabit(Habit habit) async {
-    final isExist = habit.id > 0;
-    if (isExist) {
-      await _updateHabit(habit);
-    } else {
-      await _createHabit(habit);
-    }
+    // save to DB
+    await isar.writeTxn(() async {
+      final id = await isar.habits.put(habit);
+      _habitMap[id] = habit;
+    });
+
     // TODO: run reminder service to remove reminder
     notifyListeners();
   }
@@ -69,22 +78,5 @@ class HabitService extends ChangeNotifier {
     // TODO: save to db
 
     notifyListeners();
-  }
-
-  Future<void> _createHabit(Habit habit) async {
-    // TODO: create new id
-    final newId = DateTime.now().millisecondsSinceEpoch;
-    _habitMap[newId] = habit.copy(
-      id: newId,
-    );
-
-    // TODO: save to db
-  }
-
-  Future<void> _updateHabit(Habit habit) async {
-    // update async
-    _habitMap[habit.id] = habit;
-
-    // TODO: save to db
   }
 }

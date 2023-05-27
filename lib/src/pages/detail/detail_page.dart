@@ -46,7 +46,6 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     edittedHabit = widget.habit?.copy() ??
         Habit(
-          0,
           '',
           HabitColor.values.first,
           reminder: List.empty(growable: true),
