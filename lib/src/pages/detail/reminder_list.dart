@@ -1,3 +1,4 @@
+import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -29,11 +30,11 @@ class ReminderList extends StatelessWidget {
           dense: true,
           contentPadding: EdgeInsets.zero,
           onChanged: enabled ? (state) => onUpdate(item, item.copyWith(enabled: state)) : null,
-          title: Text(item.time.format(context)),
+          title: Text('${item.hour.to2Digit()}:${item.minute.to2Digit()}'),
         );
         if (!enabled) return tile;
         return Dismissible(
-          key: ValueKey(item.time),
+          key: ValueKey('${item.hour}:${item.minute}'),
           direction: DismissDirection.startToEnd,
           onDismissed: (_) => onRemove(item),
           background: Row(

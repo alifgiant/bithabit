@@ -21,7 +21,15 @@ class SortingService extends ChangeNotifier {
           (a, b) {
             if (a.reminder.isNotEmpty && b.reminder.isNotEmpty) {
               // if both a and b have reminder, sort by first reminder
-              return a.reminder.first.time.compareTo(b.reminder.first.time);
+              final timeA = TimeOfDay(
+                hour: a.reminder.first.hour,
+                minute: a.reminder.first.minute,
+              );
+              final timeB = TimeOfDay(
+                hour: b.reminder.first.hour,
+                minute: b.reminder.first.minute,
+              );
+              return timeA.compareTo(timeB);
             } else if (a.reminder.isNotEmpty && b.reminder.isEmpty) {
               // if a has reminder but b doesn't, don't switch
               return -1;

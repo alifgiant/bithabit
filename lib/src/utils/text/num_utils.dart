@@ -17,6 +17,10 @@ extension DoubleExt on double {
 }
 
 extension IntExt on int {
+  String to2Digit() {
+    return toStringAsFixed(0).padLeft(2, '0');
+  }
+
   int getYearTotalDays() {
     final lastDayOfYear = DateTime(this, 12, 31);
     final firstDayOfYear = DateTime(this, 1, 1);

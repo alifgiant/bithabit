@@ -5,7 +5,7 @@ import 'habit_frequency.dart';
 import 'habit_reminder.dart';
 import 'habit_state.dart';
 
-// part 'habit.g.dart';
+part 'habit.g.dart';
 
 @collection
 class Habit {

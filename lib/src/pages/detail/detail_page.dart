@@ -221,7 +221,9 @@ class _DetailPageState extends State<DetailPage> {
     );
     if (!mounted || time == null) return;
 
-    final timeExist = edittedHabit.reminder.any((element) => element.time.compareTo(time) == 0);
+    final timeExist = edittedHabit.reminder.any(
+      (element) => element.hour == time.hour && element.minute == time.minute,
+    );
 
     if (timeExist) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -230,8 +232,14 @@ class _DetailPageState extends State<DetailPage> {
       return;
     }
 
-    edittedHabit.reminder.add(HabitReminder(time: time));
-    edittedHabit.reminder.sort((a, b) => a.time.compareTo(b.time));
+    edittedHabit.reminder.add(
+      HabitReminder(hour: time.hour, minute: time.minute),
+    );
+    edittedHabit.reminder.sort(
+      (a, b) => TimeOfDay(hour: a.hour, minute: a.minute).compareTo(
+        TimeOfDay(hour: b.hour, minute: b.minute),
+      ),
+    );
     setState(() {});
   }
 

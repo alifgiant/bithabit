@@ -1,5 +1,7 @@
 import 'package:isar/isar.dart';
 
+part 'habit_frequency.g.dart';
+
 @embedded
 class HabitFrequency {
   @Enumerated(EnumType.value, 'key')
