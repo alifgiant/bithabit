@@ -1,7 +1,19 @@
+import 'package:bithabit/src/model/habit.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path_provider/path_provider.dart';
 
 import 'app.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationDocumentsDirectory();
+  final isar = await Isar.open(
+    [HabitSchema],
+    directory: dir.path,
+  );
+  runApp(
+    MyApp(isar: isar),
+  );
 }

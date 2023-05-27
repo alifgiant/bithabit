@@ -1,5 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 
 import 'src/model/habit.dart';
@@ -17,11 +18,13 @@ import 'src/service/timeline_service.dart';
 import 'src/utils/const/app_route.dart';
 
 class MyApp extends StatelessWidget {
+  final Isar isar;
   final Locale? locale;
   final TransitionBuilder? builder;
   final bool useInheritedMediaQuery;
 
   const MyApp({
+    required this.isar,
     this.locale,
     this.builder,
     this.useInheritedMediaQuery = false,
@@ -32,6 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider.value(value: isar),
         ChangeNotifierProvider(create: (_) => SubsService()),
         ChangeNotifierProvider(create: (_) => HabitService()),
         ChangeNotifierProvider(create: (_) => TimelineService()),
