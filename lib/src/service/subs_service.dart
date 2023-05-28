@@ -15,7 +15,7 @@ class SubsService extends ChangeNotifier {
     notifyListeners();
 
     // TODO: use google service to subs
-    await Future.delayed(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 2));
     subsKind = SubsKind.monthly;
 
     isLoading = false;
@@ -40,7 +40,7 @@ class SubsService extends ChangeNotifier {
         return 'Rp 15.000';
       case SubsKind.yearly:
         return 'Rp 150.000';
-      default: // none
+      case SubsKind.none:
         return '';
     }
   }
@@ -50,7 +50,7 @@ class SubsService extends ChangeNotifier {
     notifyListeners();
 
     // TODO: use google service to subs
-    await Future.delayed(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 2));
     subsKind = SubsKind.none;
 
     isLoading = false;
