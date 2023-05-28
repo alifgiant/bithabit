@@ -41,6 +41,7 @@ class ExporterService {
 
   Future<ImportResult> importFile() async {
     final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
       allowedExtensions: ['json'],
     );
 
