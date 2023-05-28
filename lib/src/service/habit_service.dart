@@ -42,7 +42,7 @@ class HabitService extends ChangeNotifier {
     // save to DB
     await isar.writeTxn(() async {
       final id = await isar.habits.put(habit);
-      _habitMap[id] = habit;
+      _habitMap[id] = habit.copy(id: id);
     });
 
     // TODO: run reminder service to remove reminder

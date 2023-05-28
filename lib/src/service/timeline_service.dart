@@ -114,9 +114,9 @@ class TimelineService extends ChangeNotifier {
         if (setAction) lastAction = CheckAction(removedHourTime, isCheck: false);
       } else {
         final timeline = Timeline(removedHourTime, habit.id);
-        await isar.timelines.put(timeline);
+        final id = await isar.timelines.put(timeline);
 
-        timelines[removedHourTime] = timeline;
+        timelines[removedHourTime] = timeline.copy(id: id);
         if (setAction) lastAction = CheckAction(removedHourTime, isCheck: true);
       }
       _habitTimelineMap[habit.id] = timelines;
