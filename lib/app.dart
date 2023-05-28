@@ -10,6 +10,7 @@ import 'src/pages/detail/detail_page.dart';
 import 'src/pages/export/export_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/pages/subscription/subscription_page.dart';
+import 'src/service/exporter_service.dart';
 import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
 import 'src/service/sorting_service.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider.value(value: isar),
+        Provider(create: (ctx) => ExporterService(ctx.read())),
         ChangeNotifierProvider(create: (_) => SubsService()),
         ChangeNotifierProvider(create: (ctx) => HabitService(ctx.read())),
         ChangeNotifierProvider(create: (ctx) => TimelineService(ctx.read())),

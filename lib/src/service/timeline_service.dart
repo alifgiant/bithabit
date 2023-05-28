@@ -20,6 +20,8 @@ class TimelineService extends ChangeNotifier {
   TimelineAction? lastAction;
 
   Future<void> loadTimeline() async {
+    resetLastAction();
+
     final timelines = await isar.timelines.where().findAll();
     for (final timeline in timelines) {
       if (!_habitTimelineMap.containsKey(timeline.habitId)) {
@@ -124,9 +126,7 @@ class TimelineService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetLastAction() {
-    lastAction = null;
-  }
+  void resetLastAction() => lastAction = null;
 }
 
 class TimelineAction {

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/habit_state.dart';
+import '../../service/exporter_service.dart';
 import '../../service/habit_service.dart';
 import '../../service/timeline_service.dart';
-import '../../utils/exporter/exporter_utils.dart';
 import '../../utils/view/app_bar_title.dart';
 
 class ExportPage extends StatelessWidget {
@@ -13,12 +12,6 @@ class ExportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final habitService = context.watch<HabitService>();
-    final enabledHabits = habitService.getHabits();
-    final disabledHabits = habitService.getHabits(state: HabitState.archieved);
-
-    final timelineService = context.watch<TimelineService>();
-
     return Scaffold(
       appBar: AppBar(
         title: const AppBarTitle(text: 'Export/Import Data'),
@@ -34,17 +27,12 @@ class ExportPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () async {
                   final scaffoldMessenger = ScaffoldMessenger.of(context);
-                  final file = await ExporterUtils().dumpFile(
-                    BundleData(
-                      [...enabledHabits, ...disabledHabits],
-                      timelineService.timelineMap,
-                    ),
-                  );
-                  if (file == null) return;
+                  final path = await ExporterService.of(context).dumpFile();
+                  if (path == null) return;
 
                   scaffoldMessenger.showSnackBar(
                     SnackBar(
-                      content: Text('Habit Data Exported on ${file.path}'),
+                      content: Text('Habit Data Exported on $path'),
                     ),
                   );
                 },
@@ -64,7 +52,10 @@ class ExportPage extends StatelessWidget {
                 onPressed: () async {
                   final scaffoldMessenger = ScaffoldMessenger.of(context);
                   final colorScheme = Theme.of(context).colorScheme;
-                  final result = await ExporterUtils().importFile();
+                  final habitService = context.read<HabitService>();
+                  final timelineService = context.read<TimelineService>();
+
+                  final result = await ExporterService.of(context).importFile();
                   handleImportResult(
                     scaffoldMessenger,
                     colorScheme,
@@ -97,22 +88,16 @@ class ExportPage extends StatelessWidget {
     HabitService habitService,
     TimelineService timelineService,
   ) {
-    if (result is ErrorImportResult) {
-      return handleErrorResult(scaffold, colorScheme, result, habitService, timelineService);
-    } else if (result is SuccessImportResult) {
-      return handleSuccessResult(scaffold, colorScheme, result, habitService, timelineService);
-    }
-  }
+    switch (result) {
+      case ImportResult.success:
+        scaffold.showSnackBar(
+          const SnackBar(content: Text('Habit Successfully Imported')),
+        );
 
-  void handleErrorResult(
-    ScaffoldMessengerState scaffold,
-    ColorScheme colorScheme,
-    ErrorImportResult result,
-    HabitService habitService,
-    TimelineService timelineService,
-  ) {
-    switch (result.type) {
-      case ErrorType.fileCorrupt:
+        habitService.loadHabit();
+        timelineService.loadTimeline();
+        break;
+      case ImportResult.fileCorrupt:
         scaffold.showSnackBar(
           SnackBar(
             content: const Text('Data File is Corrupt'),
@@ -120,7 +105,7 @@ class ExportPage extends StatelessWidget {
           ),
         );
         break;
-      case ErrorType.tooMuchFile:
+      case ImportResult.tooMuchFile:
         scaffold.showSnackBar(
           SnackBar(
             content: const Text('Please only select one file'),
@@ -128,7 +113,7 @@ class ExportPage extends StatelessWidget {
           ),
         );
         break;
-      case ErrorType.wrongFileFormat:
+      case ImportResult.wrongFileFormat:
         scaffold.showSnackBar(
           SnackBar(
             content: const Text("You're selecting wrong backup file"),
@@ -136,38 +121,9 @@ class ExportPage extends StatelessWidget {
           ),
         );
         break;
-      default:
-      // case ErrorType.cancel:
+      case ImportResult.cancel:
+        // do nothing
+        break;
     }
-  }
-
-  void handleSuccessResult(
-    ScaffoldMessengerState scaffold,
-    ColorScheme colorScheme,
-    SuccessImportResult result,
-    HabitService habitService,
-    TimelineService timelineService,
-  ) {
-    final data = result.data;
-    if (data.habits.isEmpty) {
-      scaffold.showSnackBar(
-        const SnackBar(content: Text('Data File is Empty')),
-      );
-    }
-
-    for (final habit in data.habits) {
-      habitService.saveHabit(habit);
-
-      final timeline = data.timelines[habit.id];
-      if (timeline == null) continue;
-
-      for (final timeline in timeline.values) {
-        timelineService.check(habit, timeline.time, setAction: false);
-      }
-    }
-
-    scaffold.showSnackBar(
-      const SnackBar(content: Text('Habit Successfully Imported')),
-    );
   }
 }

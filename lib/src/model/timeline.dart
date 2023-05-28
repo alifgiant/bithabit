@@ -29,20 +29,4 @@ class Timeline {
       id: id ?? this.id,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'time': time.millisecondsSinceEpoch,
-      'habitId': habitId,
-      'id': id,
-    };
-  }
-
-  factory Timeline.fromJson(Map<String, dynamic> json) {
-    return Timeline(
-      DateTime.fromMillisecondsSinceEpoch(json['time'] as int? ?? 0),
-      json['habitId'] as int? ?? 0,
-      id: json['id'] as int? ?? Isar.autoIncrement,
-    );
-  }
 }
