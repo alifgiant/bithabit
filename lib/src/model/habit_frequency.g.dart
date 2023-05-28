@@ -9,9 +9,9 @@ part of 'habit_frequency.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-const HabitFrequencySchema = Schema(
+final HabitFrequencySchema = Schema(
   name: r'HabitFrequency',
-  id: 4386631787166777847,
+  id: BigInt.parse('4386631787166777847').toInt(),
   properties: {
     r'selected': PropertySchema(
       id: 0,
@@ -60,9 +60,7 @@ HabitFrequency _habitFrequencyDeserialize(
 ) {
   final object = HabitFrequency(
     selected: reader.readLongList(offsets[0]) ?? const [1, 2, 3, 4, 5, 6, 7],
-    type:
-        _HabitFrequencytypeValueEnumMap[reader.readStringOrNull(offsets[1])] ??
-            FrequencyType.daily,
+    type: _HabitFrequencytypeValueEnumMap[reader.readStringOrNull(offsets[1])] ?? FrequencyType.daily,
   );
   return object;
 }
@@ -77,9 +75,7 @@ P _habitFrequencyDeserializeProp<P>(
     case 0:
       return (reader.readLongList(offset) ?? const [1, 2, 3, 4, 5, 6, 7]) as P;
     case 1:
-      return (_HabitFrequencytypeValueEnumMap[
-              reader.readStringOrNull(offset)] ??
-          FrequencyType.daily) as P;
+      return (_HabitFrequencytypeValueEnumMap[reader.readStringOrNull(offset)] ?? FrequencyType.daily) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -94,10 +90,8 @@ const _HabitFrequencytypeValueEnumMap = {
   r'monthly': FrequencyType.monthly,
 };
 
-extension HabitFrequencyQueryFilter
-    on QueryBuilder<HabitFrequency, HabitFrequency, QFilterCondition> {
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedElementEqualTo(int value) {
+extension HabitFrequencyQueryFilter on QueryBuilder<HabitFrequency, HabitFrequency, QFilterCondition> {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'selected',
@@ -106,8 +100,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedElementGreaterThan(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedElementGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -120,8 +113,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedElementLessThan(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedElementLessThan(
     int value, {
     bool include = false,
   }) {
@@ -134,8 +126,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedElementBetween(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedElementBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -152,8 +143,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedLengthEqualTo(int length) {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'selected',
@@ -165,8 +155,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedIsEmpty() {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'selected',
@@ -178,8 +167,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedIsNotEmpty() {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'selected',
@@ -191,8 +179,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedLengthLessThan(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedLengthLessThan(
     int length, {
     bool include = false,
   }) {
@@ -207,8 +194,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedLengthGreaterThan(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
@@ -223,8 +209,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      selectedLengthBetween(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> selectedLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -241,8 +226,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeEqualTo(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeEqualTo(
     FrequencyType value, {
     bool caseSensitive = true,
   }) {
@@ -255,8 +239,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeGreaterThan(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeGreaterThan(
     FrequencyType value, {
     bool include = false,
     bool caseSensitive = true,
@@ -271,8 +254,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeLessThan(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeLessThan(
     FrequencyType value, {
     bool include = false,
     bool caseSensitive = true,
@@ -287,8 +269,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeBetween(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeBetween(
     FrequencyType lower,
     FrequencyType upper, {
     bool includeLower = true,
@@ -307,8 +288,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeStartsWith(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -321,8 +301,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeEndsWith(
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -335,8 +314,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'type',
@@ -346,8 +324,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'type',
@@ -357,8 +334,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeIsEmpty() {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'type',
@@ -367,8 +343,7 @@ extension HabitFrequencyQueryFilter
     });
   }
 
-  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition>
-      typeIsNotEmpty() {
+  QueryBuilder<HabitFrequency, HabitFrequency, QAfterFilterCondition> typeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'type',
@@ -378,5 +353,4 @@ extension HabitFrequencyQueryFilter
   }
 }
 
-extension HabitFrequencyQueryObject
-    on QueryBuilder<HabitFrequency, HabitFrequency, QFilterCondition> {}
+extension HabitFrequencyQueryObject on QueryBuilder<HabitFrequency, HabitFrequency, QFilterCondition> {}

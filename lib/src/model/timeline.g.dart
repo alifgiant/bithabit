@@ -13,9 +13,9 @@ extension GetTimelineCollection on Isar {
   IsarCollection<Timeline> get timelines => this.collection();
 }
 
-const TimelineSchema = CollectionSchema(
+final TimelineSchema = CollectionSchema(
   name: r'Timeline',
-  id: -8297703386560754855,
+  id: BigInt.parse('-8297703386560754855').toInt(),
   properties: {
     r'habitId': PropertySchema(
       id: 0,
@@ -35,7 +35,7 @@ const TimelineSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'time': IndexSchema(
-      id: -2250472054110640942,
+      id: BigInt.parse('-2250472054110640942').toInt(),
       name: r'time',
       unique: false,
       replace: false,
@@ -48,7 +48,7 @@ const TimelineSchema = CollectionSchema(
       ],
     ),
     r'habitId': IndexSchema(
-      id: 1000409552522198739,
+      id: BigInt.parse('1000409552522198739').toInt(),
       name: r'habitId',
       unique: false,
       replace: false,
@@ -186,8 +186,7 @@ extension TimelineQueryWhere on QueryBuilder<Timeline, Timeline, QWhereClause> {
     });
   }
 
-  QueryBuilder<Timeline, Timeline, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Timeline, Timeline, QAfterWhereClause> idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -195,8 +194,7 @@ extension TimelineQueryWhere on QueryBuilder<Timeline, Timeline, QWhereClause> {
     });
   }
 
-  QueryBuilder<Timeline, Timeline, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Timeline, Timeline, QAfterWhereClause> idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -220,8 +218,7 @@ extension TimelineQueryWhere on QueryBuilder<Timeline, Timeline, QWhereClause> {
     });
   }
 
-  QueryBuilder<Timeline, Timeline, QAfterWhereClause> timeEqualTo(
-      DateTime time) {
+  QueryBuilder<Timeline, Timeline, QAfterWhereClause> timeEqualTo(DateTime time) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
         indexName: r'time',
@@ -230,8 +227,7 @@ extension TimelineQueryWhere on QueryBuilder<Timeline, Timeline, QWhereClause> {
     });
   }
 
-  QueryBuilder<Timeline, Timeline, QAfterWhereClause> timeNotEqualTo(
-      DateTime time) {
+  QueryBuilder<Timeline, Timeline, QAfterWhereClause> timeNotEqualTo(DateTime time) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -310,8 +306,7 @@ extension TimelineQueryWhere on QueryBuilder<Timeline, Timeline, QWhereClause> {
     });
   }
 
-  QueryBuilder<Timeline, Timeline, QAfterWhereClause> habitIdEqualTo(
-      int habitId) {
+  QueryBuilder<Timeline, Timeline, QAfterWhereClause> habitIdEqualTo(int habitId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
         indexName: r'habitId',
@@ -320,8 +315,7 @@ extension TimelineQueryWhere on QueryBuilder<Timeline, Timeline, QWhereClause> {
     });
   }
 
-  QueryBuilder<Timeline, Timeline, QAfterWhereClause> habitIdNotEqualTo(
-      int habitId) {
+  QueryBuilder<Timeline, Timeline, QAfterWhereClause> habitIdNotEqualTo(int habitId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -401,10 +395,8 @@ extension TimelineQueryWhere on QueryBuilder<Timeline, Timeline, QWhereClause> {
   }
 }
 
-extension TimelineQueryFilter
-    on QueryBuilder<Timeline, Timeline, QFilterCondition> {
-  QueryBuilder<Timeline, Timeline, QAfterFilterCondition> habitIdEqualTo(
-      int value) {
+extension TimelineQueryFilter on QueryBuilder<Timeline, Timeline, QFilterCondition> {
+  QueryBuilder<Timeline, Timeline, QAfterFilterCondition> habitIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'habitId',
@@ -508,8 +500,7 @@ extension TimelineQueryFilter
     });
   }
 
-  QueryBuilder<Timeline, Timeline, QAfterFilterCondition> timeEqualTo(
-      DateTime value) {
+  QueryBuilder<Timeline, Timeline, QAfterFilterCondition> timeEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'time',
@@ -562,11 +553,9 @@ extension TimelineQueryFilter
   }
 }
 
-extension TimelineQueryObject
-    on QueryBuilder<Timeline, Timeline, QFilterCondition> {}
+extension TimelineQueryObject on QueryBuilder<Timeline, Timeline, QFilterCondition> {}
 
-extension TimelineQueryLinks
-    on QueryBuilder<Timeline, Timeline, QFilterCondition> {}
+extension TimelineQueryLinks on QueryBuilder<Timeline, Timeline, QFilterCondition> {}
 
 extension TimelineQuerySortBy on QueryBuilder<Timeline, Timeline, QSortBy> {
   QueryBuilder<Timeline, Timeline, QAfterSortBy> sortByHabitId() {
@@ -594,8 +583,7 @@ extension TimelineQuerySortBy on QueryBuilder<Timeline, Timeline, QSortBy> {
   }
 }
 
-extension TimelineQuerySortThenBy
-    on QueryBuilder<Timeline, Timeline, QSortThenBy> {
+extension TimelineQuerySortThenBy on QueryBuilder<Timeline, Timeline, QSortThenBy> {
   QueryBuilder<Timeline, Timeline, QAfterSortBy> thenByHabitId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'habitId', Sort.asc);
@@ -633,8 +621,7 @@ extension TimelineQuerySortThenBy
   }
 }
 
-extension TimelineQueryWhereDistinct
-    on QueryBuilder<Timeline, Timeline, QDistinct> {
+extension TimelineQueryWhereDistinct on QueryBuilder<Timeline, Timeline, QDistinct> {
   QueryBuilder<Timeline, Timeline, QDistinct> distinctByHabitId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'habitId');
@@ -648,8 +635,7 @@ extension TimelineQueryWhereDistinct
   }
 }
 
-extension TimelineQueryProperty
-    on QueryBuilder<Timeline, Timeline, QQueryProperty> {
+extension TimelineQueryProperty on QueryBuilder<Timeline, Timeline, QQueryProperty> {
   QueryBuilder<Timeline, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');

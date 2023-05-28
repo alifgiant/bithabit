@@ -13,9 +13,9 @@ extension GetHabitCollection on Isar {
   IsarCollection<Habit> get habits => this.collection();
 }
 
-const HabitSchema = CollectionSchema(
+final HabitSchema = CollectionSchema(
   name: r'Habit',
-  id: 3896650575830519340,
+  id: BigInt.parse('3896650575830519340').toInt(),
   properties: {
     r'color': PropertySchema(
       id: 0,
@@ -64,7 +64,7 @@ const HabitSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'name': IndexSchema(
-      id: 879695947855722453,
+      id: BigInt.parse('879695947855722453').toInt(),
       name: r'name',
       unique: false,
       replace: false,
@@ -78,10 +78,7 @@ const HabitSchema = CollectionSchema(
     )
   },
   links: {},
-  embeddedSchemas: {
-    r'HabitFrequency': HabitFrequencySchema,
-    r'HabitReminder': HabitReminderSchema
-  },
+  embeddedSchemas: {r'HabitFrequency': HabitFrequencySchema, r'HabitReminder': HabitReminderSchema},
   getId: _habitGetId,
   getLinks: _habitGetLinks,
   attach: _habitAttach,
@@ -95,17 +92,14 @@ int _habitEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.color.key.length * 3;
-  bytesCount += 3 +
-      HabitFrequencySchema.estimateSize(
-          object.frequency, allOffsets[HabitFrequency]!, allOffsets);
+  bytesCount += 3 + HabitFrequencySchema.estimateSize(object.frequency, allOffsets[HabitFrequency]!, allOffsets);
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 + object.reminder.length * 3;
   {
     final offsets = allOffsets[HabitReminder]!;
     for (var i = 0; i < object.reminder.length; i++) {
       final value = object.reminder[i];
-      bytesCount +=
-          HabitReminderSchema.estimateSize(value, offsets, allOffsets);
+      bytesCount += HabitReminderSchema.estimateSize(value, offsets, allOffsets);
     }
   }
   bytesCount += 3 + object.state.key.length * 3;
@@ -145,8 +139,7 @@ Habit _habitDeserialize(
 ) {
   final object = Habit(
     reader.readString(offsets[4]),
-    _HabitcolorValueEnumMap[reader.readStringOrNull(offsets[0])] ??
-        HabitColor.red,
+    _HabitcolorValueEnumMap[reader.readStringOrNull(offsets[0])] ?? HabitColor.red,
     frequency: reader.readObjectOrNull<HabitFrequency>(
           offsets[1],
           HabitFrequencySchema.deserialize,
@@ -161,8 +154,7 @@ Habit _habitDeserialize(
           HabitReminder(),
         ) ??
         const [],
-    state: _HabitstateValueEnumMap[reader.readStringOrNull(offsets[6])] ??
-        HabitState.enabled,
+    state: _HabitstateValueEnumMap[reader.readStringOrNull(offsets[6])] ?? HabitState.enabled,
   );
   return object;
 }
@@ -175,8 +167,7 @@ P _habitDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (_HabitcolorValueEnumMap[reader.readStringOrNull(offset)] ??
-          HabitColor.red) as P;
+      return (_HabitcolorValueEnumMap[reader.readStringOrNull(offset)] ?? HabitColor.red) as P;
     case 1:
       return (reader.readObjectOrNull<HabitFrequency>(
             offset,
@@ -199,8 +190,7 @@ P _habitDeserializeProp<P>(
           ) ??
           const []) as P;
     case 6:
-      return (_HabitstateValueEnumMap[reader.readStringOrNull(offset)] ??
-          HabitState.enabled) as P;
+      return (_HabitstateValueEnumMap[reader.readStringOrNull(offset)] ?? HabitState.enabled) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -295,8 +285,7 @@ extension HabitQueryWhere on QueryBuilder<Habit, Habit, QWhereClause> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Habit, Habit, QAfterWhereClause> idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -304,8 +293,7 @@ extension HabitQueryWhere on QueryBuilder<Habit, Habit, QWhereClause> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Habit, Habit, QAfterWhereClause> idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -417,8 +405,7 @@ extension HabitQueryWhere on QueryBuilder<Habit, Habit, QWhereClause> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterWhereClause> nameStartsWith(
-      String NamePrefix) {
+  QueryBuilder<Habit, Habit, QAfterWhereClause> nameStartsWith(String NamePrefix) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
         indexName: r'name',
@@ -553,8 +540,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> colorContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> colorContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'color',
@@ -564,8 +550,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> colorMatches(String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> colorMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'color',
@@ -645,8 +630,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> isArchivedEqualTo(
-      bool value) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> isArchivedEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isArchived',
@@ -655,8 +639,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> isEnabledEqualTo(
-      bool value) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> isEnabledEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isEnabled',
@@ -753,8 +736,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> nameContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> nameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'name',
@@ -764,8 +746,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> nameMatches(String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> nameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'name',
@@ -793,8 +774,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> reminderLengthEqualTo(
-      int length) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> reminderLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'reminder',
@@ -965,8 +945,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> stateContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> stateContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'state',
@@ -976,8 +955,7 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> stateMatches(String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> stateMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'state',
@@ -1007,15 +985,13 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
 }
 
 extension HabitQueryObject on QueryBuilder<Habit, Habit, QFilterCondition> {
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> frequency(
-      FilterQuery<HabitFrequency> q) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> frequency(FilterQuery<HabitFrequency> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'frequency');
     });
   }
 
-  QueryBuilder<Habit, Habit, QAfterFilterCondition> reminderElement(
-      FilterQuery<HabitReminder> q) {
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> reminderElement(FilterQuery<HabitReminder> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'reminder');
     });
@@ -1161,8 +1137,7 @@ extension HabitQuerySortThenBy on QueryBuilder<Habit, Habit, QSortThenBy> {
 }
 
 extension HabitQueryWhereDistinct on QueryBuilder<Habit, Habit, QDistinct> {
-  QueryBuilder<Habit, Habit, QDistinct> distinctByColor(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QDistinct> distinctByColor({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'color', caseSensitive: caseSensitive);
     });
@@ -1180,15 +1155,13 @@ extension HabitQueryWhereDistinct on QueryBuilder<Habit, Habit, QDistinct> {
     });
   }
 
-  QueryBuilder<Habit, Habit, QDistinct> distinctByName(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QDistinct> distinctByName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Habit, Habit, QDistinct> distinctByState(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Habit, Habit, QDistinct> distinctByState({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'state', caseSensitive: caseSensitive);
     });
@@ -1232,8 +1205,7 @@ extension HabitQueryProperty on QueryBuilder<Habit, Habit, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Habit, List<HabitReminder>, QQueryOperations>
-      reminderProperty() {
+  QueryBuilder<Habit, List<HabitReminder>, QQueryOperations> reminderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'reminder');
     });

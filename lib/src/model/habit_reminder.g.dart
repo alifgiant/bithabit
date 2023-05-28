@@ -9,9 +9,9 @@ part of 'habit_reminder.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-const HabitReminderSchema = Schema(
+final HabitReminderSchema = Schema(
   name: r'HabitReminder',
-  id: -2199955538115502775,
+  id: BigInt.parse('-2199955538115502775').toInt(),
   properties: {
     r'enabled': PropertySchema(
       id: 0,
@@ -87,10 +87,8 @@ P _habitReminderDeserializeProp<P>(
   }
 }
 
-extension HabitReminderQueryFilter
-    on QueryBuilder<HabitReminder, HabitReminder, QFilterCondition> {
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition>
-      enabledEqualTo(bool value) {
+extension HabitReminderQueryFilter on QueryBuilder<HabitReminder, HabitReminder, QFilterCondition> {
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> enabledEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'enabled',
@@ -99,8 +97,7 @@ extension HabitReminderQueryFilter
     });
   }
 
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> hourEqualTo(
-      int value) {
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> hourEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'hour',
@@ -109,8 +106,7 @@ extension HabitReminderQueryFilter
     });
   }
 
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition>
-      hourGreaterThan(
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> hourGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -123,8 +119,7 @@ extension HabitReminderQueryFilter
     });
   }
 
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition>
-      hourLessThan(
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> hourLessThan(
     int value, {
     bool include = false,
   }) {
@@ -154,8 +149,7 @@ extension HabitReminderQueryFilter
     });
   }
 
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition>
-      minuteEqualTo(int value) {
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> minuteEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'minute',
@@ -164,8 +158,7 @@ extension HabitReminderQueryFilter
     });
   }
 
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition>
-      minuteGreaterThan(
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> minuteGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -178,8 +171,7 @@ extension HabitReminderQueryFilter
     });
   }
 
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition>
-      minuteLessThan(
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> minuteLessThan(
     int value, {
     bool include = false,
   }) {
@@ -192,8 +184,7 @@ extension HabitReminderQueryFilter
     });
   }
 
-  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition>
-      minuteBetween(
+  QueryBuilder<HabitReminder, HabitReminder, QAfterFilterCondition> minuteBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -211,5 +202,4 @@ extension HabitReminderQueryFilter
   }
 }
 
-extension HabitReminderQueryObject
-    on QueryBuilder<HabitReminder, HabitReminder, QFilterCondition> {}
+extension HabitReminderQueryObject on QueryBuilder<HabitReminder, HabitReminder, QFilterCondition> {}

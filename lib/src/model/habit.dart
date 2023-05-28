@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 
 import 'habit_color.dart';
@@ -7,6 +8,8 @@ import 'habit_state.dart';
 
 part 'habit.g.dart';
 
+/// Error for web build, due to BigInt
+/// https://github.com/isar/isar/issues/686#issuecomment-1303766255
 @collection
 class Habit {
   Id id; // you can also use id = null to auto increment
