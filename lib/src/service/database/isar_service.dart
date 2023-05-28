@@ -7,6 +7,9 @@ import 'package:isar/isar.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
 
+import '../../model/habit.g.dart';
+import '../../model/timeline.g.dart';
+
 class IsarService extends DatabaseService {
   final isarCompleter = Completer<Isar>();
 
@@ -82,3 +85,5 @@ class IsarService extends DatabaseService {
     return true;
   }
 }
+
+DatabaseService startService() => IsarService()..setup();

@@ -1,6 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 
 import 'src/model/habit.dart';
@@ -10,8 +9,8 @@ import 'src/pages/detail/detail_page.dart';
 import 'src/pages/export/export_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/pages/subscription/subscription_page.dart';
+import 'src/service/database/database.dart';
 import 'src/service/database/database_service.dart';
-import 'src/service/database/isar_service.dart';
 import 'src/service/exporter_service.dart';
 import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<DatabaseService>(create: (_) => IsarService()..setup()),
+        Provider<DatabaseService>(create: (_) => Database.create()),
         Provider(create: (ctx) => ExporterService(ctx.read())),
         ChangeNotifierProvider(create: (_) => SubsService()),
         ChangeNotifierProvider(create: (ctx) => HabitService(ctx.read())),
