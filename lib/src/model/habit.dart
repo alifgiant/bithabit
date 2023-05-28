@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 
 import 'habit_color.dart';
@@ -6,10 +5,6 @@ import 'habit_frequency.dart';
 import 'habit_reminder.dart';
 import 'habit_state.dart';
 
-part 'habit.g.dart';
-
-/// Error for web build, due to BigInt
-/// https://github.com/isar/isar/issues/686#issuecomment-1303766255
 @collection
 class Habit {
   final Id id; // you can also use id = null to auto increment
@@ -56,5 +51,35 @@ class Habit {
   @override
   String toString() {
     return 'Habit($id,$name,$color,$state,$frequency,$reminder)';
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'color': color.key,
+      'state': state.key,
+      'frequency': frequency.toMap(),
+      'reminder': reminder.map((e) => e.toMap()).toList()
+    };
+  }
+
+  factory Habit.fromJson(Map<String, dynamic> json) {
+    return Habit(
+      json['name'] as String? ?? '',
+      HabitColor.parse(json['color'] as String? ?? ''),
+      id: json['id'] as int? ?? Isar.autoIncrement,
+      state: HabitState.parse(json['state'] as String? ?? ''),
+      frequency: HabitFrequency.fromJson(
+        json['frequency'] as Map<String, dynamic>? ?? {},
+      ),
+      reminder: (json['reminder'] as List?)
+              ?.cast<Map<String, dynamic>>()
+              .map<HabitReminder>(
+                HabitReminder.fromJson,
+              )
+              .toList() ??
+          [],
+    );
   }
 }

@@ -1,7 +1,5 @@
 import 'package:isar/isar.dart';
 
-part 'timeline.g.dart';
-
 @collection
 class Timeline {
   final Id id; // you can also use id = null to auto increment
@@ -27,6 +25,22 @@ class Timeline {
       time ?? this.time,
       habitId ?? this.habitId,
       id: id ?? this.id,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time.millisecondsSinceEpoch,
+      'habitId': habitId,
+      'id': id,
+    };
+  }
+
+  factory Timeline.fromJson(Map<String, dynamic> json) {
+    return Timeline(
+      DateTime.fromMillisecondsSinceEpoch(json['time'] as int? ?? 0),
+      json['habitId'] as int? ?? 0,
+      id: json['id'] as int? ?? Isar.autoIncrement,
     );
   }
 }

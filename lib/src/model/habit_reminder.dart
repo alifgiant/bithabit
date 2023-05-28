@@ -1,7 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
-
-part 'habit_reminder.g.dart';
 
 @embedded
 class HabitReminder {
