@@ -4,16 +4,14 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 
-import '../model/habit.dart';
-import '../model/timeline.dart';
+import 'database/database_service.dart';
 
 class ExporterService {
-  final Isar isar;
+  final DatabaseService _dbService;
 
-  const ExporterService(this.isar);
+  const ExporterService(this._dbService);
 
   static ExporterService of(BuildContext context) {
     return context.read<ExporterService>();
@@ -31,10 +29,7 @@ class ExporterService {
     final file = File(path);
 
     // Write the file
-    final jsonString = jsonEncode({
-      'habits': await isar.habits.where().exportJson(),
-      'timeline': await isar.timelines.where().exportJson(),
-    });
+    final jsonString = jsonEncode(await _dbService.dump());
 
     return (await file.writeAsString(jsonString)).path;
   }
@@ -63,17 +58,8 @@ class ExporterService {
       final encondedData = await file.readAsString();
       try {
         final json = jsonDecode(encondedData);
-        final rawJsonHabit = json['habits'] as List;
-        final rawJsonTimeline = json['timeline'] as List;
-        final jsonHabit = rawJsonHabit.cast<Map<String, dynamic>>();
-        final jsonTimeline = rawJsonTimeline.cast<Map<String, dynamic>>();
-
-        await isar.writeTxn(() async {
-          await isar.habits.importJson(jsonHabit);
-          await isar.timelines.importJson(jsonTimeline);
-        });
-
-        return ImportResult.success;
+        final isSuccess = await _dbService.import(json as Map<String, dynamic>);
+        return isSuccess ? ImportResult.success : ImportResult.empty;
       } catch (e) {
         return ImportResult.fileCorrupt;
       }
@@ -81,4 +67,11 @@ class ExporterService {
   }
 }
 
-enum ImportResult { cancel, tooMuchFile, wrongFileFormat, fileCorrupt, success }
+enum ImportResult {
+  cancel,
+  tooMuchFile,
+  wrongFileFormat,
+  fileCorrupt,
+  empty,
+  success,
+}

@@ -2,17 +2,17 @@ import 'package:bithabit/src/model/timeline.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 
 import '../model/habit.dart';
+import 'database/database_service.dart';
 
 class TimelineService extends ChangeNotifier {
-  final Isar isar;
+  final DatabaseService _dbService;
 
   /// [_habitTimelineMap] is Map<HabitId, Map<DateTime, Timeline>>
   final Map<int, Map<DateTime, Timeline>> _habitTimelineMap = {};
 
-  TimelineService(this.isar) {
+  TimelineService(this._dbService) {
     loadTimeline();
   }
 
@@ -22,7 +22,7 @@ class TimelineService extends ChangeNotifier {
   Future<void> loadTimeline() async {
     resetLastAction();
 
-    final timelines = await isar.timelines.where().findAll();
+    final timelines = await _dbService.getAllTimelines();
     for (final timeline in timelines) {
       if (!_habitTimelineMap.containsKey(timeline.habitId)) {
         _habitTimelineMap[timeline.habitId] = {};
@@ -100,27 +100,29 @@ class TimelineService extends ChangeNotifier {
     return timeline[removedHourTime] != null;
   }
 
-  Future<void> check(Habit habit, DateTime time, {bool setAction = true}) async {
+  Future<void> check(
+    Habit habit,
+    DateTime time, {
+    bool setAction = true,
+  }) async {
     final removedHourTime = time.emptyHour();
 
-    await isar.writeTxn(() async {
-      final timelines = _habitTimelineMap[habit.id] ?? {};
-      final savedTimeline = timelines[removedHourTime];
-      if (savedTimeline != null) {
-        final success = await isar.timelines.delete(savedTimeline.id);
-        if (!success) return;
+    final timelines = _habitTimelineMap[habit.id] ?? {};
+    final savedTimeline = timelines[removedHourTime];
+    if (savedTimeline != null) {
+      final success = await _dbService.deleteHabit(savedTimeline.id);
+      if (!success) return;
 
-        timelines.remove(removedHourTime);
-        if (setAction) lastAction = CheckAction(removedHourTime, isCheck: false);
-      } else {
-        final timeline = Timeline(removedHourTime, habit.id);
-        final id = await isar.timelines.put(timeline);
+      timelines.remove(removedHourTime);
+      if (setAction) lastAction = CheckAction(removedHourTime, isCheck: false);
+    } else {
+      final timeline = Timeline(removedHourTime, habit.id);
+      final id = await _dbService.saveTimeline(timeline);
 
-        timelines[removedHourTime] = timeline.copy(id: id);
-        if (setAction) lastAction = CheckAction(removedHourTime, isCheck: true);
-      }
-      _habitTimelineMap[habit.id] = timelines;
-    });
+      timelines[removedHourTime] = timeline.copy(id: id);
+      if (setAction) lastAction = CheckAction(removedHourTime, isCheck: true);
+    }
+    _habitTimelineMap[habit.id] = timelines;
 
     // save to DB
     notifyListeners();

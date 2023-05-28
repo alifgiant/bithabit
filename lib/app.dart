@@ -10,6 +10,8 @@ import 'src/pages/detail/detail_page.dart';
 import 'src/pages/export/export_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/pages/subscription/subscription_page.dart';
+import 'src/service/database/database_service.dart';
+import 'src/service/database/isar_service.dart';
 import 'src/service/exporter_service.dart';
 import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
@@ -19,13 +21,11 @@ import 'src/service/timeline_service.dart';
 import 'src/utils/const/app_route.dart';
 
 class MyApp extends StatelessWidget {
-  final Isar isar;
   final Locale? locale;
   final TransitionBuilder? builder;
   final bool useInheritedMediaQuery;
 
   const MyApp({
-    required this.isar,
     this.locale,
     this.builder,
     this.useInheritedMediaQuery = false,
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider.value(value: isar),
+        Provider<DatabaseService>(create: (_) => IsarService()..setup()),
         Provider(create: (ctx) => ExporterService(ctx.read())),
         ChangeNotifierProvider(create: (_) => SubsService()),
         ChangeNotifierProvider(create: (ctx) => HabitService(ctx.read())),

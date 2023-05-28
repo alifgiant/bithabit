@@ -97,6 +97,17 @@ class ExportPage extends StatelessWidget {
         habitService.loadHabit();
         timelineService.loadTimeline();
         break;
+      case ImportResult.empty:
+        scaffold.showSnackBar(
+          SnackBar(
+            content: const Text('Backup file empty'),
+            backgroundColor: colorScheme.error,
+          ),
+        );
+
+        habitService.loadHabit();
+        timelineService.loadTimeline();
+        break;
       case ImportResult.fileCorrupt:
         scaffold.showSnackBar(
           SnackBar(

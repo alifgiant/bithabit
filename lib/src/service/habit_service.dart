@@ -1,21 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 
 import '../model/habit.dart';
 import '../model/habit_state.dart';
+import 'database/database_service.dart';
 
 class HabitService extends ChangeNotifier {
-  final Isar isar;
+  final DatabaseService _dbService;
   final Map<int, Habit> _habitMap = {};
 
-  HabitService(this.isar) {
+  HabitService(this._dbService) {
     loadHabit();
   }
 
   Future<void> loadHabit() async {
-    final habits = await isar.habits.where().findAll();
+    final habits = await _dbService.getAllHabits();
     for (final habit in habits) {
       _habitMap[habit.id] = habit;
     }
@@ -40,10 +40,8 @@ class HabitService extends ChangeNotifier {
 
   Future<void> saveHabit(Habit habit) async {
     // save to DB
-    await isar.writeTxn(() async {
-      final id = await isar.habits.put(habit);
-      _habitMap[id] = habit.copy(id: id);
-    });
+    final id = await _dbService.saveHabit(habit);
+    _habitMap[id] = habit.copy(id: id);
 
     // TODO: run reminder service to remove reminder
     notifyListeners();
@@ -54,10 +52,9 @@ class HabitService extends ChangeNotifier {
     if (habit == null) return;
 
     if (permanent) {
-      await isar.writeTxn(() async {
-        final success = await isar.habits.delete(id);
-        if (success) _habitMap.remove(id);
-      });
+      final success = await _dbService.deleteHabit(id);
+      if (success) _habitMap.remove(id);
+
       // TODO: run reminder service to remove reminder
       notifyListeners();
     } else {
