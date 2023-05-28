@@ -1,11 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 
 part 'timeline.g.dart';
 
 @collection
 class Timeline {
-  Id id; // you can also use id = null to auto increment
+  final Id id; // you can also use id = null to auto increment
 
   @Index(type: IndexType.value)
   final DateTime time;

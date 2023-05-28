@@ -12,7 +12,7 @@ part 'habit.g.dart';
 /// https://github.com/isar/isar/issues/686#issuecomment-1303766255
 @collection
 class Habit {
-  Id id; // you can also use id = null to auto increment
+  final Id id; // you can also use id = null to auto increment
 
   @Index(type: IndexType.value)
   final String name;
