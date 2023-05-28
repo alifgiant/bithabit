@@ -11,7 +11,6 @@ part 'habit.g.dart';
 class Habit {
   Id id; // you can also use id = null to auto increment
 
-  // final String id;
   @Index(type: IndexType.value)
   final String name;
   @Enumerated(EnumType.value, 'key')
@@ -71,7 +70,7 @@ class Habit {
     return Habit(
       json['name'] as String? ?? '',
       HabitColor.parse(json['color'] as String? ?? ''),
-      id: json['id'] as int? ?? 0,
+      id: json['id'] as int? ?? Isar.autoIncrement,
       state: HabitState.parse(json['state'] as String? ?? ''),
       frequency: HabitFrequency.fromJson(
         json['frequency'] as Map<String, dynamic>? ?? {},

@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         Provider.value(value: isar),
         ChangeNotifierProvider(create: (_) => SubsService()),
         ChangeNotifierProvider(create: (ctx) => HabitService(ctx.read())),
-        ChangeNotifierProvider(create: (_) => TimelineService()),
+        ChangeNotifierProvider(create: (ctx) => TimelineService(ctx.read())),
         ChangeNotifierProvider(create: (_) => SortingService()),
         ChangeNotifierProvider(create: (_) => RecapService()),
       ],

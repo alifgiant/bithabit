@@ -1,4 +1,3 @@
-import 'package:bithabit/src/model/habit.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
@@ -6,12 +5,14 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'app.dart';
+import 'src/model/habit.dart';
+import 'src/model/timeline.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [HabitSchema],
+    [HabitSchema, TimelineSchema],
     directory: dir.path,
   );
   runApp(

@@ -53,30 +53,24 @@ class HabitService extends ChangeNotifier {
     final habit = _habitMap[id];
     if (habit == null) return;
 
-    // TODO: run reminder service to remove reminder
-
     if (permanent) {
-      _habitMap.remove(id);
-
-      // TODO: delete from db
+      await isar.writeTxn(() async {
+        final success = await isar.habits.delete(id);
+        if (success) _habitMap.remove(id);
+      });
+      // TODO: run reminder service to remove reminder
+      notifyListeners();
     } else {
-      _habitMap[id] = habit.copy(state: HabitState.archieved);
-
-      // TODO: save to db
+      final updatedHabit = habit.copy(state: HabitState.archieved);
+      return saveHabit(updatedHabit);
     }
-    notifyListeners();
   }
 
   Future<void> restoreHabit(int id) async {
     final habit = _habitMap[id];
     if (habit == null) return;
 
-    _habitMap[id] = habit.copy(state: HabitState.enabled);
-
-    // TODO: run reminder service to restore reminder
-
-    // TODO: save to db
-
-    notifyListeners();
+    final updatedHabit = habit.copy(state: HabitState.enabled);
+    return saveHabit(updatedHabit);
   }
 }

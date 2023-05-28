@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../model/habit.dart';
+import '../../model/timeline.dart';
 
 class ExporterUtils {
   Future<File?> dumpFile(BundleData data) async {
@@ -16,20 +17,13 @@ class ExporterUtils {
     // TODO: handle web file
     final file = File('$selectedDirectory/export-${DateTime.now().millisecondsSinceEpoch}.json');
 
-    final time = data.timelines.map(
-      (key, value) => MapEntry(
-        key.toString(),
-        value.map((time) => time.millisecondsSinceEpoch).toList(),
-      ),
-    );
-
     // Write the file
     final jsonString = jsonEncode({
       'habits': data.habits.map((e) => e.toMap()).toList(),
       'timeline': data.timelines.map(
         (key, value) => MapEntry(
-          key,
-          value.map((time) => time.millisecondsSinceEpoch).toList(),
+          key.toString(),
+          value.values.map((timeline) => timeline.toMap()).toList(),
         ),
       )
     });
@@ -65,18 +59,20 @@ class ExporterUtils {
                   Habit.fromJson,
                 ) ??
             [];
-        final timelines = <int, Set<DateTime>>{};
+        final timelinesMap = <int, Map<DateTime, Timeline>>{};
         final rawJsonTimeline = json['timeline'] as Map<String, dynamic>;
         for (final element in rawJsonTimeline.entries) {
-          timelines[int.parse(element.key)] = (element.value as List<dynamic>)
-              .cast<int>()
-              .map(
-                DateTime.fromMillisecondsSinceEpoch,
-              )
-              .toSet();
+          final timelines = <DateTime, Timeline>{};
+          for (final rawTimeline in element.value as List<dynamic>) {
+            final timeline = Timeline.fromJson(
+              rawTimeline as Map<String, dynamic>,
+            );
+            timelines[timeline.time] = timeline;
+          }
+          timelinesMap[int.parse(element.key)] = timelines;
         }
 
-        return SuccessImportResult(BundleData(habits, timelines));
+        return SuccessImportResult(BundleData(habits, timelinesMap));
       } catch (e) {
         return ErrorImportResult(ErrorType.fileCorrupt);
       }
@@ -86,7 +82,7 @@ class ExporterUtils {
 
 class BundleData {
   final Iterable<Habit> habits;
-  final Map<int, Set<DateTime>> timelines;
+  final Map<int, Map<DateTime, Timeline>> timelines;
 
   BundleData(this.habits, this.timelines);
 }

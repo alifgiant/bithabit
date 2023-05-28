@@ -1,20 +1,37 @@
+import 'package:bithabit/src/model/timeline.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 
 import '../model/habit.dart';
 
 class TimelineService extends ChangeNotifier {
-  final Map<int, Set<DateTime>> _habitTimelineMap = {};
-  Map<int, Set<DateTime>> get timelineMap => _habitTimelineMap;
+  final Isar isar;
 
+  /// [_habitTimelineMap] is Map<HabitId, Map<DateTime, Timeline>>
+  final Map<int, Map<DateTime, Timeline>> _habitTimelineMap = {};
+
+  TimelineService(this.isar) {
+    loadTimeline();
+  }
+
+  Map<int, Map<DateTime, Timeline>> get timelineMap => _habitTimelineMap;
   TimelineAction? lastAction;
 
   Future<void> loadTimeline() async {
-    // read from DB or whatever
+    final timelines = await isar.timelines.where().findAll();
+    for (final timeline in timelines) {
+      if (!_habitTimelineMap.containsKey(timeline.habitId)) {
+        _habitTimelineMap[timeline.habitId] = {};
+      }
+      _habitTimelineMap[timeline.habitId]?[timeline.time] = timeline;
+    }
+
+    notifyListeners();
   }
 
-  Set<DateTime>? getHabitTimeline(int habitId) {
+  Map<DateTime, Timeline>? getHabitTimeline(int habitId) {
     return _habitTimelineMap[habitId];
   }
 
@@ -24,7 +41,7 @@ class TimelineService extends ChangeNotifier {
 
     int best = 1;
     int count = 1;
-    final sortedTime = timeline.toList()..sort();
+    final sortedTime = timeline.keys.toList()..sort();
 
     for (int i = 1; i < sortedTime.length; i++) {
       final prevTime = sortedTime[i - 1];
@@ -46,7 +63,7 @@ class TimelineService extends ChangeNotifier {
     final timeline = getHabitTimeline(habit.id);
     if (timeline == null || timeline.isEmpty) return 0;
 
-    return timeline.where((time) => time.weekday == dayOfWeek).length;
+    return timeline.keys.where((time) => time.weekday == dayOfWeek).length;
   }
 
   double habitCompletion(
@@ -57,7 +74,7 @@ class TimelineService extends ChangeNotifier {
     final timeline = getHabitTimeline(habit.id);
     if (timeline == null || timeline.isEmpty) return 0;
 
-    Iterable<DateTime> times = timeline.where((time) => time.year == year);
+    Iterable<DateTime> times = timeline.keys.where((time) => time.year == year);
     if (month != null) times = times.where((time) => time.month == month);
 
     final count = times.length;
@@ -78,29 +95,31 @@ class TimelineService extends ChangeNotifier {
     final timeline = getHabitTimeline(habit.id);
     if (timeline == null) return false;
 
-    return timeline.contains(removedHourTime);
+    return timeline[removedHourTime] != null;
   }
 
   Future<void> check(Habit habit, DateTime time, {bool setAction = true}) async {
     final removedHourTime = time.emptyHour();
 
-    Set<DateTime> timeline;
-    if (!_habitTimelineMap.containsKey(habit.id)) {
-      // create set if still not loaded
-      timeline = {};
-    } else {
-      timeline = _habitTimelineMap[habit.id]!;
-    }
+    await isar.writeTxn(() async {
+      final timelines = _habitTimelineMap[habit.id] ?? {};
+      final savedTimeline = timelines[removedHourTime];
+      if (savedTimeline != null) {
+        final success = await isar.timelines.delete(savedTimeline.id);
+        if (!success) return;
 
-    if (timeline.contains(removedHourTime)) {
-      if (setAction) lastAction = CheckAction(removedHourTime, false);
-      timeline.remove(removedHourTime);
-    } else {
-      if (setAction) lastAction = CheckAction(removedHourTime, true);
-      timeline.add(removedHourTime);
-    }
+        timelines.remove(removedHourTime);
+        if (setAction) lastAction = CheckAction(removedHourTime, isCheck: false);
+      } else {
+        final timeline = Timeline(removedHourTime, habit.id);
+        await isar.timelines.put(timeline);
 
-    _habitTimelineMap[habit.id] = timeline;
+        timelines[removedHourTime] = timeline;
+        if (setAction) lastAction = CheckAction(removedHourTime, isCheck: true);
+      }
+      _habitTimelineMap[habit.id] = timelines;
+    });
+
     // save to DB
     notifyListeners();
   }
@@ -113,11 +132,11 @@ class TimelineService extends ChangeNotifier {
 class TimelineAction {
   final bool isCheck;
 
-  TimelineAction(this.isCheck);
+  TimelineAction({required this.isCheck});
 }
 
 class CheckAction extends TimelineAction {
   final DateTime time;
 
-  CheckAction(this.time, super.isCheck);
+  CheckAction(this.time, {required super.isCheck});
 }

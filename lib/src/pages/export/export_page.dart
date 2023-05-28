@@ -161,8 +161,8 @@ class ExportPage extends StatelessWidget {
       final timeline = data.timelines[habit.id];
       if (timeline == null) continue;
 
-      for (final time in timeline) {
-        timelineService.check(habit, time, setAction: false);
+      for (final timeline in timeline.values) {
+        timelineService.check(habit, timeline.time, setAction: false);
       }
     }
 
