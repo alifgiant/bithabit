@@ -8,6 +8,7 @@ import 'src/service/analytic_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseSetup().start();
+  Analytic.get().logAppOpen();
   runApp(
     DevicePreview(
       enabled: true,
