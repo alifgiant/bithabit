@@ -62,7 +62,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
     ).show();
 
     confettiController.play();
-    await Future.delayed(const Duration(seconds: 3));
+    await Future<void>.delayed(const Duration(seconds: 3));
+
+    if (!mounted) return;
     confettiController.stop();
   }
 

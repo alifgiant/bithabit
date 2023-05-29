@@ -1,9 +1,9 @@
-import 'package:bithabit/src/model/timeline.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
+import '../model/timeline.dart';
 import 'database/database_service.dart';
 
 class TimelineService extends ChangeNotifier {

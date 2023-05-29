@@ -1,6 +1,6 @@
-import 'package:bithabit/src/model/habit.dart';
 import 'package:isar/isar.dart';
 
+import '../../../model/habit.dart';
 import '../../../model/habit_color.dart';
 import '../../../model/habit_state.dart';
 import 'db_habit_frequency.dart';

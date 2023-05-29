@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:bithabit/src/model/habit.dart';
-import 'package:bithabit/src/model/timeline.dart';
-import 'package:bithabit/src/service/database/database_service.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../model/habit.dart';
+import '../../../model/timeline.dart';
+import '../database_service.dart';
 import 'db_habit.dart';
 import 'db_timeline.dart';
 

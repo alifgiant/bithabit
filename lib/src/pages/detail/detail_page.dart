@@ -1,4 +1,3 @@
-import 'package:bithabit/src/service/navigation_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -8,6 +7,7 @@ import '../../model/habit_color.dart';
 import '../../model/habit_frequency.dart';
 import '../../model/habit_reminder.dart';
 import '../../service/habit_service.dart';
+import '../../service/navigation_service.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/const/app_route.dart';
 import '../../utils/view/app_bar_title.dart';
@@ -286,12 +286,15 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> onRestoreClick() async {
-    // TODO: check subscription
+    NavigationService.of(context).runIfPremium(
+      'Restore Habit',
+      () {
+        widget.timelineService.resetLastAction();
+        widget.habitService.restoreHabit(edittedHabit.id);
 
-    widget.timelineService.resetLastAction();
-    widget.habitService.restoreHabit(edittedHabit.id);
-
-    if (!mounted) return;
-    NavigationService.of(context).maybePop();
+        if (!mounted) return;
+        NavigationService.of(context).maybePop();
+      },
+    );
   }
 }

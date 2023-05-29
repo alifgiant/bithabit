@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bithabit/src/model/habit.dart';
-import 'package:bithabit/src/model/timeline.dart';
-import 'package:bithabit/src/service/database/database_service.dart';
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../model/habit.dart';
+import '../../../model/timeline.dart';
+import '../database_service.dart';
 
 class WebPrefService extends DatabaseService {
   static const _dbHabitsKey = 'dbHabits';
