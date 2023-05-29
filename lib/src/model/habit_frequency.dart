@@ -1,8 +1,4 @@
-import 'package:isar/isar.dart';
-
-@embedded
 class HabitFrequency {
-  @Enumerated(EnumType.value, 'key')
   final FrequencyType type;
   final List<int> selected;
   const HabitFrequency({

@@ -4,11 +4,10 @@ import 'package:bithabit/src/model/habit.dart';
 import 'package:bithabit/src/model/timeline.dart';
 import 'package:bithabit/src/service/database/database_service.dart';
 import 'package:isar/isar.dart';
-// ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
 
-import '../../model/habit.g.dart';
-import '../../model/timeline.g.dart';
+import 'db_habit.dart';
+import 'db_timeline.dart';
 
 class IsarService extends DatabaseService {
   final isarCompleter = Completer<Isar>();
@@ -16,7 +15,7 @@ class IsarService extends DatabaseService {
   Future<void> setup() async {
     final dir = await getApplicationDocumentsDirectory();
     final isar = await Isar.open(
-      [HabitSchema, TimelineSchema],
+      [DbHabitSchema, DbTimelineSchema],
       directory: dir.path,
     );
     isarCompleter.complete(isar);
@@ -25,45 +24,47 @@ class IsarService extends DatabaseService {
   @override
   Future<int> saveHabit(Habit habit) async {
     final isar = await isarCompleter.future;
-    return isar.writeTxn(() => isar.habits.put(habit));
+    return isar.writeTxn(() => isar.dbHabits.put(habit.toDbHabit()));
   }
 
   @override
   Future<bool> deleteHabit(int id) async {
     final isar = await isarCompleter.future;
-    return isar.writeTxn(() => isar.habits.delete(id));
+    return isar.writeTxn(() => isar.dbHabits.delete(id));
   }
 
   @override
   Future<List<Habit>> getAllHabits() async {
     final isar = await isarCompleter.future;
-    return isar.habits.where().findAll();
+    final dbHabits = await isar.dbHabits.where().findAll();
+    return dbHabits.map((e) => e.toHabit()).toList();
   }
 
   @override
   Future<int> saveTimeline(Timeline timeline) async {
     final isar = await isarCompleter.future;
-    return isar.writeTxn(() => isar.timelines.put(timeline));
+    return isar.writeTxn(() => isar.dbTimelines.put(timeline.toDbTimeline()));
   }
 
   @override
   Future<bool> deleteTimeline(int id) async {
     final isar = await isarCompleter.future;
-    return isar.writeTxn(() => isar.timelines.delete(id));
+    return isar.writeTxn(() => isar.dbTimelines.delete(id));
   }
 
   @override
   Future<List<Timeline>> getAllTimelines() async {
     final isar = await isarCompleter.future;
-    return isar.timelines.where().findAll();
+    final dbTimelines = await isar.dbTimelines.where().findAll();
+    return dbTimelines.map((e) => e.toTimeline()).toList();
   }
 
   @override
   Future<Map<String, dynamic>> dump() async {
     final isar = await isarCompleter.future;
     return {
-      'habits': await isar.habits.where().exportJson(),
-      'timeline': await isar.timelines.where().exportJson(),
+      'habits': await isar.dbTimelines.where().exportJson(),
+      'timeline': await isar.dbTimelines.where().exportJson(),
     };
   }
 
@@ -78,8 +79,8 @@ class IsarService extends DatabaseService {
     if (jsonHabit.isEmpty) return false;
 
     await isar.writeTxn(() async {
-      await isar.habits.importJson(jsonHabit);
-      await isar.timelines.importJson(jsonTimeline);
+      await isar.dbHabits.importJson(jsonHabit);
+      await isar.dbTimelines.importJson(jsonTimeline);
     });
 
     return true;

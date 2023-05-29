@@ -1,13 +1,8 @@
 import 'package:isar/isar.dart';
 
-@collection
 class Timeline {
-  final Id id; // you can also use id = null to auto increment
-
-  @Index(type: IndexType.value)
+  final int id; // you can also use id = null to auto increment
   final DateTime time;
-
-  @Index(type: IndexType.value)
   final int habitId;
 
   Timeline(

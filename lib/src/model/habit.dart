@@ -5,15 +5,10 @@ import 'habit_frequency.dart';
 import 'habit_reminder.dart';
 import 'habit_state.dart';
 
-@collection
 class Habit {
-  final Id id; // you can also use id = null to auto increment
-
-  @Index(type: IndexType.value)
+  final int id;
   final String name;
-  @Enumerated(EnumType.value, 'key')
   final HabitColor color;
-  @Enumerated(EnumType.value, 'key')
   final HabitState state;
   final HabitFrequency frequency;
   final List<HabitReminder> reminder;

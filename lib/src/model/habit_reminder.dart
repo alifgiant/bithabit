@@ -1,6 +1,3 @@
-import 'package:isar/isar.dart';
-
-@embedded
 class HabitReminder {
   final int hour;
   final int minute;
