@@ -1,6 +1,8 @@
+import 'package:bithabit/src/service/navigation_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:provider/provider.dart';
 
 import '../../model/habit.dart';
 import '../../model/habit_color.dart';
@@ -33,6 +35,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  late NavigationService navService;
   late Habit edittedHabit;
   bool get isNewHabit => widget.habit == null;
 
@@ -44,6 +47,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
+    navService = NavigationService(context, context.read());
     edittedHabit = widget.habit?.copy() ??
         Habit(
           '',
@@ -243,7 +247,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void onChartClick() {
-    Navigator.of(context).pushNamed(AppRoute.charts, arguments: edittedHabit);
+    navService.open(AppRoute.charts, arguments: edittedHabit);
   }
 
   Future<void> onDeleteClick() async {
@@ -251,6 +255,7 @@ class _DetailPageState extends State<DetailPage> {
       context,
       edittedHabit.isEnabled ? 'Archive this habit?' : 'Permanent delete?',
       edittedHabit.isEnabled ? "Don't worry, you can bring it back on setting page." : "You won't be able to restore this habit anymore",
+      confirmBtnColor: Theme.of(context).colorScheme.error,
     );
     if (result == null || result == ConfirmationResult.no) return;
     if (!mounted) return;

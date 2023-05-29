@@ -29,17 +29,20 @@ class ConfirmingDialog extends StatelessWidget {
   final String desc;
   final String? confirmText;
   final String? declineText;
+  final Color? confirmBtnColor;
 
   const ConfirmingDialog(
     this.title,
     this.desc, {
     this.confirmText,
     this.declineText,
+    this.confirmBtnColor,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final defaultColor = Theme.of(context).colorScheme.primary;
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(21),
@@ -58,15 +61,21 @@ class ConfirmingDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.maybePop(context, ConfirmationResult.no),
+                  onPressed: () => Navigator.maybePop(
+                    context,
+                    ConfirmationResult.no,
+                  ),
                   child: Text(declineText ?? 'No'),
                 ),
                 const SizedBox(width: 10),
                 TextButton(
-                  onPressed: () => Navigator.maybePop(context, ConfirmationResult.yes),
+                  onPressed: () => Navigator.maybePop(
+                    context,
+                    ConfirmationResult.yes,
+                  ),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Theme.of(context).colorScheme.error,
+                    backgroundColor: confirmBtnColor ?? defaultColor,
                   ),
                   child: Text(confirmText ?? 'Okay'),
                 ),
@@ -83,6 +92,7 @@ class ConfirmingDialog extends StatelessWidget {
     String title,
     String desc, {
     String? confirmText,
+    Color? confirmBtnColor,
     String? declineText,
   }) {
     return showDialog<ConfirmationResult>(
@@ -93,6 +103,7 @@ class ConfirmingDialog extends StatelessWidget {
           desc,
           confirmText: confirmText,
           declineText: declineText,
+          confirmBtnColor: confirmBtnColor,
         );
       },
     );
