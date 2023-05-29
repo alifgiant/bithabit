@@ -16,6 +16,13 @@
             "program": "lib/main_preview.dart",
         },
         {
+            "name": "bithabit web (debug preview)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_preview.dart",
+            "deviceId": "chrome",
+        },
+        {
             "name": "bithabit (profile mode)",
             "request": "launch",
             "type": "dart",
