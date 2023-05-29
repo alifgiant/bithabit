@@ -45,9 +45,9 @@ class WebPrefService extends DatabaseService {
   }
 
   @override
-  Future<bool> deleteHabit(int id) async {
+  Future<bool> deleteHabit(Habit habit) async {
     final savedHabits = await getAllHabits();
-    savedHabits.removeWhere((e) => e.id == id);
+    savedHabits.removeWhere((e) => e.id == habit.id);
     return _replaceSavedHabits(savedHabits);
   }
 
@@ -92,9 +92,9 @@ class WebPrefService extends DatabaseService {
   }
 
   @override
-  Future<bool> deleteTimeline(int id) async {
+  Future<bool> deleteTimeline(Timeline timeline) async {
     final savedTimeline = await getAllTimelines();
-    savedTimeline.removeWhere((e) => e.id == id);
+    savedTimeline.removeWhere((e) => e.id == timeline.id);
     return _replaceSavedTimelines(savedTimeline);
   }
 

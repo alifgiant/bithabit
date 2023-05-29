@@ -7,13 +7,13 @@ abstract class DatabaseService {
   /// create or update [habit]
   /// return habit id [int]
   Future<int> saveHabit(Habit habit);
-  Future<bool> deleteHabit(int id);
+  Future<bool> deleteHabit(Habit habit);
   Future<List<Habit>> getAllHabits();
 
   /// create or update [timeline]
   /// return timeline id [int]
   Future<int> saveTimeline(Timeline timeline);
-  Future<bool> deleteTimeline(int id);
+  Future<bool> deleteTimeline(Timeline timeline);
   Future<List<Timeline>> getAllTimelines();
 
   Future<Map<String, dynamic>> dump();

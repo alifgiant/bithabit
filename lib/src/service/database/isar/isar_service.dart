@@ -28,9 +28,9 @@ class IsarService extends DatabaseService {
   }
 
   @override
-  Future<bool> deleteHabit(int id) async {
+  Future<bool> deleteHabit(Habit habit) async {
     final isar = await isarCompleter.future;
-    return isar.writeTxn(() => isar.dbHabits.delete(id));
+    return isar.writeTxn(() => isar.dbHabits.delete(habit.id));
   }
 
   @override
@@ -47,9 +47,9 @@ class IsarService extends DatabaseService {
   }
 
   @override
-  Future<bool> deleteTimeline(int id) async {
+  Future<bool> deleteTimeline(Timeline timeline) async {
     final isar = await isarCompleter.future;
-    return isar.writeTxn(() => isar.dbTimelines.delete(id));
+    return isar.writeTxn(() => isar.dbTimelines.delete(timeline.id));
   }
 
   @override

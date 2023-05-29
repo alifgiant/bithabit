@@ -110,7 +110,7 @@ class TimelineService extends ChangeNotifier {
     final timelines = _habitTimelineMap[habit.id] ?? {};
     final savedTimeline = timelines[removedHourTime];
     if (savedTimeline != null) {
-      final success = await _dbService.deleteHabit(savedTimeline.id);
+      final success = await _dbService.deleteTimeline(savedTimeline);
       if (!success) return;
 
       timelines.remove(removedHourTime);

@@ -52,7 +52,7 @@ class HabitService extends ChangeNotifier {
     if (habit == null) return;
 
     if (permanent) {
-      final success = await _dbService.deleteHabit(id);
+      final success = await _dbService.deleteHabit(habit);
       if (success) _habitMap.remove(id);
 
       // TODO: run reminder service to remove reminder
