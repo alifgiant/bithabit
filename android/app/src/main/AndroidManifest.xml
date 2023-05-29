@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bithabit">
+    package="com.luxinfity.bithabit">
    <application
         android:label="BitHabit"
         android:name="${applicationName}"

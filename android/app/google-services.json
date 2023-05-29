@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1061987817719",
+    "project_id": "bithabit-app",
+    "storage_bucket": "bithabit-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061987817719:android:98bbc8ed44f88127ab1bf2",
+        "android_client_info": {
+          "package_name": "com.luxinfity.bithabit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXvhTk-dsZDOn864ECCGZgbzej45cqBzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
