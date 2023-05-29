@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 
 import 'firebase_options.dart';
@@ -11,14 +10,15 @@ class FirebaseSetup {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    final remoteConfig = FirebaseRemoteConfig.instance;
-    await remoteConfig.setConfigSettings(
-      RemoteConfigSettings(
-        fetchTimeout: const Duration(minutes: 5),
-        minimumFetchInterval: const Duration(days: 1),
-      ),
-    );
-    await remoteConfig.fetchAndActivate();
+    // TODO: enable remote config
+    // final remoteConfig = FirebaseRemoteConfig.instance;
+    // await remoteConfig.setConfigSettings(
+    //   RemoteConfigSettings(
+    //     fetchTimeout: const Duration(minutes: 5),
+    //     minimumFetchInterval: const Duration(days: 1),
+    //   ),
+    // );
+    // Future(remoteConfig.fetchAndActivate);
 
     /// crashlytic not supported on WEB Platform
     if (kIsWeb) return;
