@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
+import '../../service/navigation_service.dart';
 import '../../service/subs_service.dart';
 import '../../utils/const/app_route.dart';
 import '../../utils/res/res_color.dart';
@@ -17,7 +18,7 @@ class SubscribeTile extends StatelessWidget {
       return SettingTile(
         title: 'BitHabit Pro',
         icon: BoxIcons.bx_extension,
-        onTap: () => Navigator.of(context).pushNamed(AppRoute.premium),
+        onTap: () => NavigationService.of(context).open(AppRoute.premium),
       );
     }
 
@@ -28,7 +29,7 @@ class SubscribeTile extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        onTap: () => Navigator.of(context).pushNamed(AppRoute.premium),
+        onTap: () => NavigationService.of(context).open(AppRoute.premium),
         leading: const Icon(
           BoxIcons.bxs_extension,
           size: 32,

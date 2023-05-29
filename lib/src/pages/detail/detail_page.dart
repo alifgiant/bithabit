@@ -2,7 +2,6 @@ import 'package:bithabit/src/service/navigation_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:provider/provider.dart';
 
 import '../../model/habit.dart';
 import '../../model/habit_color.dart';
@@ -35,7 +34,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  late NavigationService navService;
   late Habit edittedHabit;
   bool get isNewHabit => widget.habit == null;
 
@@ -47,7 +45,6 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    navService = NavigationService(context, context.read());
     edittedHabit = widget.habit?.copy() ??
         Habit(
           '',
@@ -247,7 +244,10 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void onChartClick() {
-    navService.open(AppRoute.charts, arguments: edittedHabit);
+    NavigationService.of(context).open(
+      AppRoute.charts,
+      arguments: edittedHabit,
+    );
   }
 
   Future<void> onDeleteClick() async {
@@ -267,7 +267,7 @@ class _DetailPageState extends State<DetailPage> {
     );
 
     if (!mounted) return;
-    Navigator.of(context).maybePop();
+    NavigationService.of(context).maybePop();
   }
 
   Future<void> onSaveClick() async {
@@ -282,7 +282,7 @@ class _DetailPageState extends State<DetailPage> {
     await widget.habitService.saveHabit(edittedHabit);
 
     if (!mounted) return;
-    Navigator.of(context).pop(edittedHabit);
+    NavigationService.of(context).maybePop(edittedHabit);
   }
 
   Future<void> onRestoreClick() async {
@@ -292,6 +292,6 @@ class _DetailPageState extends State<DetailPage> {
     widget.habitService.restoreHabit(edittedHabit.id);
 
     if (!mounted) return;
-    Navigator.of(context).maybePop();
+    NavigationService.of(context).maybePop();
   }
 }

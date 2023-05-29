@@ -3,6 +3,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../service/navigation_service.dart';
 import '../../service/recap_service.dart';
 import '../../service/sorting_service.dart';
 import '../../utils/const/app_route.dart';
@@ -37,7 +38,7 @@ class SettingPage extends StatelessWidget {
             title: 'Today View Sorting',
             icon: Icons.sort_rounded,
             onTap: () {
-              ViewUtils.showOptionListBottomSheet(
+              ViewUtils.showOptionListBottomSheet<void>(
                 context: context,
                 children: SortingOption.values
                     .map(
@@ -45,7 +46,7 @@ class SettingPage extends StatelessWidget {
                         title: Text(e.title),
                         onTap: () {
                           context.read<SortingService>().updateOption(e);
-                          Navigator.maybePop(context);
+                          NavigationService.of(context).maybePop();
                         },
                       ),
                     )
@@ -57,7 +58,7 @@ class SettingPage extends StatelessWidget {
             title: 'Recap View Style',
             icon: Icons.calendar_month_outlined,
             onTap: () {
-              ViewUtils.showOptionListBottomSheet(
+              ViewUtils.showOptionListBottomSheet<void>(
                 context: context,
                 children: RecapOption.values
                     .map(
@@ -65,7 +66,7 @@ class SettingPage extends StatelessWidget {
                         title: Text(e.menuTitle),
                         onTap: () {
                           context.read<RecapService>().updateOption(e);
-                          Navigator.maybePop(context);
+                          NavigationService.of(context).maybePop();
                         },
                       ),
                     )
@@ -76,12 +77,12 @@ class SettingPage extends StatelessWidget {
           SettingTile(
             title: 'Archived Habit',
             icon: BoxIcons.bx_archive_out,
-            onTap: () => Navigator.of(context).pushNamed(AppRoute.archive),
+            onTap: () => NavigationService.of(context).open(AppRoute.archive),
           ),
           SettingTile(
             title: 'Export/Import Data',
             icon: Icons.import_export,
-            onTap: () => Navigator.of(context).pushNamed(AppRoute.export),
+            onTap: () => NavigationService.of(context).open(AppRoute.export),
           ),
           const SubscribeTile(),
           const Padding(

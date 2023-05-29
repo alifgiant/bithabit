@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../service/navigation_service.dart';
+
 mixin ViewUtils {
   static Future<T?> showOptionListBottomSheet<T>({
     required BuildContext context,
@@ -61,16 +63,14 @@ class ConfirmingDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.maybePop(
-                    context,
+                  onPressed: () => NavigationService.of(context).maybePop(
                     ConfirmationResult.no,
                   ),
                   child: Text(declineText ?? 'No'),
                 ),
                 const SizedBox(width: 10),
                 TextButton(
-                  onPressed: () => Navigator.maybePop(
-                    context,
+                  onPressed: () => NavigationService.of(context).maybePop(
                     ConfirmationResult.yes,
                   ),
                   style: TextButton.styleFrom(
