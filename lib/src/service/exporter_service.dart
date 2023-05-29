@@ -46,8 +46,15 @@ class ExporterService {
     if (result.files.first.extension != 'json') return ImportResult.wrongFileFormat;
 
     if (kIsWeb) {
-      // TODO: handle web pick file
-      return ImportResult.cancel;
+      try {
+        final byte = result.files.first.bytes;
+        final encondedData = utf8.decode(byte!, allowMalformed: true);
+        final json = jsonDecode(encondedData);
+        final isSuccess = await _dbService.import(json as Map<String, dynamic>);
+        return isSuccess ? ImportResult.success : ImportResult.empty;
+      } catch (e) {
+        return ImportResult.fileCorrupt;
+      }
     } else {
       final file = File(result.files.first.path!);
 

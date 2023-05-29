@@ -120,8 +120,8 @@ class WebPrefService extends DatabaseService {
   @override
   Future<Map<String, dynamic>> dump() async {
     return {
-      'habits': await getAllHabits(),
-      'timeline': await getAllTimelines(),
+      'habits': (await getAllHabits()).map((e) => e.toMap()).toList(),
+      'timeline': (await getAllTimelines()).map((e) => e.toMap()).toList(),
     };
   }
 

@@ -61,10 +61,9 @@ class IsarService extends DatabaseService {
 
   @override
   Future<Map<String, dynamic>> dump() async {
-    final isar = await isarCompleter.future;
     return {
-      'habits': await isar.dbTimelines.where().exportJson(),
-      'timeline': await isar.dbTimelines.where().exportJson(),
+      'habits': (await getAllHabits()).map((e) => e.toMap()).toList(),
+      'timeline': (await getAllTimelines()).map((e) => e.toMap()).toList(),
     };
   }
 
@@ -78,12 +77,36 @@ class IsarService extends DatabaseService {
     final jsonTimeline = rawJsonTimeline.cast<Map<String, dynamic>>();
     if (jsonHabit.isEmpty) return false;
 
+    final habits = jsonHabit.map(Habit.fromJson);
+    final savedHabits = await getAllHabits();
+    final mergedHabit = combineHabits(savedHabits, habits);
+
+    final timelines = jsonTimeline.map(Timeline.fromJson);
+    final savedTimeline = await getAllTimelines();
+    final mergedTimeline = combineTimeline(savedTimeline, timelines);
+
     await isar.writeTxn(() async {
-      await isar.dbHabits.importJson(jsonHabit);
-      await isar.dbTimelines.importJson(jsonTimeline);
+      await isar.dbHabits.putAll(mergedHabit.toList());
+      await isar.dbTimelines.putAll(mergedTimeline.toList());
     });
 
     return true;
+  }
+
+  Iterable<DbHabit> combineHabits(List<Habit> old, Iterable<Habit> newHabit) {
+    final newHabitKeys = newHabit.map((e) => e.id).toSet();
+    final merged = old
+      ..removeWhere((e) => newHabitKeys.contains(e.id))
+      ..addAll(newHabit);
+    return merged.map((e) => e.toDbHabit());
+  }
+
+  Iterable<DbTimeline> combineTimeline(List<Timeline> old, Iterable<Timeline> newTimeline) {
+    final newTimelineKeys = newTimeline.map((e) => e.id).toSet();
+    final merged = old
+      ..removeWhere((e) => newTimelineKeys.contains(e.id))
+      ..addAll(newTimeline);
+    return merged.map((e) => e.toDbTimeline());
   }
 }
 
