@@ -61,7 +61,11 @@ class WeeklyRecap extends StatelessWidget {
                           date: day,
                           habitColor: habit.color,
                           isChecked: timelineService.isHabitChecked(habit, day),
-                          onTap: () => timelineService.check(habit, day),
+                          onTap: () => timelineService.maybeCheck(
+                            context,
+                            habit,
+                            day,
+                          ),
                         ),
                       )
                       .toList(),

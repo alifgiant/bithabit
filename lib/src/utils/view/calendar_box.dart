@@ -22,14 +22,19 @@ class CalendarBox extends StatelessWidget {
     this.enableClick = true,
     super.key,
   }) {
-    // Get first day of month's weekday. to help position date:1 on correct day position
+    // Get first day of month's weekday.
+    // to help position date:1 on correct day position
     // final firstDayOfMonth = DateTime(today.year, today.month, 1);
-    final lastDayOfMonth = DateTime(firstDayOfMonth.year, firstDayOfMonth.month + 1, 0);
-    final firstWeekDay = firstDayOfMonth.weekday;
-    final lastWeekDay = lastDayOfMonth.weekday;
+    final lastDayOfMonth = DateTime(
+      firstDayOfMonth.year,
+      firstDayOfMonth.month + 1,
+      0,
+    );
+    final firstWeekDay = firstDayOfMonth.weekday - 1;
+    final lastWeekDay = 7 - lastDayOfMonth.weekday;
 
     // Get the number of days in the current month
-    final totalShowedDays = lastDayOfMonth.day + (firstWeekDay - 1) + (7 - lastWeekDay);
+    final totalShowedDays = lastDayOfMonth.day + firstWeekDay + lastWeekDay;
     monthDates = List.generate(
       totalShowedDays,
       (index) => DateTime(
@@ -48,7 +53,9 @@ class CalendarBox extends StatelessWidget {
       builder: (ctx, constraints) {
         const buttonSpacing = 6.0;
         const horizontalItemCount = 7;
-        final buttonSize = (constraints.maxWidth - ((horizontalItemCount - 1) * buttonSpacing) - 1) / horizontalItemCount;
+        const totalButtonSpacing = (horizontalItemCount - 1) * buttonSpacing;
+        final maxWidth = constraints.maxWidth - totalButtonSpacing - 1;
+        final buttonSize = maxWidth / horizontalItemCount;
 
         return Column(
           children: [
@@ -86,7 +93,13 @@ class CalendarBox extends StatelessWidget {
                         habitColor: habit.color,
                         isChecked: timelineService.isHabitChecked(habit, day),
                         unselectedTextColor: unselectedTextColor,
-                        onTap: enableClick ? () => timelineService.check(habit, day) : null,
+                        onTap: enableClick
+                            ? () => timelineService.maybeCheck(
+                                  context,
+                                  habit,
+                                  day,
+                                )
+                            : null,
                       ),
                     ),
                   )
@@ -124,7 +137,7 @@ class _MonthDayBox extends StatelessWidget {
     final today = DateTime.now();
     final isSameAsToday = today.isSameDay(date);
 
-    Color _getTextColor() {
+    Color getTextColor() {
       if (isChecked) return habitColor.textColor;
       return unselectedTextColor ?? habitColor.textColor;
     }
@@ -137,7 +150,9 @@ class _MonthDayBox extends StatelessWidget {
         ),
       ),
       clipBehavior: Clip.hardEdge,
-      color: isChecked ? habitColor.mainColor : habitColor.mainColor.withOpacity(0.2),
+      color: isChecked
+          ? habitColor.mainColor
+          : habitColor.mainColor.withOpacity(0.2),
       child: InkWell(
         onTap: onTap,
         child: Center(
@@ -145,7 +160,7 @@ class _MonthDayBox extends StatelessWidget {
             date.day.toString(),
             style: TextStyle(
               fontSize: 12,
-              color: _getTextColor(),
+              color: getTextColor(),
               fontWeight: isSameAsToday ? FontWeight.w800 : null,
             ),
           ),

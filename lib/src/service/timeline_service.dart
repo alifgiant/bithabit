@@ -1,19 +1,25 @@
-import 'package:bithabit/src/service/analytic_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
 import '../model/timeline.dart';
+import 'analytic_service.dart';
 import 'database/database_service.dart';
+import 'navigation_service.dart';
+import 'subs_service.dart';
 
 class TimelineService extends ChangeNotifier {
   final DatabaseService _dbService;
+  final SubsService _subsService;
+
+  static const int maxWeekNonPremium = 12;
+  static const int _maxDayNonPremium = maxWeekNonPremium * 7 /** day */;
 
   /// [_habitTimelineMap] is Map<HabitId, Map<DateTime, Timeline>>
   late final Map<int, Map<DateTime, Timeline>> _habitTimelineMap;
   late final TimelineCounter counter;
 
-  TimelineService(this._dbService) {
+  TimelineService(this._dbService, this._subsService) {
     _habitTimelineMap = {};
     counter = TimelineCounter(_habitTimelineMap);
 
@@ -50,34 +56,55 @@ class TimelineService extends ChangeNotifier {
     return timeline[removedHourTime] != null;
   }
 
-  Future<void> check(
+  Future<void> maybeCheck(
+    BuildContext context,
     Habit habit,
-    DateTime time, {
-    bool setAction = true,
-  }) async {
+    DateTime time,
+  ) async {
     final removedHourTime = time.emptyHour();
-
     final timelines = _getHabitTimeline(habit.id) ?? {};
-    final savedTimeline = timelines[removedHourTime];
-    if (savedTimeline != null) {
-      final success = await _dbService.deleteTimeline(savedTimeline);
-      if (!success) return;
+    final timeline = timelines[removedHourTime];
+    final hasSavedTimeline = timeline != null;
 
-      timelines.remove(removedHourTime);
+    if (hasSavedTimeline) return _uncheck(habit, timeline);
 
-      Analytic.get().logCheckTimeline(savedTimeline, isCheck: false);
-      if (setAction) lastAction = CheckAction(removedHourTime, isCheck: false);
-    } else {
-      final timeline = Timeline(removedHourTime, habit.id);
-      final id = await _dbService.saveTimeline(timeline);
-
-      final newTimeline = timeline.copy(id: id);
-      timelines[removedHourTime] = newTimeline;
-
-      Analytic.get().logCheckTimeline(newTimeline, isCheck: true);
-      if (setAction) lastAction = CheckAction(removedHourTime, isCheck: true);
+    if (!_subsService.isPremiumUser && timelines.length > _maxDayNonPremium) {
+      return NavigationService.of(context).showPremiumDialog(
+        'Track Day is Maxed Out',
+        desc: 'You can only track an habit for $maxWeekNonPremium weeks. '
+            'BitHabit Pro subcription is required for more days',
+      );
     }
+
+    return _check(habit, Timeline(removedHourTime, habit.id));
+  }
+
+  Future<void> _check(Habit habit, Timeline timeline) async {
+    final timelines = _getHabitTimeline(habit.id) ?? {};
+    final id = await _dbService.saveTimeline(timeline);
+    final timelineWithId = timeline.copy(id: id);
+
+    // update map
+    timelines[timeline.time] = timelineWithId;
     _habitTimelineMap[habit.id] = timelines;
+
+    lastAction = CheckAction(timeline.time, isCheck: true);
+    Analytic.get().logCheckTimeline(timelineWithId, isCheck: true);
+
+    notifyListeners();
+  }
+
+  Future<void> _uncheck(Habit habit, Timeline timeline) async {
+    final timelines = _getHabitTimeline(habit.id) ?? {};
+    final success = await _dbService.deleteTimeline(timeline);
+    if (!success) return;
+
+    // update map
+    timelines.remove(timeline.time);
+    _habitTimelineMap[habit.id] = timelines;
+
+    lastAction = CheckAction(timeline.time, isCheck: false);
+    Analytic.get().logCheckTimeline(timeline, isCheck: false);
 
     notifyListeners();
   }

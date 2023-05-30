@@ -27,12 +27,17 @@ class NavigationService {
     return subsService.isPremiumUser;
   }
 
-  Future<void> _showPremiumDialog(String title) async {
+  Future<void> showPremiumDialog(
+    String title, {
+    String? desc,
+  }) async {
     final navigator = Navigator.of(context);
+    const defDesc = 'You need BitHabit Pro subcription '
+        'to access this premium feature';
     final result = await ConfirmingDialog.show(
       context,
       title,
-      'You need BitHabit Pro subcription to access this premium feature',
+      desc ?? defDesc,
       confirmText: 'Read More',
     );
     if (result == ConfirmationResult.yes) navigator.pushNamed(AppRoute.premium);
@@ -40,7 +45,7 @@ class NavigationService {
 
   Future<T?> runIfPremium<T>(String featureName, T Function() fun) async {
     if (_isPremiumUser) return fun();
-    _showPremiumDialog(featureName);
+    showPremiumDialog(featureName);
     return null;
   }
 
@@ -50,7 +55,7 @@ class NavigationService {
     final isAllowed = !premiumRoute || _isPremiumUser;
 
     if (!isAllowed) {
-      _showPremiumDialog(premiumScreens[routeName]!);
+      showPremiumDialog(premiumScreens[routeName]!);
       return;
     }
 

@@ -61,8 +61,12 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
     if (!lastAction.isCheck) return;
 
     // if all today habit are completed, trigger award animation
-    final isEditingTodayHabit = lastAction.time.isAtSameMomentAs(today.emptyHour());
-    if (isEditingTodayHabit == true && completed == habits.length && habits.isNotEmpty) {
+    final isEditingTodayHabit = lastAction.time.isAtSameMomentAs(
+      today.emptyHour(),
+    );
+    if (isEditingTodayHabit == true &&
+        completed == habits.length &&
+        habits.isNotEmpty) {
       playCompleteSound();
       startAnimation(context);
     } else {
@@ -92,7 +96,7 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
     ).show();
 
     confettiController.play();
-    await Future.delayed(widget.duration ?? const Duration(seconds: 3));
+    await Future<void>.delayed(widget.duration ?? const Duration(seconds: 3));
     confettiController.stop();
   }
 
@@ -100,7 +104,8 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
   Widget build(BuildContext context) {
     return ConfettiWidget(
       confettiController: confettiController,
-      blastDirectionality: BlastDirectionality.explosive, // don't specify a direction, blast randomly
+      blastDirectionality: BlastDirectionality
+          .explosive, // don't specify a direction, blast randomly
       shouldLoop: true, // start again as soon as the animation is finished
       colors: const [
         ResColor.lightGreen,

@@ -7,6 +7,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/subs_service.dart';
+import '../../service/timeline_service.dart';
 import '../../utils/res/res_color.dart';
 import '../../utils/view/app_bar_title.dart';
 import '../../utils/view/section_title.dart';
@@ -28,7 +29,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
   @override
   void initState() {
     super.initState();
-    confettiController = ConfettiController(duration: const Duration(seconds: 6));
+    confettiController = ConfettiController(
+      duration: const Duration(seconds: 6),
+    );
 
     subsService = context.read<SubsService>();
     isPremiumUser = subsService.isPremiumUser;
@@ -36,7 +39,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
   }
 
   Future<void> checkSubs() async {
-    if (subsService.isPremiumUser && isPremiumUser != subsService.isPremiumUser) {
+    if (subsService.isPremiumUser &&
+        isPremiumUser != subsService.isPremiumUser) {
       startAnimation(context);
       playCompleteSound();
     }
@@ -100,7 +104,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
                     children: [
                       const Text(
                         'Subscribe Now, Cancel Anytime',
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
                       ),
                       const SizedBox(height: 18),
                       const ListTile(
@@ -117,7 +124,11 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
                       if (isPremiumUser)
                         TextButton(
                           onPressed: () => subsService.cancel(context),
-                          style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Theme.of(
+                              context,
+                            ).colorScheme.error,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
@@ -151,19 +162,22 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
               ),
               const _FeatureTile(
                 title: 'Import Data',
-                subtitle: 'Switching phones? Restore a previously exported backup',
+                subtitle: 'Switching phones? '
+                    'Restore a previously exported backup',
                 icon: BoxIcons.bxs_arrow_from_top,
                 color: ResColor.lightBlue,
               ),
               const _FeatureTile(
                 title: 'Unlimited tracked day',
-                subtitle: 'Track an habit for more than 3 months',
+                subtitle: 'Track an habit for more than '
+                    '${TimelineService.maxWeekNonPremium} weeks',
                 icon: BoxIcons.bxs_collection,
                 color: Colors.orange,
               ),
               const _FeatureTile(
                 title: 'Charts',
-                subtitle: 'Visualize your progress to better understand yourself',
+                subtitle: 'Visualize your progress '
+                    'to better understand yourself',
                 icon: BoxIcons.bx_line_chart,
                 color: ResColor.lightGreen,
               ),
@@ -185,8 +199,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
             child: ConfettiWidget(
               key: const Key('Subscription Page Confetti'),
               confettiController: confettiController,
-              blastDirectionality: BlastDirectionality.explosive, // don't specify a direction, blast randomly
-              shouldLoop: true, // start again as soon as the animation is finished
+              // don't specify a direction, blast randomly
+              blastDirectionality: BlastDirectionality.explosive,
               colors: const [
                 ResColor.lightGreen,
                 ResColor.lightBlue,

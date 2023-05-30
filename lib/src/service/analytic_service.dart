@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 import '../model/habit.dart';
@@ -23,7 +25,7 @@ class Analytic {
     _firebase.logEvent(
       name: 'habit_${action.key}',
       parameters: {
-        ...habit.toMap(),
+        'habit': jsonEncode(habit.toMap()),
         ...?parameters,
       },
     );
@@ -37,7 +39,7 @@ class Analytic {
       name: 'timeline_update',
       parameters: {
         ...timeline.toMap(),
-        'isCheck': isCheck,
+        'isCheck': isCheck.toString(),
       },
     );
   }

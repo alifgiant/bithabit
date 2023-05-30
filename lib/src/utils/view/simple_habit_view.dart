@@ -59,7 +59,11 @@ class SimpleHabitView extends StatelessWidget {
                       _CheckCircle(
                         habitColor: habit.color,
                         isChecked: isChecked,
-                        onTap: () => timelineService.check(habit, today),
+                        onTap: () => timelineService.maybeCheck(
+                          context,
+                          habit,
+                          today,
+                        ),
                       ),
                   ],
                 ),
