@@ -8,15 +8,17 @@ class RecapOptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recapService = context.read<RecapService>();
     return PopupMenuButton(
       icon: const Icon(Icons.calendar_month_outlined),
       tooltip: 'Recap Option',
       itemBuilder: (context) => RecapOption.values
           .map(
             (e) => PopupMenuItem(
+              value: e,
               child: Text(e.menuTitle),
-              onTap: () => recapService.updateOption(e, 'RecapOptionButton'),
+              onTap: () => context
+                  .read<RecapService>()
+                  .updateOption(e, 'RecapOptionButton'),
             ),
           )
           .toList(),
