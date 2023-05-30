@@ -25,7 +25,7 @@ class NavigationService {
   };
 
   bool get _isPremiumUser {
-    return subsService.isPremiumUser || kIsWeb;
+    return subsService.isPremiumUser;
   }
 
   Future<void> _showPremiumDialog(String title) async {

@@ -11,7 +11,7 @@ import 'src/pages/home/home_page.dart';
 import 'src/pages/subscription/subscription_page.dart';
 import 'src/service/database/database.dart';
 import 'src/service/database/database_service.dart';
-import 'src/service/exporter_service.dart';
+import 'src/service/exporter/exporter_service.dart';
 import 'src/service/habit_service.dart';
 import 'src/service/recap_service.dart';
 import 'src/service/sorting_service.dart';
