@@ -1,6 +1,5 @@
 import 'package:bithabit/src/service/analytic_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
-import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
@@ -11,9 +10,13 @@ class TimelineService extends ChangeNotifier {
   final DatabaseService _dbService;
 
   /// [_habitTimelineMap] is Map<HabitId, Map<DateTime, Timeline>>
-  final Map<int, Map<DateTime, Timeline>> _habitTimelineMap = {};
+  late final Map<int, Map<DateTime, Timeline>> _habitTimelineMap;
+  late final TimelineCounter counter;
 
   TimelineService(this._dbService) {
+    _habitTimelineMap = {};
+    counter = TimelineCounter(_habitTimelineMap);
+
     loadTimeline();
   }
 
@@ -34,68 +37,14 @@ class TimelineService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<DateTime, Timeline>? getHabitTimeline(int habitId) {
+  Map<DateTime, Timeline>? _getHabitTimeline(int habitId) {
     return _habitTimelineMap[habitId];
-  }
-
-  int countBestStreak(Habit habit) {
-    final timeline = getHabitTimeline(habit.id);
-    if (timeline == null || timeline.isEmpty) return 0;
-
-    int best = 1;
-    int count = 1;
-    final sortedTime = timeline.keys.toList()..sort();
-
-    for (int i = 1; i < sortedTime.length; i++) {
-      final prevTime = sortedTime[i - 1];
-      final time = sortedTime[i];
-      if (time.difference(prevTime).inDays == 1) {
-        count += 1;
-        if (best < count) best = count;
-      } else {
-        count = 1;
-      }
-    }
-    return best;
-  }
-
-  int countHabit(
-    Habit habit,
-    int dayOfWeek,
-  ) {
-    final timeline = getHabitTimeline(habit.id);
-    if (timeline == null || timeline.isEmpty) return 0;
-
-    return timeline.keys.where((time) => time.weekday == dayOfWeek).length;
-  }
-
-  double habitCompletion(
-    Habit habit,
-    int year, {
-    int? month,
-  }) {
-    final timeline = getHabitTimeline(habit.id);
-    if (timeline == null || timeline.isEmpty) return 0;
-
-    Iterable<DateTime> times = timeline.keys.where((time) => time.year == year);
-    if (month != null) times = times.where((time) => time.month == month);
-
-    final count = times.length;
-
-    int totalDays;
-    if (month != null) {
-      totalDays = month.getMonthTotalDays(year: year);
-    } else {
-      totalDays = year.getYearTotalDays();
-    }
-
-    return count / totalDays;
   }
 
   bool isHabitChecked(Habit habit, DateTime time) {
     final removedHourTime = time.emptyHour();
 
-    final timeline = getHabitTimeline(habit.id);
+    final timeline = _getHabitTimeline(habit.id);
     if (timeline == null) return false;
 
     return timeline[removedHourTime] != null;
@@ -108,7 +57,7 @@ class TimelineService extends ChangeNotifier {
   }) async {
     final removedHourTime = time.emptyHour();
 
-    final timelines = _habitTimelineMap[habit.id] ?? {};
+    final timelines = _getHabitTimeline(habit.id) ?? {};
     final savedTimeline = timelines[removedHourTime];
     if (savedTimeline != null) {
       final success = await _dbService.deleteTimeline(savedTimeline);
@@ -130,7 +79,6 @@ class TimelineService extends ChangeNotifier {
     }
     _habitTimelineMap[habit.id] = timelines;
 
-    // save to DB
     notifyListeners();
   }
 
@@ -147,4 +95,54 @@ class CheckAction extends TimelineAction {
   final DateTime time;
 
   CheckAction(this.time, {required super.isCheck});
+}
+
+class TimelineCounter {
+  final Map<int, Map<DateTime, Timeline>> _habitTimelineMap;
+
+  TimelineCounter(this._habitTimelineMap);
+
+  Map<DateTime, Timeline>? _getHabitTimeline(int habitId) {
+    return _habitTimelineMap[habitId];
+  }
+
+  int bestStreak(Habit habit) {
+    final timeline = _getHabitTimeline(habit.id);
+    if (timeline == null || timeline.isEmpty) return 0;
+
+    int best = 1;
+    int count = 1;
+    final sortedTime = timeline.keys.toList()..sort();
+
+    for (int i = 1; i < sortedTime.length; i++) {
+      final prevTime = sortedTime[i - 1];
+      final time = sortedTime[i];
+      if (time.difference(prevTime).inDays == 1) {
+        count += 1;
+        if (best < count) best = count;
+      } else {
+        count = 1;
+      }
+    }
+    return best;
+  }
+
+  int completionIn(
+    Habit habit, {
+    int? year,
+    int? month,
+    int? dayOfWeek,
+  }) {
+    final timeline = _getHabitTimeline(habit.id);
+    if (timeline == null || timeline.isEmpty) return 0;
+
+    Iterable<DateTime> times = timeline.keys;
+    if (year != null) times = times.where((time) => time.year == year);
+    if (month != null) times = times.where((time) => time.month == month);
+    if (dayOfWeek != null) {
+      times = times.where((time) => time.weekday == dayOfWeek);
+    }
+
+    return times.length;
+  }
 }

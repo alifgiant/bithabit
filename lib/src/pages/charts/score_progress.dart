@@ -73,24 +73,33 @@ class ScoreProgress extends StatelessWidget {
         enabled: true,
         touchTooltipData: LineTouchTooltipData(
           tooltipBgColor: habit.color.mainColor,
-          getTooltipItems: (spot) => spot
-              .map(
-                (e) => LineTooltipItem(
-                  '${e.y.toPercentage(withPositiveSign: false)}\n(${getMonthName((e.x - 1).toInt())})',
-                  const TextStyle(color: ResColor.white),
-                ),
-              )
-              .toList(),
+          getTooltipItems: (spot) => spot.map(
+            (e) {
+              final percent = e.y.toPercentage(withPositiveSign: false);
+              final month = getMonthName((e.x - 1).toInt());
+              return LineTooltipItem(
+                '$percent\n($month)',
+                const TextStyle(color: ResColor.white),
+              );
+            },
+          ).toList(),
         ),
       ),
       lineBarsData: [
         LineChartBarData(
           spots: List.generate(
             now.month,
-            (index) => FlSpot(
-              (index + 1).toDouble(),
-              timelineService.habitCompletion(habit, now.year, month: index + 1),
-            ),
+            (index) {
+              final month = index + 1;
+              final completionCount = timelineService.counter.completionIn(
+                habit,
+                year: now.year,
+                month: month,
+              );
+              final totalDays = month.getMonthTotalDays(year: now.year);
+
+              return FlSpot(month.toDouble(), completionCount / totalDays);
+            },
           ),
           isCurved: true,
           gradient: LinearGradient(colors: gradientColors),

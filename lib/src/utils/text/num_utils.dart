@@ -27,8 +27,8 @@ extension IntExt on int {
     return lastDayOfYear.difference(firstDayOfYear).inDays + 1;
   }
 
-  int getMonthTotalDays({int? year}) {
-    return DateTime(year ?? DateTime.now().year, this + 1, 0).day;
+  int getMonthTotalDays({required int year}) {
+    return DateTime(year, this + 1, 0).day;
   }
 
   String formatShort() {

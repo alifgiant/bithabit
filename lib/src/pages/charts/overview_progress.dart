@@ -15,29 +15,46 @@ class OverviewProgress extends StatelessWidget {
     super.key,
   });
 
+  double calculateRatio(
+    TimelineService timelineService,
+    int year, {
+    int? month,
+  }) {
+    final monthCount = timelineService.counter.completionIn(
+      habit,
+      year: year,
+      month: month,
+    );
+
+    final totalDays = month != null
+        ? month.getMonthTotalDays(year: year)
+        : year.getYearTotalDays();
+
+    return monthCount / totalDays;
+  }
+
   @override
   Widget build(BuildContext context) {
     final today = DateTime.now().emptyHour();
 
     final timelineService = context.watch<TimelineService>();
-
-    final prevMonthRatio = timelineService.habitCompletion(
-      habit,
+    final prevMonthRatio = calculateRatio(
+      timelineService,
       today.year,
       month: today.month - 1,
     );
-    final curMonthRatio = timelineService.habitCompletion(
-      habit,
+    final curMonthRatio = calculateRatio(
+      timelineService,
       today.year,
       month: today.month,
     );
     final monthDiff = curMonthRatio - prevMonthRatio;
 
-    final prevYearRatio = timelineService.habitCompletion(habit, today.year - 1);
-    final curYearRatio = timelineService.habitCompletion(habit, today.year);
+    final prevYearRatio = calculateRatio(timelineService, today.year - 1);
+    final curYearRatio = calculateRatio(timelineService, today.year);
     final yearDiff = curYearRatio - prevYearRatio;
 
-    final bestStreak = timelineService.countBestStreak(habit);
+    final bestStreak = timelineService.counter.bestStreak(habit);
 
     const paddingH = 12.0;
     const spaceH = 6.0;
@@ -116,7 +133,11 @@ class _DetailOverview extends StatelessWidget {
                   : null,
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
-            if (doubleValue == 1) const Icon(Icons.star_rounded, color: ResColor.lightPurple)
+            if (doubleValue == 1)
+              const Icon(
+                Icons.star_rounded,
+                color: ResColor.lightPurple,
+              )
           ],
         );
       } else {
