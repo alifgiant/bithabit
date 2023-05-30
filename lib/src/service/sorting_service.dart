@@ -2,11 +2,13 @@ import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
+import 'analytic_service.dart';
 
 class SortingService extends ChangeNotifier {
   SortingOption currentSelectedFilter = SortingOption.byName;
 
-  void updateOption(SortingOption option) {
+  void updateOption(SortingOption option, String source) {
+    Analytic.get().logSortTypeUpdate(option, source);
     currentSelectedFilter = option;
     notifyListeners();
   }

@@ -1,3 +1,4 @@
+import 'package:bithabit/src/service/analytic_service.dart';
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:bithabit/src/utils/text/num_utils.dart';
 import 'package:flutter/material.dart';
@@ -114,12 +115,17 @@ class TimelineService extends ChangeNotifier {
       if (!success) return;
 
       timelines.remove(removedHourTime);
+
+      Analytic.get().logCheckTimeline(savedTimeline, isCheck: false);
       if (setAction) lastAction = CheckAction(removedHourTime, isCheck: false);
     } else {
       final timeline = Timeline(removedHourTime, habit.id);
       final id = await _dbService.saveTimeline(timeline);
 
-      timelines[removedHourTime] = timeline.copy(id: id);
+      final newTimeline = timeline.copy(id: id);
+      timelines[removedHourTime] = newTimeline;
+
+      Analytic.get().logCheckTimeline(newTimeline, isCheck: true);
       if (setAction) lastAction = CheckAction(removedHourTime, isCheck: true);
     }
     _habitTimelineMap[habit.id] = timelines;

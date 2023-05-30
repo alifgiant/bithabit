@@ -16,7 +16,7 @@ class RecapOptionButton extends StatelessWidget {
           .map(
             (e) => PopupMenuItem(
               child: Text(e.menuTitle),
-              onTap: () => recapService.updateOption(e),
+              onTap: () => recapService.updateOption(e, 'RecapOptionButton'),
             ),
           )
           .toList(),

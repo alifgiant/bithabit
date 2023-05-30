@@ -2,6 +2,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 
 import '../model/habit.dart';
 import '../model/timeline.dart';
+import 'recap_service.dart';
+import 'sorting_service.dart';
 
 class Analytic {
   Analytic._();
@@ -13,14 +15,23 @@ class Analytic {
 
   void logAppOpen() => _firebase.logAppOpen();
 
-  void logOpenHabit(Habit habit) => _firebase.logEvent(
-        name: 'habit_open',
-        parameters: habit.toMap(),
-      );
+  void logHabitAction(
+    Habit habit,
+    HabitAction action, {
+    Map<String, Object?>? parameters,
+  }) {
+    _firebase.logEvent(
+      name: 'habit_${action.key}',
+      parameters: {
+        ...habit.toMap(),
+        ...?parameters,
+      },
+    );
+  }
 
   void logCheckTimeline(
     Timeline timeline, {
-    bool isCheck = true,
+    required bool isCheck,
   }) {
     _firebase.logEvent(
       name: 'timeline_update',
@@ -40,4 +51,50 @@ class Analytic {
       screenName: screenName,
     );
   }
+
+  void logTabChange(
+    int index,
+    Type pageType,
+  ) {
+    _firebase.logEvent(
+      name: 'tab_change',
+      parameters: {
+        'index': index,
+        'pageType': pageType.toString(),
+      },
+    );
+  }
+
+  void logSortTypeUpdate(SortingOption option, String source) {
+    _firebase.logEvent(
+      name: 'sort_habit_update',
+      parameters: {
+        'option': option.title,
+        'source': source,
+      },
+    );
+  }
+
+  void logRecapOptionUpdate(RecapOption option, String source) {
+    _firebase.logEvent(
+      name: 'recap_habit_update',
+      parameters: {
+        'option': option.title,
+        'source': source,
+      },
+    );
+  }
+}
+
+enum HabitAction {
+  create('save'),
+  update('update'),
+  open('open'),
+  deleteAttempt('delete_attempt'),
+  archived('archived'),
+  delete('delete'),
+  restore('restore');
+
+  const HabitAction(this.key);
+  final String key;
 }

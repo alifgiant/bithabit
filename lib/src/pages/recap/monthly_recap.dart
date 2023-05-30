@@ -28,7 +28,8 @@ class MonthlyRecap extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: SingleMonth(habit: habit, firstDayOfMonth: firstDayOfMonth),
+                child:
+                    SingleMonth(habit: habit, firstDayOfMonth: firstDayOfMonth),
               ),
             ],
           );
@@ -59,7 +60,11 @@ class SingleMonth extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),
+        onTap: () => AddHabitButton.navToAddHabit(
+          context,
+          habit: habit,
+          source: 'monthly_recap_item',
+        ),
         child: DefaultTextStyle(
           style: TextStyle(color: habit.color.textColor),
           child: Padding(

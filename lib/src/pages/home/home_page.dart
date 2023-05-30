@@ -1,3 +1,4 @@
+import 'package:bithabit/src/service/analytic_service.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -26,19 +27,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    const tabs = [
+      DashPage(),
+      RecapPage(),
+      SettingPage(),
+    ];
     return Scaffold(
       extendBody: true,
       body: Stack(
         children: [
           PageView(
             controller: pageController,
-            children: const [
-              DashPage(),
-              RecapPage(),
-              SettingPage(),
-            ],
-            onPageChanged: (value) {
-              setState(() => currentPageIndex = value);
+            children: tabs,
+            onPageChanged: (index) {
+              Analytic.get().logTabChange(index, tabs[index].runtimeType);
+              setState(() => currentPageIndex = index);
             },
           ),
           const Align(

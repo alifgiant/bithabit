@@ -34,7 +34,11 @@ class WeeklyRecap extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),
+        onTap: () => AddHabitButton.navToAddHabit(
+          context,
+          habit: habit,
+          source: 'weekly_recap_item',
+        ),
         child: DefaultTextStyle(
           style: TextStyle(
             color: habit.color.textColor,

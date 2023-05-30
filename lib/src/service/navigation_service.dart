@@ -1,5 +1,4 @@
 import 'package:bithabit/src/utils/const/app_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

@@ -24,7 +24,7 @@ class RecapPage extends StatelessWidget {
         title: AppBarTitle(text: '${recapService.currentView.title} Recap'),
         actions: const [
           SizedBox(width: 8),
-          AddHabitButton(),
+          AddHabitButton(source: 'recap_page_appbar_action'),
           SizedBox(width: 8),
           RecapOptionButton(),
           SizedBox(width: 8),
@@ -41,7 +41,10 @@ class RecapPage extends StatelessWidget {
             )
           : Center(
               child: InkWell(
-                onTap: () => AddHabitButton.navToAddHabit(context),
+                onTap: () => AddHabitButton.navToAddHabit(
+                  context,
+                  source: 'recap_page_scaffold',
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(

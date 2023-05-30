@@ -15,7 +15,9 @@ class SortHabitButton extends StatelessWidget {
           .map(
             (e) => PopupMenuItem(
               child: Text(e.title),
-              onTap: () => context.read<SortingService>().updateOption(e),
+              onTap: () => context
+                  .read<SortingService>()
+                  .updateOption(e, 'SortHabitButton'),
             ),
           )
           .toList(),

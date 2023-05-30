@@ -9,6 +9,7 @@ import 'src/pages/detail/detail_page.dart';
 import 'src/pages/export/export_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/pages/subscription/subscription_page.dart';
+import 'src/service/analytic_service.dart';
 import 'src/service/database/database.dart';
 import 'src/service/database/database_service.dart';
 import 'src/service/exporter/exporter_service.dart';
@@ -62,8 +63,18 @@ class MyApp extends StatelessWidget {
         ),
         themeMode: ThemeMode.light,
         routes: {
-          AppRoute.home: (context) => const HomePage(),
+          AppRoute.home: (context) {
+            Analytic.get().logScreenView(
+              screenName: 'Home Page',
+              screenClass: 'home_page.dart',
+            );
+            return const HomePage();
+          },
           AppRoute.detail: (context) {
+            Analytic.get().logScreenView(
+              screenName: 'Detail Page',
+              screenClass: 'detail_page.dart',
+            );
             final args = ModalRoute.of(context)?.settings.arguments;
             final habitService = context.read<HabitService>();
             final timelineService = context.read<TimelineService>();
@@ -74,13 +85,35 @@ class MyApp extends StatelessWidget {
               timelineService: timelineService,
             );
           },
-          AppRoute.archive: (context) => const ArchivedPage(),
-          AppRoute.charts: (context) {
-            final args = ModalRoute.of(context)?.settings.arguments;
-            return ChartPage(habit: args as Habit);
+          AppRoute.archive: (context) {
+            Analytic.get().logScreenView(
+              screenName: 'Archive Page',
+              screenClass: 'archived_page.dart',
+            );
+            return const ArchivedPage();
           },
-          AppRoute.export: (context) => const ExportPage(),
-          AppRoute.premium: (context) => const SubscriptionPage(),
+          AppRoute.charts: (context) {
+            Analytic.get().logScreenView(
+              screenName: 'Chart Page',
+              screenClass: 'chart_page.dart',
+            );
+            final args = ModalRoute.of(context)?.settings.arguments;
+            return ChartPage(habit: args! as Habit);
+          },
+          AppRoute.export: (context) {
+            Analytic.get().logScreenView(
+              screenName: 'Export/Import Data Page',
+              screenClass: 'export_page.dart',
+            );
+            return const ExportPage();
+          },
+          AppRoute.premium: (context) {
+            Analytic.get().logScreenView(
+              screenName: 'Subscription Page',
+              screenClass: 'subscription_page.dart',
+            );
+            return const SubscriptionPage();
+          },
         },
       ),
     );

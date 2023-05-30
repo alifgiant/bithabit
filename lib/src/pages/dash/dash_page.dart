@@ -46,14 +46,15 @@ class DashPage extends StatelessWidget {
           SliverAppBar.large(
             actions: const [
               SizedBox(width: 8),
-              AddHabitButton(),
+              AddHabitButton(source: 'dash_page'),
               SizedBox(width: 8),
               SortHabitButton(),
               SizedBox(width: 8),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,

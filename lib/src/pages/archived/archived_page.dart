@@ -16,7 +16,11 @@ class ArchivedPage extends StatelessWidget {
     const screenPadding = 16.0;
 
     final habitService = context.watch<HabitService>();
-    final habits = habitService.getHabits(state: HabitState.archieved).sortByName();
+    final habits = habitService
+        .getHabits(
+          state: HabitState.archieved,
+        )
+        .sortByName();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +39,9 @@ class ArchivedPage extends StatelessWidget {
                 habit: habits[index],
                 isCheckable: false,
               ),
-              separatorBuilder: (_, __) => const SizedBox(height: screenPadding),
+              separatorBuilder: (_, __) => const SizedBox(
+                height: screenPadding,
+              ),
               itemCount: habits.length,
             )
           : Center(

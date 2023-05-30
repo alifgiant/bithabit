@@ -45,7 +45,9 @@ class SettingPage extends StatelessWidget {
                       (e) => ListTile(
                         title: Text(e.title),
                         onTap: () {
-                          context.read<SortingService>().updateOption(e);
+                          context
+                              .read<SortingService>()
+                              .updateOption(e, 'Setting Page');
                           NavigationService.of(context).maybePop();
                         },
                       ),
@@ -65,7 +67,9 @@ class SettingPage extends StatelessWidget {
                       (e) => ListTile(
                         title: Text(e.menuTitle),
                         onTap: () {
-                          context.read<RecapService>().updateOption(e);
+                          context
+                              .read<RecapService>()
+                              .updateOption(e, 'Setting Page');
                           NavigationService.of(context).maybePop();
                         },
                       ),
@@ -93,7 +97,8 @@ class SettingPage extends StatelessWidget {
             title: 'General Help',
             icon: Icons.help_outline_rounded,
             onTap: () => launchUrl(
-              Uri.parse('https://alifgiant.notion.site/BitHabit-Frequently-Asked-Questions-FAQ-39f18303d3ec43589228ca5b1776b23f'),
+              Uri.parse(
+                  'https://alifgiant.notion.site/BitHabit-Frequently-Asked-Questions-FAQ-39f18303d3ec43589228ca5b1776b23f'),
             ),
           ),
           SettingTile(
@@ -105,20 +110,23 @@ class SettingPage extends StatelessWidget {
             title: 'Terms of Use',
             icon: Icons.check_outlined,
             onTap: () => launchUrl(
-              Uri.parse('https://alifgiant.notion.site/BitHabit-Terms-of-Use-35258a9b7a2140ef9682f5897d8b0fe6'),
+              Uri.parse(
+                  'https://alifgiant.notion.site/BitHabit-Terms-of-Use-35258a9b7a2140ef9682f5897d8b0fe6'),
             ),
           ),
           SettingTile(
             title: 'Privacy Policy',
             icon: Icons.lock_outline_rounded,
             onTap: () => launchUrl(
-              Uri.parse('https://alifgiant.notion.site/BitHabit-Privacy-Policy-8a58c24dc4934c218002c3e60d2a1205'),
+              Uri.parse(
+                  'https://alifgiant.notion.site/BitHabit-Privacy-Policy-8a58c24dc4934c218002c3e60d2a1205'),
             ),
           ),
           SettingTile(
             title: 'Send Feedback',
             icon: BoxIcons.bx_message_square_detail,
-            onTap: () => launchUrl(Uri.parse('https://instagram.com/luxinfity')),
+            onTap: () =>
+                launchUrl(Uri.parse('https://instagram.com/luxinfity')),
           ),
           SettingTile(
             title: 'Licenses',

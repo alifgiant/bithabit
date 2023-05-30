@@ -27,11 +27,17 @@ class SimpleHabitView extends StatelessWidget {
     final isChecked = timelineService.isHabitChecked(habit, today);
 
     return Material(
-      color: isCheckable && isChecked ? ResColor.black.withOpacity(0.3) : habit.color.mainColor.withOpacity(0.6),
+      color: isCheckable && isChecked
+          ? ResColor.black.withOpacity(0.3)
+          : habit.color.mainColor.withOpacity(0.6),
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => AddHabitButton.navToAddHabit(context, habit: habit),
+        onTap: () => AddHabitButton.navToAddHabit(
+          context,
+          habit: habit,
+          source: 'simple_view',
+        ),
         child: DefaultTextStyle(
           style: TextStyle(color: habit.color.textColor),
           child: Padding(

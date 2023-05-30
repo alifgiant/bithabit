@@ -4,11 +4,13 @@ import '../model/habit.dart';
 import '../pages/recap/monthly_recap.dart';
 import '../pages/recap/streak_recap.dart';
 import '../pages/recap/weekly_recap.dart';
+import 'analytic_service.dart';
 
 class RecapService extends ChangeNotifier {
   RecapOption currentView = RecapOption.byWeek;
 
-  void updateOption(RecapOption option) {
+  void updateOption(RecapOption option, String source) {
+    Analytic.get().logRecapOptionUpdate(option, source);
     currentView = option;
     notifyListeners();
   }
@@ -19,8 +21,7 @@ class RecapService extends ChangeNotifier {
         return MonthlyRecap(habit: habit);
       case RecapOption.byStreak:
         return StreakRecap(habit: habit);
-      default:
-        // byWeek
+      case RecapOption.byWeek:
         return WeeklyRecap(habit: habit);
     }
   }

@@ -1,11 +1,13 @@
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:isar/isar.dart';
 
 import '../../model/habit.dart';
 import '../../model/habit_color.dart';
 import '../../model/habit_frequency.dart';
 import '../../model/habit_reminder.dart';
+import '../../service/analytic_service.dart';
 import '../../service/habit_service.dart';
 import '../../service/navigation_service.dart';
 import '../../service/timeline_service.dart';
@@ -93,7 +95,9 @@ class _DetailPageState extends State<DetailPage> {
             title: AppBarTitle(text: screenTitle),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: screenPadding).copyWith(
+            padding: const EdgeInsets.symmetric(
+              horizontal: screenPadding,
+            ).copyWith(
               bottom: kBottomNavigationBarHeight * 2,
             ),
             sliver: SliverList(
@@ -134,7 +138,9 @@ class _DetailPageState extends State<DetailPage> {
                       });
                     },
                   ),
-                  SectionTitle(text: frequencyValueDetail(edittedHabit.frequency.type)),
+                  SectionTitle(
+                    text: frequencyValueDetail(edittedHabit.frequency.type),
+                  ),
                   HabitFrequencyValuePicker(
                     enabled: edittedHabit.isEnabled,
                     selectedFrequency: edittedHabit.frequency,
@@ -146,15 +152,22 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   SectionTitle(
                     text: 'Reminder',
-                    subtitle: edittedHabit.reminder.isNotEmpty ? 'Swipe right to remove' : '',
+                    subtitle: edittedHabit.reminder.isNotEmpty
+                        ? 'Swipe right to remove'
+                        : '',
                     suffix: InkWell(
-                      onTap: edittedHabit.isEnabled ? addReminderClick : () => ViewUtils.showHabitArchieved(context),
+                      onTap: edittedHabit.isEnabled
+                          ? addReminderClick
+                          : () => ViewUtils.showHabitArchieved(context),
                       borderRadius: BorderRadius.circular(16),
                       child: SizedBox.square(
                         dimension: 28,
                         child: Icon(
                           BoxIcons.bx_alarm_add,
-                          color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                          color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme!
+                              .primary,
                           size: 21,
                         ),
                       ),
@@ -193,7 +206,9 @@ class _DetailPageState extends State<DetailPage> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: edittedHabit.isEnabled ? const Text('Save') : const Text('Restore'),
+            child: edittedHabit.isEnabled
+                ? const Text('Save')
+                : const Text('Restore'),
           ),
         ),
       ),
@@ -251,19 +266,30 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> onDeleteClick() async {
+    Analytic.get().logHabitAction(edittedHabit, HabitAction.deleteAttempt);
+
     final result = await ConfirmingDialog.show(
       context,
       edittedHabit.isEnabled ? 'Archive this habit?' : 'Permanent delete?',
-      edittedHabit.isEnabled ? "Don't worry, you can bring it back on setting page." : "You won't be able to restore this habit anymore",
+      edittedHabit.isEnabled
+          ? "Don't worry, you can bring it back on setting page."
+          : "You won't be able to restore this habit anymore",
       confirmBtnColor: Theme.of(context).colorScheme.error,
     );
     if (result == null || result == ConfirmationResult.no) return;
     if (!mounted) return;
 
+    final isDeleting = edittedHabit.isEnabled ? false : true;
+
     widget.timelineService.resetLastAction();
     widget.habitService.deleteHabit(
       edittedHabit.id,
-      permanent: edittedHabit.isEnabled ? false : true,
+      permanent: isDeleting,
+    );
+
+    Analytic.get().logHabitAction(
+      edittedHabit,
+      isDeleting ? HabitAction.delete : HabitAction.archived,
     );
 
     if (!mounted) return;
@@ -271,6 +297,12 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> onSaveClick() async {
+    if (edittedHabit.id == Isar.autoIncrement) {
+      Analytic.get().logHabitAction(edittedHabit, HabitAction.create);
+    } else {
+      Analytic.get().logHabitAction(edittedHabit, HabitAction.update);
+    }
+
     if (edittedHabit.name.isEmpty) {
       setState(() {
         isTitleEmpty = true;
@@ -286,6 +318,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> onRestoreClick() async {
+    Analytic.get().logHabitAction(edittedHabit, HabitAction.restore);
     NavigationService.of(context).runIfPremium(
       'Restore Habit',
       () {
