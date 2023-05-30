@@ -9,10 +9,7 @@ import '../../utils/text/date_utils.dart';
 class DayRadar extends StatelessWidget {
   final Habit habit;
 
-  const DayRadar({
-    required this.habit,
-    super.key,
-  });
+  const DayRadar({required this.habit, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +20,14 @@ class DayRadar extends StatelessWidget {
           dataSets: showingDataSets(context),
           radarBorderData: const BorderSide(color: Colors.transparent),
           titlePositionPercentageOffset: 0.1,
-          getTitle: (index, angle) => RadarChartTitle(text: getDayNameText(index)),
+          getTitle: (day, _) => RadarChartTitle(
+            text: getDayNameText(day + 1),
+          ),
           tickCount: 2,
-          ticksTextStyle: const TextStyle(color: Colors.transparent, fontSize: 10),
+          ticksTextStyle: const TextStyle(
+            color: Colors.transparent,
+            fontSize: 10,
+          ),
           tickBorderData: const BorderSide(color: Colors.transparent),
         ),
       ),
@@ -34,13 +36,17 @@ class DayRadar extends StatelessWidget {
 
   List<RadarDataSet> showingDataSets(BuildContext context) {
     final timelineService = context.watch<TimelineService>();
-
     final rawDataSet = RawDataSet(
       title: "Day's Frequency",
       color: habit.color.mainColor,
       values: List.generate(
         7,
-        (day) => timelineService.countHabit(habit, day).toDouble(),
+        (day) => timelineService.counter
+            .completionIn(
+              habit,
+              dayOfWeek: day + 1,
+            )
+            .toDouble(),
       ),
     );
 
@@ -48,7 +54,11 @@ class DayRadar extends StatelessWidget {
       RadarDataSet(
         fillColor: rawDataSet.color.withOpacity(0.2),
         borderColor: rawDataSet.color,
-        dataEntries: rawDataSet.values.map((e) => RadarEntry(value: e)).toList(),
+        dataEntries: rawDataSet.values
+            .map(
+              (e) => RadarEntry(value: e),
+            )
+            .toList(),
         entryRadius: 2.3,
         borderWidth: 2.3,
       )
