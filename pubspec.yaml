@@ -42,39 +42,9 @@ dependencies:
   firebase_crashlytics: ^3.3.1
   firebase_remote_config: ^4.2.1
   # audio
-  audioplayers: ^4.0.1
+  audioplayers: ^4.1.0
   # dev
   device_preview: ^1.1.0
-
-dependency_overrides:
-  audioplayers:
-    git:
-      url: https://github.com/bluefireteam/audioplayers.git
-      path: 'packages/audioplayers'
-  audioplayers_platform_interface:
-    git:
-      url: https://github.com/bluefireteam/audioplayers.git
-      path: 'packages/audioplayers_platform_interface'
-  audioplayers_web:
-    git:
-      url: https://github.com/bluefireteam/audioplayers.git
-      path: 'packages/audioplayers_web'
-  audioplayers_linux:
-    git:
-      url: https://github.com/bluefireteam/audioplayers.git
-      path: 'packages/audioplayers_linux'
-  audioplayers_android:
-    git:
-      url: https://github.com/bluefireteam/audioplayers.git
-      path: 'packages/audioplayers_android'
-  audioplayers_darwin:
-    git:
-      url: https://github.com/bluefireteam/audioplayers.git
-      path: 'packages/audioplayers_darwin'
-  audioplayers_windows:
-    git:
-      url: https://github.com/bluefireteam/audioplayers.git
-      path: 'packages/audioplayers_windows'
 
 dev_dependencies:
   build_runner: any
