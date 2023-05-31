@@ -2,26 +2,28 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../model/habit.dart';
 import '../../../model/timeline.dart';
+import '../../cache/cache.dart';
 import '../database_service.dart';
 
 class WebPrefService extends DatabaseService {
+  final Cache cache;
+
+  const WebPrefService(this.cache);
+
   static const _dbHabitsKey = 'dbHabits';
   static const _dbTimelineKey = 'dbTimeline';
 
-  Future<bool> _replaceSavedHabits(List<Habit> newHabits) async {
+  Future<bool> _replaceSavedHabits(List<Habit> newHabits) {
     final rawHabits = jsonEncode(newHabits.map((e) => e.toMap()).toList());
-    final pref = await SharedPreferences.getInstance();
-    return pref.setString(_dbHabitsKey, rawHabits);
+    return cache.setString(_dbHabitsKey, rawHabits);
   }
 
-  Future<bool> _replaceSavedTimelines(List<Timeline> newTimelines) async {
+  Future<bool> _replaceSavedTimelines(List<Timeline> newTimelines) {
     final rawHabits = jsonEncode(newTimelines.map((e) => e.toMap()).toList());
-    final pref = await SharedPreferences.getInstance();
-    return pref.setString(_dbTimelineKey, rawHabits);
+    return cache.setString(_dbTimelineKey, rawHabits);
   }
 
   @override
@@ -54,8 +56,7 @@ class WebPrefService extends DatabaseService {
 
   @override
   Future<List<Habit>> getAllHabits() async {
-    final pref = await SharedPreferences.getInstance();
-    final rawHabits = pref.getString(_dbHabitsKey);
+    final rawHabits = await cache.getString(_dbHabitsKey);
     if (rawHabits == null) return [];
 
     try {
@@ -66,7 +67,7 @@ class WebPrefService extends DatabaseService {
           )
           .toList();
     } catch (e) {
-      await pref.remove(_dbHabitsKey);
+      await cache.remove(_dbHabitsKey);
       return [];
     }
   }
@@ -101,8 +102,7 @@ class WebPrefService extends DatabaseService {
 
   @override
   Future<List<Timeline>> getAllTimelines() async {
-    final pref = await SharedPreferences.getInstance();
-    final rawTimelines = pref.getString(_dbTimelineKey);
+    final rawTimelines = await cache.getString(_dbTimelineKey);
     if (rawTimelines == null) return [];
 
     try {
@@ -113,7 +113,7 @@ class WebPrefService extends DatabaseService {
           )
           .toList();
     } catch (e) {
-      await pref.remove(_dbTimelineKey);
+      await cache.remove(_dbTimelineKey);
       return [];
     }
   }
@@ -155,7 +155,8 @@ class WebPrefService extends DatabaseService {
       ..addAll(newHabit);
   }
 
-  List<Timeline> combineTimeline(List<Timeline> old, Iterable<Timeline> newTimeline) {
+  List<Timeline> combineTimeline(
+      List<Timeline> old, Iterable<Timeline> newTimeline) {
     final newTimelineKeys = newTimeline.map((e) => e.id).toSet();
     return old
       ..removeWhere((e) => newTimelineKeys.contains(e.id))
@@ -163,4 +164,4 @@ class WebPrefService extends DatabaseService {
   }
 }
 
-DatabaseService startService() => WebPrefService();
+DatabaseService startService(Cache cache) => WebPrefService(cache);

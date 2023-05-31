@@ -3,13 +3,29 @@ import 'package:flutter/material.dart';
 
 import '../model/habit.dart';
 import 'analytic_service.dart';
+import 'cache/cache.dart';
 
 class SortingService extends ChangeNotifier {
-  SortingOption currentSelectedFilter = SortingOption.byName;
+  static const _prefKey = 'SortingService';
+  final Cache cache;
+  SortingService(this.cache) {
+    load();
+  }
+
+  Future<void> load() async {
+    final title = await cache.getString(_prefKey);
+    if (title == null) return;
+
+    selectedOption = SortingOption.parse(title);
+    notifyListeners();
+  }
+
+  SortingOption selectedOption = SortingOption.byName;
 
   void updateOption(SortingOption option, String source) {
     Analytic.get().logSortTypeUpdate(option, source);
-    currentSelectedFilter = option;
+    selectedOption = option;
+    cache.setString(_prefKey, option.title);
     notifyListeners();
   }
 
@@ -17,7 +33,7 @@ class SortingService extends ChangeNotifier {
     required Iterable<Habit> source,
     required bool Function(Habit habit, DateTime time) completionChecker,
   }) {
-    if (currentSelectedFilter == SortingOption.byReminder) {
+    if (selectedOption == SortingOption.byReminder) {
       return source.toList()
         ..sort(
           (a, b) {
@@ -44,7 +60,7 @@ class SortingService extends ChangeNotifier {
             }
           },
         );
-    } else if (currentSelectedFilter == SortingOption.byCompletion) {
+    } else if (selectedOption == SortingOption.byCompletion) {
       final now = DateTime.now();
       return source.toList()
         ..sort(
@@ -79,6 +95,14 @@ enum SortingOption {
 
   const SortingOption(this.title);
   final String title;
+
+  static SortingOption parse(String title) {
+    if (title == SortingOption.byName.title) return SortingOption.byName;
+    if (title == SortingOption.byReminder.title) {
+      return SortingOption.byReminder;
+    }
+    return SortingOption.byCompletion;
+  }
 }
 
 extension ListHabitExt on Iterable<Habit> {

@@ -10,6 +10,8 @@ import 'src/pages/export/export_page.dart';
 import 'src/pages/home/home_page.dart';
 import 'src/pages/subscription/subscription_page.dart';
 import 'src/service/analytic_service.dart';
+import 'src/service/cache/cache.dart';
+import 'src/service/cache/pref_cache.dart';
 import 'src/service/database/database.dart';
 import 'src/service/database/database_service.dart';
 import 'src/service/exporter/exporter_service.dart';
@@ -36,15 +38,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<DatabaseService>(create: (_) => Database.create()),
+        Provider<Cache>(create: (_) => const PrefCache()),
+        Provider<DatabaseService>(create: (ctx) => Database.create(ctx.read())),
         Provider(create: (ctx) => ExporterService(ctx.read())),
         ChangeNotifierProvider(create: (_) => SubsService()),
         ChangeNotifierProvider(create: (ctx) => HabitService(ctx.read())),
         ChangeNotifierProvider(
           create: (ctx) => TimelineService(ctx.read(), ctx.read()),
         ),
-        ChangeNotifierProvider(create: (_) => SortingService()),
-        ChangeNotifierProvider(create: (_) => RecapService()),
+        ChangeNotifierProvider(create: (ctx) => SortingService(ctx.read())),
+        ChangeNotifierProvider(create: (ctx) => RecapService(ctx.read())),
       ],
       child: MaterialApp(
         locale: locale,

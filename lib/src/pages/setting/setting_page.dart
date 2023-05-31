@@ -38,12 +38,19 @@ class SettingPage extends StatelessWidget {
             title: 'Today View Sorting',
             icon: Icons.sort_rounded,
             onTap: () {
+              final selected = context.read<SortingService>().selectedOption;
               ViewUtils.showOptionListBottomSheet<void>(
                 context: context,
                 children: SortingOption.values
                     .map(
                       (e) => ListTile(
                         title: Text(e.title),
+                        trailing: selected == e
+                            ? Icon(
+                                BoxIcons.bx_check,
+                                color: Theme.of(context).colorScheme.primary,
+                              )
+                            : null,
                         onTap: () {
                           context
                               .read<SortingService>()
@@ -60,12 +67,19 @@ class SettingPage extends StatelessWidget {
             title: 'Recap View Style',
             icon: Icons.calendar_month_outlined,
             onTap: () {
+              final selected = context.read<RecapService>().selectedOption;
               ViewUtils.showOptionListBottomSheet<void>(
                 context: context,
                 children: RecapOption.values
                     .map(
                       (e) => ListTile(
                         title: Text(e.menuTitle),
+                        trailing: selected == e
+                            ? Icon(
+                                BoxIcons.bx_check,
+                                color: Theme.of(context).colorScheme.primary,
+                              )
+                            : null,
                         onTap: () {
                           context
                               .read<RecapService>()

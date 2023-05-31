@@ -21,7 +21,7 @@ class RecapPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: AppBarTitle(text: '${recapService.currentView.title} Recap'),
+        title: AppBarTitle(text: '${recapService.selectedOption.title} Recap'),
         actions: const [
           SizedBox(width: 8),
           AddHabitButton(source: 'recap_page_appbar_action'),
@@ -33,7 +33,7 @@ class RecapPage extends StatelessWidget {
       body: habits.isNotEmpty
           ? ListView.separated(
               padding: EdgeInsets.all(
-                recapService.currentView == RecapOption.byMonth ? 0 : 16,
+                recapService.selectedOption == RecapOption.byMonth ? 0 : 16,
               ).copyWith(bottom: kBottomNavigationBarHeight * 2),
               itemBuilder: (_, index) => recapService.createView(habits[index]),
               separatorBuilder: (_, __) => const SizedBox(height: 16),

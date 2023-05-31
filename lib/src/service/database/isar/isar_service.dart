@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../model/habit.dart';
 import '../../../model/timeline.dart';
+import '../../cache/cache.dart';
 import '../database_service.dart';
 import 'db_habit.dart';
 import 'db_timeline.dart';
@@ -101,7 +102,8 @@ class IsarService extends DatabaseService {
     return merged.map((e) => e.toDbHabit());
   }
 
-  Iterable<DbTimeline> combineTimeline(List<Timeline> old, Iterable<Timeline> newTimeline) {
+  Iterable<DbTimeline> combineTimeline(
+      List<Timeline> old, Iterable<Timeline> newTimeline) {
     final newTimelineKeys = newTimeline.map((e) => e.id).toSet();
     final merged = old
       ..removeWhere((e) => newTimelineKeys.contains(e.id))
@@ -110,4 +112,4 @@ class IsarService extends DatabaseService {
   }
 }
 
-DatabaseService startService() => IsarService()..setup();
+DatabaseService startService(Cache cache) => IsarService()..setup();
