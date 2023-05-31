@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 
 import '../model/habit.dart';
 import '../model/timeline.dart';
@@ -13,9 +14,15 @@ class Analytic {
   static final Analytic _i = Analytic._();
   static Analytic get() => _i;
 
-  FirebaseAnalytics get _firebase => FirebaseAnalytics.instance;
+  FirebaseAnalytics get _firebase {
+    return kDebugMode
+        ? DisabledFirebaseAnalytics.instance // disable analytic on debug
+        : FirebaseAnalytics.instance;
+  }
 
-  void logAppOpen() => _firebase.logAppOpen();
+  void logAppOpen() {
+    _firebase.logAppOpen();
+  }
 
   void logHabitAction(
     Habit habit,
@@ -99,4 +106,19 @@ enum HabitAction {
 
   const HabitAction(this.key);
   final String key;
+}
+
+class _Disabled {
+  const _Disabled();
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    return Future<void>(() {});
+  }
+}
+
+class DisabledFirebaseAnalytics extends _Disabled implements FirebaseAnalytics {
+  const DisabledFirebaseAnalytics();
+
+  static const instance = DisabledFirebaseAnalytics();
 }
