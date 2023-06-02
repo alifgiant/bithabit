@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 // ignore: depend_on_referenced_packages
@@ -89,6 +91,7 @@ class NotificationManager {
   }
 
   Future<bool?> requestNotificationPermission() async {
+    if (kIsWeb) return true;
     if (Platform.isAndroid) {
       return plugin
           .resolvePlatformSpecificImplementation<
@@ -181,6 +184,8 @@ class NotificationManager {
   }
 
   Future<void> showNotification() async {
+    if (kIsWeb) return; // TODO: show not working status
+
     final isPermitted = await requestNotificationPermission();
     if (isPermitted != true) return;
 
@@ -205,8 +210,8 @@ class NotificationManager {
     );
     await plugin.show(
       0,
-      'plain title',
-      'plain body',
+      'BitHabit Reminder',
+      'Start your exercise for today',
       notificationDetails,
       payload: 'item x',
     );
@@ -253,6 +258,7 @@ class NotificationManager {
       '...',
       '...',
       channelDescription: '...',
+      colorized: true,
       actions: <AndroidNotificationAction>[
         AndroidNotificationAction('id_1', 'Action 1'),
         AndroidNotificationAction('id_2', 'Action 2'),
