@@ -41,6 +41,7 @@ class DashPage extends StatelessWidget {
       completionChecker: timelineService.isHabitChecked,
     );
 
+    int id = 0;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -90,19 +91,28 @@ class DashPage extends StatelessWidget {
             )
           else
             SliverToBoxAdapter(
-              child: GestureDetector(
-                onTap: () {
-                  context.read<NotificationManager>().showNotification();
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: halfScreen - 152 /* app bar sie */ - 21),
-                    const Icon(Icons.offline_bolt_rounded, size: 52),
-                    const SizedBox(height: 18),
-                    const Text('No Schedule for Today'),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: halfScreen - 152 /* app bar sie */ - 21),
+                  GestureDetector(
+                    onTap: () {
+                      context
+                          .read<NotificationManager>()
+                          .showNotification(id++);
+                    },
+                    child: const Icon(Icons.offline_bolt_rounded, size: 52),
+                  ),
+                  const SizedBox(height: 18),
+                  GestureDetector(
+                    onTap: () {
+                      context
+                          .read<NotificationManager>()
+                          .scheduleNotification(id++);
+                    },
+                    child: const Text('No Schedule for Today'),
+                  ),
+                ],
               ),
             ),
           const SliverToBoxAdapter(

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 // ignore: depend_on_referenced_packages
@@ -11,6 +10,27 @@ import 'package:timezone/timezone.dart' as tz;
 
 class NotificationManager {
   final plugin = FlutterLocalNotificationsPlugin();
+  static const androidDetails = AndroidNotificationDetails(
+    'BitHabit:Reminder',
+    'Habit Reminder ',
+    // TODO: [ticker] will be announced for accessibility, create dynamic
+    ticker: 'Habit Reminder',
+    channelDescription: "Let's achieve more by doing your habit on time",
+    importance: Importance.max,
+    priority: Priority.high,
+    // TODO: handle actions on [notificationTapBackground]
+    actions: <AndroidNotificationAction>[
+      AndroidNotificationAction('id_1', 'Complete'),
+    ],
+  );
+
+  static const appleDetails = DarwinNotificationDetails(
+    categoryIdentifier: 'BitHabit:Reminder',
+    // TODO: dynamic thread base on habit name
+    threadIdentifier: 'habit-name',
+    subtitle: "Let's achieve more by doing your habit on time",
+    presentAlert: true,
+  );
 
   Future<void> init() async {
     tz.initializeTimeZones();
@@ -30,7 +50,7 @@ class NotificationManager {
       requestSoundPermission: false,
       notificationCategories: [
         DarwinNotificationCategory(
-          'demoCategory',
+          'BitHabit:Reminder',
           actions: <DarwinNotificationAction>[
             DarwinNotificationAction.plain('id_1', 'Action 1'),
             DarwinNotificationAction.plain(
@@ -71,16 +91,16 @@ class NotificationManager {
     final didNotificationLaunchApp = initialNotif?.didNotificationLaunchApp;
     final payload = initialNotif?.notificationResponse?.payload;
     print(
-      'onDidReceiveNotificationResponse => payload:$payload '
+      'alifakbar:init => payload:$payload '
       'didNotificationLaunchApp:$didNotificationLaunchApp',
     );
   }
 
-  void onDidReceiveNotificationResponse(
+  Future<void> onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse,
   ) async {
     final String? payload = notificationResponse.payload;
-    print('onDidReceiveNotificationResponse => payload: $payload');
+    print('alifakbar:onDidReceiveNotificationResponse => payload: $payload');
     // if (notificationResponse.payload != null) {
     //   debugPrint('notification payload: $payload');
     // }
@@ -119,30 +139,23 @@ class NotificationManager {
     return null;
   }
 
-  Future<void> scheduleNotification() async {
+  Future<void> scheduleNotification(int id) async {
+    if (kIsWeb) return; // TODO: show not working status
+
+    final isPermitted = await requestNotificationPermission();
+    if (isPermitted != true) return;
+
+    final time = tz.TZDateTime(tz.local, 2023);
+
     await plugin.zonedSchedule(
-      0,
-      'scheduled title',
-      'scheduled body',
+      id,
+      'Repeating BitHabit Reminder',
+      'Start your exercise for today',
       tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
       const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'your channel id',
-          'your channel name',
-          channelDescription: 'your channel description',
-        ),
-        iOS: DarwinNotificationDetails(
-          threadIdentifier: 'habit-name',
-          presentAlert: true,
-          categoryIdentifier: 'demoCategory',
-          subtitle: 'your channel description',
-        ),
-        macOS: DarwinNotificationDetails(
-          threadIdentifier: 'habit-name',
-          presentAlert: true,
-          categoryIdentifier: 'demoCategory',
-          subtitle: 'your channel description',
-        ),
+        android: androidDetails,
+        iOS: appleDetails,
+        macOS: appleDetails,
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -152,64 +165,41 @@ class NotificationManager {
     );
   }
 
-  Future<void> scheduleNotificationInterval() async {
+  // note: can't schedule specific time notif
+  Future<void> _scheduleNotificationInterval(int id) async {
+    if (kIsWeb) return; // TODO: show not working status
+
+    final isPermitted = await requestNotificationPermission();
+    if (isPermitted != true) return;
     const notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'repeating channel id',
-        'repeating channel name',
-        channelDescription: 'repeating description',
-      ),
-      iOS: DarwinNotificationDetails(
-        threadIdentifier: 'habit-name',
-        presentAlert: true,
-        categoryIdentifier: 'demoCategory',
-        subtitle: 'your channel description',
-      ),
-      macOS: DarwinNotificationDetails(
-        threadIdentifier: 'habit-name',
-        presentAlert: true,
-        categoryIdentifier: 'demoCategory',
-        subtitle: 'your channel description',
-      ),
+      android: androidDetails,
+      iOS: appleDetails,
+      macOS: appleDetails,
     );
     await plugin.periodicallyShow(
-      0,
-      'repeating title',
-      'repeating body',
-      RepeatInterval.daily,
+      id,
+      'Repeating BitHabit Reminder',
+      'Start your exercise for today',
+      RepeatInterval.everyMinute,
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      // androidAllowWhileIdle: true,
+      payload: 'item x',
     );
   }
 
-  Future<void> showNotification() async {
+  Future<void> showNotification(int id) async {
     if (kIsWeb) return; // TODO: show not working status
 
     final isPermitted = await requestNotificationPermission();
     if (isPermitted != true) return;
 
-    const androidNotificationDetails = AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      channelDescription: 'your channel description',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    const ios = DarwinNotificationDetails(
-      presentAlert: true,
-      threadIdentifier: 'habit-name',
-      categoryIdentifier: 'demoCategory',
-      subtitle: 'your channel description',
-    );
     const notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: ios,
-      macOS: ios,
+      android: androidDetails,
+      iOS: appleDetails,
+      macOS: appleDetails,
     );
     await plugin.show(
-      0,
+      id,
       'BitHabit Reminder',
       'Start your exercise for today',
       notificationDetails,
@@ -222,12 +212,16 @@ class NotificationManager {
     await plugin.cancel(notifId);
   }
 
+  /// [onDidReceiveLocalNotification] called when
+  /// On Android:
+  ///  - notification banner is tapped
   void onDidReceiveLocalNotification(
     int id,
     String? title,
     String? body,
     String? payload,
   ) async {
+    print('alifakbar:onDidReceiveLocalNotification => id:$id, title:$title');
     // display a dialog with the notification details, tap ok to go to another page
     // showDialog(
     //   context: context,
@@ -252,36 +246,17 @@ class NotificationManager {
     //   ),
     // );
   }
-
-  Future<void> _showNotificationWithActions() async {
-    const androidNotificationDetails = AndroidNotificationDetails(
-      '...',
-      '...',
-      channelDescription: '...',
-      colorized: true,
-      actions: <AndroidNotificationAction>[
-        AndroidNotificationAction('id_1', 'Action 1'),
-        AndroidNotificationAction('id_2', 'Action 2'),
-        AndroidNotificationAction('id_3', 'Action 3'),
-      ],
-    );
-
-    const notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-
-    await plugin.show(
-      0,
-      '...',
-      '...',
-      notificationDetails,
-    );
-  }
 }
 
+/// [notificationTapBackground] called when
+/// On Android:
+///  - action button is tapped, either on foreground or background
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
   final String? payload = notificationResponse.payload;
-  print('onDidReceiveNotificationResponse => payload: $payload');
+  print(
+    'alifakbar:notificationTapBackground => '
+    'payload: $payload, action:${notificationResponse.actionId}',
+  );
   // handle action
 }
