@@ -25,8 +25,16 @@ extension DateTimeExt on DateTime {
   String dayName() => AppDateFormat.dayNameFormat.format(this);
   String hourMinute() => AppDateFormat.hourMinuteFormat.format(this);
 
-  DateTime emptyHour() => copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
-  bool isSameDay(DateTime other) => emptyHour().isAtSameMomentAs(other.emptyHour());
+  DateTime emptyHour() => copyWith(
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+      );
+  bool isSameDay(DateTime other) => emptyHour().isAtSameMomentAs(
+        other.emptyHour(),
+      );
   bool isSameMonth(DateTime other) => month == other.month;
 }
 
@@ -36,10 +44,12 @@ extension WeekTimeExt on List<DateTime> {
     if (length == 1) return AppDateFormat.monthDateFormat.format(first);
     final startWeek = first;
     final endWeek = last;
+
+    final start = AppDateFormat.monthDateFormat.format(startWeek);
     if (startWeek.month == endWeek.month) {
-      return '${AppDateFormat.monthDateFormat.format(startWeek)} - ${AppDateFormat.onlyDateFormat.format(endWeek)}';
+      return '$start - ${AppDateFormat.onlyDateFormat.format(endWeek)}';
     } else {
-      return '${AppDateFormat.monthDateFormat.format(startWeek)} - ${AppDateFormat.monthDateFormat.format(endWeek)}';
+      return '$start - ${AppDateFormat.monthDateFormat.format(endWeek)}';
     }
   }
 }

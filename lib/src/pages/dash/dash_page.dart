@@ -95,23 +95,9 @@ class DashPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: halfScreen - 152 /* app bar sie */ - 21),
-                  GestureDetector(
-                    onTap: () {
-                      context
-                          .read<NotificationManager>()
-                          .showNotification(id++);
-                    },
-                    child: const Icon(Icons.offline_bolt_rounded, size: 52),
-                  ),
+                  const Icon(Icons.offline_bolt_rounded, size: 52),
                   const SizedBox(height: 18),
-                  GestureDetector(
-                    onTap: () {
-                      context
-                          .read<NotificationManager>()
-                          .scheduleNotification(id++);
-                    },
-                    child: const Text('No Schedule for Today'),
-                  ),
+                  const Text('No Schedule for Today'),
                 ],
               ),
             ),

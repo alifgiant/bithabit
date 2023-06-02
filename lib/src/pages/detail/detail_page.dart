@@ -10,6 +10,7 @@ import '../../model/habit_reminder.dart';
 import '../../service/analytic_service.dart';
 import '../../service/habit_service.dart';
 import '../../service/navigation_service.dart';
+import '../../service/notification_manager.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/const/app_route.dart';
 import '../../utils/view/app_bar_title.dart';
@@ -23,10 +24,12 @@ class DetailPage extends StatefulWidget {
   final Habit? habit;
   final HabitService habitService;
   final TimelineService timelineService;
+  final NotificationManager notificationManager;
 
   const DetailPage({
     required this.habitService,
     required this.timelineService,
+    required this.notificationManager,
     this.habit,
     super.key,
   });
@@ -242,7 +245,9 @@ class _DetailPageState extends State<DetailPage> {
 
     if (timeExist) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('You already added that time')),
+        const SnackBar(
+          content: Text('You already selected that time'),
+        ),
       );
       return;
     }
@@ -297,17 +302,45 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> onSaveClick() async {
+    if (edittedHabit.name.isEmpty) {
+      setState(() {
+        isTitleEmpty = true;
+      });
+      return;
+    }
+
     if (edittedHabit.id == Isar.autoIncrement) {
       Analytic.get().logHabitAction(edittedHabit, HabitAction.create);
     } else {
       Analytic.get().logHabitAction(edittedHabit, HabitAction.update);
     }
 
-    if (edittedHabit.name.isEmpty) {
-      setState(() {
-        isTitleEmpty = true;
-      });
+    if (widget.habit == edittedHabit) {
+      NavigationService.of(context).maybePop(edittedHabit);
       return;
+    }
+
+    if (edittedHabit.reminder.isNotEmpty) {
+      final enabled = await widget.notificationManager.isNotificationEnabled();
+      if (!mounted) return;
+
+      if (enabled == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Notification is currently not supported'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+        return;
+      } else if (enabled == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Please enable notification to proceed'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+        return;
+      }
     }
 
     widget.timelineService.resetLastAction();

@@ -45,11 +45,16 @@ class HabitService extends ChangeNotifier {
 
   Future<void> saveHabit(Habit habit) async {
     // save to DB
+    final oldHabit = _habitMap[habit.id];
     final id = await _dbService.saveHabit(habit);
-    _habitMap[id] = habit.copy(id: id);
+    final newHabit = habit.copy(id: id);
 
-    // TODO: run reminder service to remove reminder
+    // save on memory
+    _habitMap[id] = newHabit;
     notifyListeners();
+
+    // setup schedule
+    await _notificationManager.scheduleNotification(oldHabit, newHabit);
   }
 
   Future<void> deleteHabit(int id, {bool permanent = false}) async {
@@ -59,13 +64,16 @@ class HabitService extends ChangeNotifier {
     if (permanent) {
       final success = await _dbService.deleteHabit(habit);
       if (success) _habitMap.remove(id);
-
-      // TODO: run reminder service to remove reminder
       notifyListeners();
     } else {
       final updatedHabit = habit.copy(state: HabitState.archieved);
-      return saveHabit(updatedHabit);
+      // save habit, it'll also run schedule setup,
+      // but it'll be removed soon
+      await saveHabit(updatedHabit);
     }
+
+    // remove schedule
+    return _notificationManager.cancelNotification(habit);
   }
 
   Future<void> restoreHabit(int id) async {

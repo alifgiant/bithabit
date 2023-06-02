@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 
 import 'habit_color.dart';
@@ -5,7 +6,7 @@ import 'habit_frequency.dart';
 import 'habit_reminder.dart';
 import 'habit_state.dart';
 
-class Habit {
+class Habit extends Equatable {
   final int id;
   final String name;
   final HabitColor color;
@@ -13,7 +14,7 @@ class Habit {
   final HabitFrequency frequency;
   final List<HabitReminder> reminder;
 
-  Habit(
+  const Habit(
     this.name,
     this.color, {
     this.id = Isar.autoIncrement,
@@ -44,9 +45,7 @@ class Habit {
   bool get isArchived => state == HabitState.archieved;
 
   @override
-  String toString() {
-    return 'Habit($id,$name,$color,$state,$frequency,$reminder)';
-  }
+  bool get stringify => true;
 
   Map<String, dynamic> toMap() {
     return {
@@ -77,4 +76,14 @@ class Habit {
           [],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        color,
+        state,
+        frequency,
+        ...reminder,
+      ];
 }

@@ -87,11 +87,13 @@ class MyApp extends StatelessWidget {
             final args = ModalRoute.of(context)?.settings.arguments;
             final habitService = context.read<HabitService>();
             final timelineService = context.read<TimelineService>();
+            final notifManager = context.read<NotificationManager>();
 
             return DetailPage(
               habit: args is Habit ? args : null,
               habitService: habitService,
               timelineService: timelineService,
+              notificationManager: notifManager,
             );
           },
           AppRoute.archive: (context) {

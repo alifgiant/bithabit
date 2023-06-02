@@ -1,4 +1,6 @@
-class HabitFrequency {
+import 'package:equatable/equatable.dart';
+
+class HabitFrequency extends Equatable {
   final FrequencyType type;
   final List<int> selected;
   const HabitFrequency({
@@ -30,6 +32,12 @@ class HabitFrequency {
       type: FrequencyType.parse(json['type'] as String),
     );
   }
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [type, ...selected];
 }
 
 enum FrequencyType {

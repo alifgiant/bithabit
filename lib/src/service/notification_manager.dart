@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -8,29 +9,12 @@ import 'package:timezone/data/latest_all.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 
+import '../model/habit.dart';
+import '../model/habit_frequency.dart';
+import '../model/habit_reminder.dart';
+
 class NotificationManager {
   final plugin = FlutterLocalNotificationsPlugin();
-  static const androidDetails = AndroidNotificationDetails(
-    'BitHabit:Reminder',
-    'Habit Reminder ',
-    // TODO: [ticker] will be announced for accessibility, create dynamic
-    ticker: 'Habit Reminder',
-    channelDescription: "Let's achieve more by doing your habit on time",
-    importance: Importance.max,
-    priority: Priority.high,
-    // TODO: handle actions on [notificationTapBackground]
-    actions: <AndroidNotificationAction>[
-      AndroidNotificationAction('id_1', 'Complete'),
-    ],
-  );
-
-  static const appleDetails = DarwinNotificationDetails(
-    categoryIdentifier: 'BitHabit:Reminder',
-    // TODO: dynamic thread base on habit name
-    threadIdentifier: 'habit-name',
-    subtitle: "Let's achieve more by doing your habit on time",
-    presentAlert: true,
-  );
 
   Future<void> init() async {
     tz.initializeTimeZones();
@@ -39,10 +23,8 @@ class NotificationManager {
 
     // initialise the plugin. app_icon needs to be a added as a drawable
     // resource to the Android head project
-    const initializationSettingsAndroid = AndroidInitializationSettings(
-      'ic_notification',
-    );
-    final initializationSettingsDarwin = DarwinInitializationSettings(
+    const settingsAndroid = AndroidInitializationSettings('ic_notification');
+    final settingsDarwin = DarwinInitializationSettings(
       // request permissions at a later point in application
       // on iOS, set all of the above to false when initialising the plugin
       requestAlertPermission: false,
@@ -52,21 +34,21 @@ class NotificationManager {
         DarwinNotificationCategory(
           'BitHabit:Reminder',
           actions: <DarwinNotificationAction>[
-            DarwinNotificationAction.plain('id_1', 'Action 1'),
-            DarwinNotificationAction.plain(
-              'id_2',
-              'Action 2',
-              options: <DarwinNotificationActionOption>{
-                DarwinNotificationActionOption.destructive,
-              },
-            ),
-            DarwinNotificationAction.plain(
-              'id_3',
-              'Action 3',
-              options: <DarwinNotificationActionOption>{
-                DarwinNotificationActionOption.foreground,
-              },
-            ),
+            DarwinNotificationAction.plain('complete', 'Complete'),
+            // DarwinNotificationAction.plain(
+            //   'id_2',
+            //   'Action 2',
+            //   options: <DarwinNotificationActionOption>{
+            //     DarwinNotificationActionOption.destructive,
+            //   },
+            // ),
+            // DarwinNotificationAction.plain(
+            //   'id_3',
+            //   'Action 3',
+            //   options: <DarwinNotificationActionOption>{
+            //     DarwinNotificationActionOption.foreground,
+            //   },
+            // ),
           ],
           options: <DarwinNotificationCategoryOption>{
             DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
@@ -77,9 +59,9 @@ class NotificationManager {
     );
 
     final initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsDarwin,
-      macOS: initializationSettingsDarwin,
+      android: settingsAndroid,
+      iOS: settingsDarwin,
+      macOS: settingsDarwin,
     );
     await plugin.initialize(
       initializationSettings,
@@ -96,11 +78,17 @@ class NotificationManager {
     );
   }
 
+  /// [onDidReceiveNotificationResponse] called when
+  /// On macOS:
+  ///  - action button is tapped, either on foreground or background
   Future<void> onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse,
   ) async {
     final String? payload = notificationResponse.payload;
-    print('alifakbar:onDidReceiveNotificationResponse => payload: $payload');
+    print(
+      'alifakbar:onDidReceiveNotificationResponse => '
+      'payload: $payload, action:${notificationResponse.actionId}',
+    );
     // if (notificationResponse.payload != null) {
     //   debugPrint('notification payload: $payload');
     // }
@@ -111,7 +99,6 @@ class NotificationManager {
   }
 
   Future<bool?> requestNotificationPermission() async {
-    if (kIsWeb) return true;
     if (Platform.isAndroid) {
       return plugin
           .resolvePlatformSpecificImplementation<
@@ -139,77 +126,114 @@ class NotificationManager {
     return null;
   }
 
-  Future<void> scheduleNotification(int id) async {
-    if (kIsWeb) return; // TODO: show not working status
+  DateTime? getReminderTime(
+    HabitFrequency frequency,
+    int selectedDay,
+    HabitReminder reminder,
+  ) {
+    final today = DateTime.now().emptyHour().copyWith(
+          hour: reminder.hour,
+          minute: reminder.minute,
+        );
 
-    final isPermitted = await requestNotificationPermission();
-    if (isPermitted != true) return;
+    // for daily frequency, date is invalid for day bigger than 7 (sunday)
+    final isDailyReminder = frequency.type == FrequencyType.daily;
+    if (isDailyReminder && selectedDay > 7) return null;
 
-    final time = tz.TZDateTime(tz.local, 2023);
-
-    await plugin.zonedSchedule(
-      id,
-      'Repeating BitHabit Reminder',
-      'Start your exercise for today',
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-      const NotificationDetails(
-        android: androidDetails,
-        iOS: appleDetails,
-        macOS: appleDetails,
-      ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents:
-          DateTimeComponents.dayOfWeekAndTime, // when to repeat
-    );
+    final startDay = isDailyReminder ? today.weekday : today.day;
+    return today.subtract(Duration(days: startDay - selectedDay));
   }
 
-  // note: can't schedule specific time notif
-  Future<void> _scheduleNotificationInterval(int id) async {
-    if (kIsWeb) return; // TODO: show not working status
-
-    final isPermitted = await requestNotificationPermission();
-    if (isPermitted != true) return;
-    const notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: appleDetails,
-      macOS: appleDetails,
-    );
-    await plugin.periodicallyShow(
-      id,
-      'Repeating BitHabit Reminder',
-      'Start your exercise for today',
-      RepeatInterval.everyMinute,
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      payload: 'item x',
-    );
+  int getNotificationId(int habitId, int selectedDay, int hour, int minute) {
+    return '$habitId:$selectedDay:$hour:$minute'.hashCode;
   }
 
-  Future<void> showNotification(int id) async {
-    if (kIsWeb) return; // TODO: show not working status
-
-    final isPermitted = await requestNotificationPermission();
-    if (isPermitted != true) return;
-
-    const notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: appleDetails,
-      macOS: appleDetails,
-    );
-    await plugin.show(
-      id,
-      'BitHabit Reminder',
-      'Start your exercise for today',
-      notificationDetails,
-      payload: 'item x',
-    );
+  Future<void> cancelNotification(Habit habit) async {
+    final cancelEvent = List<Future<void>>.empty(growable: true);
+    for (final selectedDay in habit.frequency.selected) {
+      for (final reminder in habit.reminder) {
+        final id = getNotificationId(
+          habit.id,
+          selectedDay,
+          reminder.hour,
+          reminder.minute,
+        );
+        cancelEvent.add(plugin.cancel(id));
+      }
+    }
+    await Future.wait(cancelEvent);
   }
 
-  void cancelNotification(int notifId) async {
-    // cancel the notification with id value of zero
-    await plugin.cancel(notifId);
+  Future<bool?> isNotificationEnabled() async {
+    if (kIsWeb) return null; // TODO: show not working status
+    return requestNotificationPermission();
+  }
+
+  Future<void> scheduleNotification(
+    Habit? oldHabit,
+    Habit newHabit,
+  ) async {
+    if (oldHabit != null) cancelNotification(oldHabit);
+
+    final isPermitted = await isNotificationEnabled();
+    if (isPermitted != true) return;
+
+    final androidDetails = AndroidNotificationDetails(
+      'BitHabit:Reminder',
+      'Habit Reminder ',
+      // TODO: [ticker] will be announced for accessibility, create dynamic
+      ticker: 'Habit Reminder for ${newHabit.name}',
+      channelDescription: "Let's achieve more by doing your habit on time",
+      importance: Importance.max,
+      priority: Priority.high,
+      // TODO: handle actions on [notificationTapBackground]
+      actions: <AndroidNotificationAction>[
+        AndroidNotificationAction('id_1', 'Complete'),
+      ],
+    );
+
+    final appleDetails = DarwinNotificationDetails(
+      categoryIdentifier: 'BitHabit:Reminder',
+      threadIdentifier: newHabit.name,
+      presentAlert: true,
+      interruptionLevel: InterruptionLevel.timeSensitive,
+    );
+
+    final matchDateTime = newHabit.frequency.type.toMatcher();
+    final createEvent = List<Future<void>>.empty(growable: true);
+    for (final selectedDay in newHabit.frequency.selected) {
+      for (final reminder in newHabit.reminder) {
+        if (!reminder.enabled) continue; // if disabled don't schedule it
+
+        final time = getReminderTime(newHabit.frequency, selectedDay, reminder);
+        if (time == null) return;
+        final id = getNotificationId(
+          newHabit.id,
+          selectedDay,
+          reminder.hour,
+          reminder.minute,
+        );
+
+        final scheduleCreation = plugin.zonedSchedule(
+          id,
+          'BitHabit Reminder',
+          'Start your ${newHabit.name} for today',
+          tz.TZDateTime.from(time, tz.local),
+          NotificationDetails(
+            android: androidDetails,
+            iOS: appleDetails,
+            macOS: appleDetails,
+          ),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          payload: newHabit.id.toString(),
+          matchDateTimeComponents: matchDateTime, // when to repeat
+        );
+        createEvent.add(scheduleCreation);
+      }
+    }
+    await Future.wait(createEvent);
   }
 
   /// [onDidReceiveLocalNotification] called when
@@ -259,4 +283,15 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
     'payload: $payload, action:${notificationResponse.actionId}',
   );
   // handle action
+}
+
+extension on FrequencyType {
+  DateTimeComponents toMatcher() {
+    switch (this) {
+      case FrequencyType.daily:
+        return DateTimeComponents.dayOfWeekAndTime;
+      case FrequencyType.monthly:
+        return DateTimeComponents.dayOfMonthAndTime;
+    }
+  }
 }
