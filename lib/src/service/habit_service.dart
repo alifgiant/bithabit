@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import '../model/habit.dart';
 import '../model/habit_state.dart';
 import 'database/database_service.dart';
+import 'notification_manager.dart';
 
 class HabitService extends ChangeNotifier {
   final DatabaseService _dbService;
+  final NotificationManager _notificationManager;
   final Map<int, Habit> _habitMap = {};
 
-  HabitService(this._dbService) {
+  HabitService(
+    this._dbService,
+    this._notificationManager,
+  ) {
     loadHabit();
   }
 

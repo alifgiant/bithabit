@@ -1,3 +1,4 @@
+import 'package:bithabit/src/service/notification_manager.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,10 +40,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<Cache>(create: (_) => const PrefCache()),
+        Provider(create: (_) => NotificationManager()..init()),
         Provider<DatabaseService>(create: (ctx) => Database.create(ctx.read())),
         Provider(create: (ctx) => ExporterService(ctx.read())),
         ChangeNotifierProvider(create: (_) => SubsService()),
-        ChangeNotifierProvider(create: (ctx) => HabitService(ctx.read())),
+        ChangeNotifierProvider(
+          create: (ctx) => HabitService(ctx.read(), ctx.read()),
+        ),
         ChangeNotifierProvider(
           create: (ctx) => TimelineService(ctx.read(), ctx.read()),
         ),

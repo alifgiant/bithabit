@@ -1,3 +1,4 @@
+import 'package:bithabit/src/service/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -89,14 +90,19 @@ class DashPage extends StatelessWidget {
             )
           else
             SliverToBoxAdapter(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: halfScreen - 152 /* app bar sie */ - 21),
-                  const Icon(Icons.offline_bolt_rounded, size: 52),
-                  const SizedBox(height: 18),
-                  const Text('No Schedule for Today'),
-                ],
+              child: GestureDetector(
+                onTap: () {
+                  context.read<NotificationManager>().showNotification();
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: halfScreen - 152 /* app bar sie */ - 21),
+                    const Icon(Icons.offline_bolt_rounded, size: 52),
+                    const SizedBox(height: 18),
+                    const Text('No Schedule for Today'),
+                  ],
+                ),
               ),
             ),
           const SliverToBoxAdapter(
