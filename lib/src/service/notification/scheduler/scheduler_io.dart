@@ -1,5 +1,5 @@
-// ignore: depend_on_referenced_packages
-import 'package:bithabit/src/service/notification/permission/permission.dart';
+import 'dart:convert';
+
 import 'package:bithabit/src/utils/text/date_utils.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // ignore: depend_on_referenced_packages
@@ -8,6 +8,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../../../model/habit.dart';
 import '../../../model/habit_frequency.dart';
 import '../../../model/habit_reminder.dart';
+import '../permission/permission.dart';
 
 DateTime? _getReminderTime(
   HabitFrequency frequency,
@@ -114,7 +115,7 @@ Future<void> scheduleNotification(
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        payload: newHabit.id.toString(),
+        payload: jsonEncode(newHabit.toMap()),
         matchDateTimeComponents: matchDateTime, // when to repeat
       );
       createEvent.add(scheduleCreation);

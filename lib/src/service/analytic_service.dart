@@ -20,6 +20,17 @@ class Analytic {
         : FirebaseAnalytics.instance;
   }
 
+  void logNotificationClick(int? notifId, String? payload, String? actionId) {
+    _firebase.logEvent(
+      name: 'notification_click',
+      parameters: {
+        if (notifId != null) 'notifId': notifId,
+        'habit': payload ?? 'no id',
+        if (actionId != null) 'actionId': actionId
+      },
+    );
+  }
+
   void logAppOpen() {
     _firebase.logAppOpen();
   }

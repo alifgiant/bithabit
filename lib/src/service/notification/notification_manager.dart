@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 // ignore: depend_on_referenced_packages
@@ -5,7 +6,9 @@ import 'package:timezone/data/latest_all.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../../firebase_setup.dart';
 import '../../model/habit.dart';
+import '../analytic_service.dart';
 import 'permission/permission.dart';
 import 'scheduler/scheduler.dart';
 
@@ -60,12 +63,23 @@ class NotificationManager {
     /// On macOS:
     ///  - app open
     final initialNotif = await plugin.getNotificationAppLaunchDetails();
-    final didNotificationLaunchApp = initialNotif?.didNotificationLaunchApp;
-    final payload = initialNotif?.notificationResponse?.payload;
-    print(
-      'alifakbar:init => payload:$payload '
-      'didNotificationLaunchApp:$didNotificationLaunchApp',
-    );
+    if (initialNotif == null) return;
+
+    final notificationResponse = initialNotif.notificationResponse;
+    if (notificationResponse == null) return;
+
+    final didNotificationLaunchApp = initialNotif.didNotificationLaunchApp;
+    if (!didNotificationLaunchApp) return;
+
+    final notifId = notificationResponse.id;
+    final payload = notificationResponse.payload;
+    final action = notificationResponse.actionId;
+    // print(
+    //   'alifakbar:init => payload:$payload '
+    //   'didNotificationLaunchApp:$didNotificationLaunchApp',
+    // );
+
+    Analytic.get().logNotificationClick(notifId, payload, action);
   }
 
   Future<bool?> isNotificationEnabled() async {
@@ -93,11 +107,16 @@ class NotificationManager {
   Future<void> onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse,
   ) async {
-    final String? payload = notificationResponse.payload;
-    print(
-      'alifakbar:onDidReceiveNotificationResponse => '
-      'payload: $payload, action:${notificationResponse.actionId}',
-    );
+    final notifId = notificationResponse.id;
+    final payload = notificationResponse.payload;
+    final action = notificationResponse.actionId;
+
+    Analytic.get().logNotificationClick(notifId, payload, action);
+
+    // print(
+    //   'alifakbar:onDidReceiveNotificationResponse => '
+    //   'payload: $payload, action:${notificationResponse.actionId}',
+    // );
   }
 
   /// [onDidReceiveLocalNotification] called when
@@ -113,11 +132,12 @@ class NotificationManager {
     String? body,
     String? payload,
   ) async {
-    print('alifakbar:onDidReceiveLocalNotification => id:$id, title:$title');
+    // print('alifakbar:onDidReceiveLocalNotification => id:$id, title:$title');
+    Analytic.get().logNotificationClick(id, payload, null);
   }
 }
 
-/// [notificationTapBackground] called when
+/// [notificationTapBackground] is triggered on isolate, will be called when
 /// On Android:
 ///  - action button is tapped, either on foreground or background
 /// On iOS:
@@ -125,11 +145,21 @@ class NotificationManager {
 /// On macOS:
 ///  - //
 @pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  final String? payload = notificationResponse.payload;
+Future<void> notificationTapBackground(
+  NotificationResponse notificationResponse,
+) async {
+  final notifId = notificationResponse.id;
+  final payload = notificationResponse.payload;
+  final action = notificationResponse.actionId;
+
   // TODO: handle actions
-  print(
-    'alifakbar:notificationTapBackground => '
-    'payload: $payload, action:${notificationResponse.actionId}',
-  );
+  // print(
+  //   'alifakbar:notificationTapBackground => '
+  //   'payload: $payload, action:${notificationResponse.actionId}',
+  // );
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseSetup().start();
+
+  Analytic.get().logNotificationClick(notifId, payload, action);
 }
