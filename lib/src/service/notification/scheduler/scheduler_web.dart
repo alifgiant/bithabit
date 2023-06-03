@@ -9,9 +9,18 @@ Future<void> scheduleNotification(
   FlutterLocalNotificationsPlugin plugin,
   Habit? oldHabit,
   Habit newHabit,
-) async {}
+) async {
+  Notification(
+    'BitHabit Reminder',
+    body: 'Start your ${newHabit.name} for today '
+        '(Demo Only, not actual scheduled reminder)',
+    icon: 'assets/images/app-icon2.png',
+  );
+}
 
 Future<void> cancelNotification(
   FlutterLocalNotificationsPlugin plugin,
   Habit habit,
-) async {}
+) async {
+  // do nothing
+}
