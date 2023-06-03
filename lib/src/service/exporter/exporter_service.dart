@@ -44,6 +44,7 @@ class ExporterService {
       final isSuccess = await _dbService.import(json as Map<String, dynamic>);
       return isSuccess ? ImportResult.success : ImportResult.empty;
     } catch (e) {
+      FlutterError.reportError(FlutterErrorDetails(exception: e));
       return ImportResult.fileCorrupt;
     }
   }

@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -112,20 +114,34 @@ class SettingPage extends StatelessWidget {
             icon: Icons.help_outline_rounded,
             onTap: () => launchUrl(
               Uri.parse(
-                  'https://alifgiant.notion.site/BitHabit-Frequently-Asked-Questions-FAQ-39f18303d3ec43589228ca5b1776b23f'),
+                'https://alifgiant.notion.site/BitHabit-Frequently-Asked-Questions-FAQ-39f18303d3ec43589228ca5b1776b23f',
+              ),
             ),
           ),
           SettingTile(
             title: 'Rate the app',
             icon: BoxIcons.bx_star,
-            onTap: () {},
+            onTap: () {
+              if (kIsWeb) {
+                try {
+                  launchUrl(Uri.parse(playStoreUrl));
+                } catch (e) {
+                  FlutterError.reportError(FlutterErrorDetails(exception: e));
+                }
+                return;
+              }
+              InAppReview.instance.openStoreListing(
+                appStoreId: '...', // TODO: apple app id
+              );
+            },
           ),
           SettingTile(
             title: 'Terms of Use',
             icon: Icons.check_outlined,
             onTap: () => launchUrl(
               Uri.parse(
-                  'https://alifgiant.notion.site/BitHabit-Terms-of-Use-35258a9b7a2140ef9682f5897d8b0fe6'),
+                'https://alifgiant.notion.site/BitHabit-Terms-of-Use-35258a9b7a2140ef9682f5897d8b0fe6',
+              ),
             ),
           ),
           SettingTile(
@@ -133,14 +149,16 @@ class SettingPage extends StatelessWidget {
             icon: Icons.lock_outline_rounded,
             onTap: () => launchUrl(
               Uri.parse(
-                  'https://alifgiant.notion.site/BitHabit-Privacy-Policy-8a58c24dc4934c218002c3e60d2a1205'),
+                'https://alifgiant.notion.site/BitHabit-Privacy-Policy-8a58c24dc4934c218002c3e60d2a1205',
+              ),
             ),
           ),
           SettingTile(
             title: 'Send Feedback',
             icon: BoxIcons.bx_message_square_detail,
-            onTap: () =>
-                launchUrl(Uri.parse('https://instagram.com/luxinfity')),
+            onTap: () => launchUrl(
+              Uri.parse('https://instagram.com/luxinfity'),
+            ),
           ),
           SettingTile(
             title: 'Licenses',
@@ -156,3 +174,6 @@ class SettingPage extends StatelessWidget {
     );
   }
 }
+
+const androidId = 'com.luxinfity.bithabit';
+const playStoreUrl = 'https://play.google.com/store/apps/details?id=$androidId';
