@@ -26,17 +26,18 @@ class NotificationManager {
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
-      notificationCategories: [
-        DarwinNotificationCategory(
-          'BitHabit:Reminder',
-          actions: <DarwinNotificationAction>[
-            DarwinNotificationAction.plain('complete', 'Complete'),
-          ],
-          options: <DarwinNotificationCategoryOption>{
-            DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
-          },
-        ),
-      ],
+      // TODO: add action on reminder
+      // notificationCategories: [
+      //   DarwinNotificationCategory(
+      //     'BitHabit:Reminder',
+      //     actions: <DarwinNotificationAction>[
+      //       DarwinNotificationAction.plain('complete', 'Complete'),
+      //     ],
+      //     options: <DarwinNotificationCategoryOption>{
+      //       DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
+      //     },
+      //   ),
+      // ],
       onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
 
@@ -51,6 +52,13 @@ class NotificationManager {
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
 
+    /// this section called when
+    /// on Android:
+    ///  - app open and notif banner click while on background (app killed)
+    /// On iOS:
+    ///  - app open
+    /// On macOS:
+    ///  - app open
     final initialNotif = await plugin.getNotificationAppLaunchDetails();
     final didNotificationLaunchApp = initialNotif?.didNotificationLaunchApp;
     final payload = initialNotif?.notificationResponse?.payload;
@@ -77,11 +85,11 @@ class NotificationManager {
 
   /// [onDidReceiveNotificationResponse] called when
   /// on Android:
-  ///  - //
-  /// On macOS:
-  ///  - action button is tapped, either on foreground or background
+  ///  - notification banner is tapped while on foreground / background (app not killed)
   /// On iOS:
-  ///  - notif banner tapped
+  ///  - notification banner is tapped while on foreground / background (app not killed)
+  /// On macOS:
+  ///  - //
   Future<void> onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse,
   ) async {
@@ -94,10 +102,10 @@ class NotificationManager {
 
   /// [onDidReceiveLocalNotification] called when
   /// On Android:
-  ///  - notification banner is tapped
-  /// On macOS:
-  ///  - //
+  ///  - never trigger
   /// On iOS:
+  ///  - notification banner is tapped on foreground
+  /// On macOS:
   ///  - //
   Future<void> onDidReceiveLocalNotification(
     int id,
@@ -112,14 +120,14 @@ class NotificationManager {
 /// [notificationTapBackground] called when
 /// On Android:
 ///  - action button is tapped, either on foreground or background
-/// On macOS:
-///  - //
 /// On iOS:
 ///  - action button is tapped, either on foreground or background
+/// On macOS:
+///  - //
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
   final String? payload = notificationResponse.payload;
-  // handle action
+  // TODO: handle actions
   print(
     'alifakbar:notificationTapBackground => '
     'payload: $payload, action:${notificationResponse.actionId}',

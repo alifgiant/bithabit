@@ -68,10 +68,10 @@ Future<void> scheduleNotification(
     channelDescription: "Let's achieve more by doing your habit on time",
     importance: Importance.max,
     priority: Priority.high,
-    // TODO: handle actions on [notificationTapBackground]
-    actions: const [
-      AndroidNotificationAction('complete', 'Complete'),
-    ],
+    // TODO: add action on reminder
+    // actions: const [
+    //   AndroidNotificationAction('complete', 'Complete'),
+    // ],
   );
 
   final appleDetails = DarwinNotificationDetails(
