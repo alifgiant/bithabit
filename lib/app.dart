@@ -1,4 +1,3 @@
-import 'package:bithabit/src/service/notification_manager.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +16,7 @@ import 'src/service/database/database.dart';
 import 'src/service/database/database_service.dart';
 import 'src/service/exporter/exporter_service.dart';
 import 'src/service/habit_service.dart';
+import 'src/service/notification/notification_manager.dart';
 import 'src/service/recap_service.dart';
 import 'src/service/sorting_service.dart';
 import 'src/service/subs_service.dart';

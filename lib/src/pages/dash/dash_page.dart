@@ -1,4 +1,3 @@
-import 'package:bithabit/src/service/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +40,6 @@ class DashPage extends StatelessWidget {
       completionChecker: timelineService.isHabitChecked,
     );
 
-    int id = 0;
     return Scaffold(
       body: CustomScrollView(
         slivers: [

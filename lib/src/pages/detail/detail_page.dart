@@ -10,7 +10,7 @@ import '../../model/habit_reminder.dart';
 import '../../service/analytic_service.dart';
 import '../../service/habit_service.dart';
 import '../../service/navigation_service.dart';
-import '../../service/notification_manager.dart';
+import '../../service/notification/notification_manager.dart';
 import '../../service/timeline_service.dart';
 import '../../utils/const/app_route.dart';
 import '../../utils/view/app_bar_title.dart';
