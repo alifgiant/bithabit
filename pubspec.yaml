@@ -2,7 +2,7 @@ name: bithabit
 description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
@@ -18,8 +18,9 @@ dependencies:
 
   # core
   provider: ^6.0.5
-  flex_color_scheme: ^7.0.5
   path_provider: ^2.0.15
+  in_app_purchase: ^3.1.7
+  flex_color_scheme: ^7.0.5
   flutter_local_notifications: ^14.1.0
   # database
   isar: *isar_version
