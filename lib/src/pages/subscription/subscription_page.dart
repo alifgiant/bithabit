@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:achievement_view/achievement_view.dart';
+import 'package:bithabit/src/pages/subscription/dev_dialog.dart';
+import 'package:bithabit/src/service/analytic_service.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -25,6 +27,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
   late ConfettiController confettiController;
   late final SubsService subsService;
   late bool isPremiumUser;
+  int devClick = 0;
 
   @override
   void initState() {
@@ -48,6 +51,26 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
     setState(() {
       isPremiumUser = subsService.isPremiumUser;
     });
+  }
+
+  Future<void> onDevClick() async {
+    devClick += 1;
+    // TODO: use number based on remote config
+    if (devClick > 4) {
+      Analytic.get().logDevDialog(DevAction.open);
+      final pass = await showDialog<String?>(
+        context: context,
+        builder: (ctx) => const DevDialog(),
+      );
+      Analytic.get().logDevDialog(DevAction.attempt, pass: pass);
+      devClick = 0; // reset counter
+
+      // TODO: use pass based on remote config
+      const passwordDev = 'TempGoogleR3v13w';
+      if (pass != passwordDev) return;
+      Analytic.get().logDevDialog(DevAction.success, pass: pass);
+      subsService.updateKind(SubsKind.monthly);
+    }
   }
 
   Future<void> startAnimation(BuildContext context) async {
@@ -187,11 +210,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
                 icon: BoxIcons.bx_upload,
                 color: ResColor.lightPurple,
               ),
-              const _FeatureTile(
+              _FeatureTile(
                 title: 'Support Indie Develpoer',
                 subtitle: 'You help us maintain the app',
                 icon: BoxIcons.bx_pulse,
                 color: ResColor.red,
+                onTap: onDevClick,
               ),
             ],
           ),
@@ -222,33 +246,38 @@ class _FeatureTile extends StatelessWidget {
   final String subtitle;
   final IconData icon;
   final Color color;
+  final VoidCallback? onTap;
 
   const _FeatureTile({
     required this.title,
     required this.subtitle,
     required this.icon,
     required this.color,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 6),
-      leading: Container(
-        height: 54,
-        width: 54,
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.6),
-          borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 6),
+        leading: Container(
+          height: 54,
+          width: 54,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.6),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            icon,
+            color: ResColor.white,
+            size: 32,
+          ),
         ),
-        child: Icon(
-          icon,
-          color: ResColor.white,
-          size: 32,
-        ),
+        title: Text(title),
+        subtitle: Text(subtitle),
       ),
-      title: Text(title),
-      subtitle: Text(subtitle),
     );
   }
 }

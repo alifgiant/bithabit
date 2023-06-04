@@ -20,6 +20,15 @@ class Analytic {
         : FirebaseAnalytics.instance;
   }
 
+  void logDevDialog(DevAction action, {String? pass}) {
+    _firebase.logEvent(
+      name: 'dev_${action.key}',
+      parameters: {
+        if (pass != null) 'pass': pass,
+      },
+    );
+  }
+
   void logNotificationClick(int? notifId, String? payload, String? actionId) {
     _firebase.logEvent(
       name: 'notification_click',
@@ -104,6 +113,15 @@ class Analytic {
       },
     );
   }
+}
+
+enum DevAction {
+  open('open'),
+  attempt('attempt'),
+  success('success');
+
+  const DevAction(this.key);
+  final String key;
 }
 
 enum HabitAction {
