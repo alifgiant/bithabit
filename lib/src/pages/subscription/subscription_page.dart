@@ -75,18 +75,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> with SoundPlayer {
 
   Future<void> startAnimation(BuildContext context) async {
     AchievementView(
-      context,
       title: 'Thank You!',
       subTitle: 'Hope you have fantastic journey',
       alignment: Alignment.bottomCenter,
-      icon: const Icon(
-        BoxIcons.bxs_medal,
-        color: ResColor.white,
-        size: 42,
-      ),
+      icon: const Icon(BoxIcons.bxs_medal, color: ResColor.white, size: 42),
       borderRadius: BorderRadius.circular(12),
       color: ResColor.brown,
-    ).show();
+    ).show(context);
 
     confettiController.play();
     await Future<void>.delayed(const Duration(seconds: 3));

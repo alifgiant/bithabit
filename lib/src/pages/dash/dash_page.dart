@@ -43,7 +43,7 @@ class DashPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(
+          SliverAppBar(
             actions: const [
               SizedBox(width: 8),
               AddHabitButton(source: 'dash_page'),
@@ -51,6 +51,8 @@ class DashPage extends StatelessWidget {
               SortHabitButton(),
               SizedBox(width: 8),
             ],
+            collapsedHeight: 64,
+            expandedHeight: 152,
             flexibleSpace: FlexibleSpaceBar(
               background: Padding(
                 padding:

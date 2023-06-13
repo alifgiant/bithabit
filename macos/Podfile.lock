@@ -17,19 +17,19 @@ PODS:
   - Firebase/RemoteConfig (10.9.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.9.0)
-  - firebase_analytics (10.4.1):
+  - firebase_analytics (10.4.2):
     - Firebase/Analytics (= 10.9.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_core (2.13.0):
+  - firebase_core (2.13.1):
     - Firebase/CoreOnly (~> 10.9.0)
     - FlutterMacOS
-  - firebase_crashlytics (3.3.1):
+  - firebase_crashlytics (3.3.2):
     - Firebase/CoreOnly (~> 10.9.0)
     - Firebase/Crashlytics (~> 10.9.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_remote_config (4.2.1):
+  - firebase_remote_config (4.2.2):
     - Firebase/CoreOnly (~> 10.9.0)
     - Firebase/RemoteConfig (~> 10.9.0)
     - firebase_core
@@ -146,6 +146,11 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.11.1):
     - GoogleUtilities/Logger
+  - in_app_purchase_storekit (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - in_app_review (0.2.0):
+    - FlutterMacOS
   - isar_flutter_libs (1.0.0):
     - FlutterMacOS
   - nanopb (2.30909.0):
@@ -177,10 +182,12 @@ DEPENDENCIES:
   - flutter_local_notifications (from `Flutter/ephemeral/.symlinks/plugins/flutter_local_notifications/macos`)
   - flutter_timezone (from `Flutter/ephemeral/.symlinks/plugins/flutter_timezone/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - in_app_purchase_storekit (from `Flutter/ephemeral/.symlinks/plugins/in_app_purchase_storekit/darwin`)
+  - in_app_review (from `Flutter/ephemeral/.symlinks/plugins/in_app_review/macos`)
   - isar_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/isar_flutter_libs/macos`)
   - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
-  - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos`)
-  - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/macos`)
+  - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
+  - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
 
 SPEC REPOS:
@@ -219,24 +226,28 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/flutter_timezone/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  in_app_purchase_storekit:
+    :path: Flutter/ephemeral/.symlinks/plugins/in_app_purchase_storekit/darwin
+  in_app_review:
+    :path: Flutter/ephemeral/.symlinks/plugins/in_app_review/macos
   isar_flutter_libs:
     :path: Flutter/ephemeral/.symlinks/plugins/isar_flutter_libs/macos
   package_info_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
   path_provider_foundation:
-    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   shared_preferences_foundation:
-    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/macos
+    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin
   url_launcher_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
   audioplayers_darwin: dcad41de4fbd0099cb3749f7ab3b0cb8f70b810c
   Firebase: bd152f0f3d278c4060c5c71359db08ebcfd5a3e2
-  firebase_analytics: 28d1d097d37accf81c520c783f0e5827caea5f5e
-  firebase_core: feb9ea6e23cfb6d4961cd2abeec1b79b47790b8d
-  firebase_crashlytics: 590044331fe201d96be90ba8fd1f431bcb497a67
-  firebase_remote_config: a4f92f07a2279167ff0f9fe78b574057e834e121
+  firebase_analytics: f088393712d56cb3a9380d94a3143a0a6c8b8b49
+  firebase_core: bef54c6955ffe824bb73ec34090f4013b6921bc1
+  firebase_crashlytics: effbfab05bc829de381d0ff731114800cd473990
+  firebase_remote_config: 8ae9580fce792eaa5a5277d8accf225cd86dc11d
   FirebaseABTesting: b2a87808d90f02766fcffb3957d3e397e7accc15
   FirebaseAnalytics: 5ea0db4893825e7b0149d575352cd838236313dc
   FirebaseCore: b68d3616526ec02e4d155166bbafb8eca64af557
@@ -252,15 +263,17 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 373bcbead1bb6a85be7a64d5d8f96284b762ea9c
   GoogleDataTransport: f0308f5905a745f94fb91fea9c6cbaf3831cb1bd
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
+  in_app_purchase_storekit: 4fb7ee9e824b1f09107fbfbbce8c4b276366dc43
+  in_app_review: a850789fad746e89bce03d4aeee8078b45a53fd0
   isar_flutter_libs: 43385c99864c168fadba7c9adeddc5d38838ca6a
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   package_info_plus: 02d7a575e80f194102bef286361c6c326e4c29ce
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
-  shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
+  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
   url_launcher_macos: 5335912b679c073563f29d89d33d10d459f95451
 
-PODFILE CHECKSUM: 818f5eedb8dfdb5453aae495f28b8327fa30a7d0
+PODFILE CHECKSUM: e0a1b931c98d9a496f70b1a77d9400fe96abe78a
 
 COCOAPODS: 1.12.0

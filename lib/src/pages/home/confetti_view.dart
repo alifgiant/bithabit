@@ -86,14 +86,13 @@ class _ConfettiViewState extends State<ConfettiView> with SoundPlayer {
 
   Future<void> startAnimation(BuildContext context) async {
     AchievementView(
-      context,
       title: 'Congrats!',
       subTitle: "All today's Habit are done",
       alignment: Alignment.bottomCenter,
       icon: const Icon(BoxIcons.bx_party, color: Colors.white),
       borderRadius: BorderRadius.circular(12),
       color: ResColor.darkGreen,
-    ).show();
+    ).show(context);
 
     confettiController.play();
     await Future<void>.delayed(widget.duration ?? const Duration(seconds: 3));
